@@ -37,7 +37,7 @@ public class SQLService {
 
         SQLUtils.setDb(PooledDatabaseOptions.builder().options(options).createHikariDatabase());
 
-        profileTable = new SQLTable("profiles", "uuid","VARCHAR(36)",new String[][]{{"joined","TEXT"},{"discordid","VARCHAR(32)"}});
+        profileTable = new SQLTable("profiles", DbData.PROFILE_PK , DbData.PROFILE_COLUMNS);
 
         profileCache = CacheBuilder.newBuilder()
                 .removalListener(this::saveProfile)
@@ -52,12 +52,14 @@ public class SQLService {
     @NonNull
     private Profile loadProfile(@NotNull final UUID uuid) {
         Profile profile = new Profile(uuid);
-        if(! SQLUtils.holdsKey(profileTable, "\""+uuid.toString()+"\"")) return profile;
+        if(! SQLUtils.holdsKey(profileTable, "\""+uuid+"\"")) return profile;
         return profile.loadAttributes(profileTable);
     }
 
     private void saveProfile(@NotNull final RemovalNotification<@NotNull UUID, @NotNull Profile> notification) {
-        setRow( profileTable, notification.getValue().getUuid().toString(), Long.toString(notification.getValue().getFirstJoined().getTime()), notification.getValue().getDiscord());
+        Profile profile = notification.getValue();
+        // DISCORD , TRACK TP , HOMES , NOTES , MUTE
+        setRow( profileTable, profile.getUuid().toString(), profile.getDiscord(), Boolean.toString(profile.isTrackingTeleports()), profile.getHomesString(), profile.getPrivateNotesString(), profile.getMute());
     }
 
     /*

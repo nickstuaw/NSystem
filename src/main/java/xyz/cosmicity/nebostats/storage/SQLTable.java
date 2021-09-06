@@ -20,9 +20,9 @@ public class SQLTable {
     private final String[] pk;
     private final String[][] cols;
 
-    public SQLTable(final String table, final String pkLbl, final String pkType, final String[][] columns) {
+    public SQLTable(final String table, final String[] pkey, final String[][] columns) {
         name = table;
-        pk = new String[]{pkLbl, pkType};
+        pk = pkey;
         cols = columns;
         colsJoined = joinCols();
         init();
