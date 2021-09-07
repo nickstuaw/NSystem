@@ -23,7 +23,7 @@ public class HomesC implements CommandExecutor {
         if(sender instanceof Player) {
             Profile p = pl.sql().wrap(((Player)sender).getUniqueId());
             if(p != null) {
-                sender.sendMessage(ChatColor.GREEN + "Homes: "+ChatColor.RESET+ String.join(", ", p.getHomes().keySet()));
+                sender.sendMessage(ChatColor.BLUE +""+p.getHomes().size()+ "/10 "+ChatColor.GREEN+"Homes: "+ChatColor.RESET+ String.join(", ", p.getHomes().keySet()));
             }
         } else {
             sender.sendMessage("This command is limited to players only.");

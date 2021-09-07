@@ -27,11 +27,19 @@ public class SetHomeC implements CommandExecutor {
             if(p != null) {
                 Location loc = ((Player) sender).getLocation();
                 if(args.length > 0) {
-                    p.setHome(args[0], loc);
-                    sender.sendMessage(ChatColor.GREEN + "Home '"+args[0]+"' set.");
+                    if(p.getHomes().size() < 10) {
+                        p.setHome(args[0], loc);
+                        sender.sendMessage(ChatColor.GREEN + "Home '" + args[0] + "' set.");
+                    } else {
+                        sender.sendMessage(ChatColor.GREEN + "You have reached the maximum home limit.");
+                    }
                 } else {
-                    p.setHome("home", loc);
-                    sender.sendMessage(ChatColor.GREEN + "Home 'home' set.");
+                    if(p.getHomes().size() < 10) {
+                        p.setHome("home", loc);
+                        sender.sendMessage(ChatColor.GREEN + "Home 'home' set.");
+                    } else {
+                        sender.sendMessage(ChatColor.GREEN + "You have reached the maximum home limit.");
+                    }
                 }
             }
         } else {
