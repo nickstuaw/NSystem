@@ -8,9 +8,15 @@ package xyz.cosmicity.nebostats;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.cosmicity.nebostats.commands.DelHomeC;
+import xyz.cosmicity.nebostats.commands.HomeC;
+import xyz.cosmicity.nebostats.commands.HomesC;
+import xyz.cosmicity.nebostats.commands.SetHomeC;
 import xyz.cosmicity.nebostats.listeners.LoadingListener;
 import xyz.cosmicity.nebostats.storage.SQLService;
 import xyz.cosmicity.nebostats.storage.SQLUtils;
+
+import java.util.Objects;
 
 public final class NeboStats extends JavaPlugin {
     private SQLService sql;
@@ -29,6 +35,11 @@ public final class NeboStats extends JavaPlugin {
                 sqlConfig.getString("database"),
                 sqlConfig.getString("user"), sqlConfig.getString("pass"));
         Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
+
+        Objects.requireNonNull(Bukkit.getPluginCommand("home")).setExecutor(new HomeC(this));
+        Objects.requireNonNull(Bukkit.getPluginCommand("homes")).setExecutor(new HomesC(this));
+        Objects.requireNonNull(Bukkit.getPluginCommand("sethome")).setExecutor(new SetHomeC(this));
+        Objects.requireNonNull(Bukkit.getPluginCommand("delhome")).setExecutor(new DelHomeC(this));
     }
 
     @Override

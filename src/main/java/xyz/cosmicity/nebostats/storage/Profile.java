@@ -7,6 +7,7 @@ package xyz.cosmicity.nebostats.storage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Instant;
 import java.util.*;
@@ -63,7 +64,7 @@ public class Profile {
         // homename:worlduuid,x,y,z,yaw,pitch;
         for(String home : homesRaw) {
             vals1 = home.split(":");
-            vals2 = Arrays.stream(vals1).map(s->s.split(",")).collect(Collectors.toList()).toArray(String[][]::new);
+            vals2 = new String[][]{vals1[0].split(","), vals1[1].split(",")};
             homes.put(vals2[0][0],new Location(Bukkit.getWorld(UUID.fromString(vals2[1][0])),
                     Double.parseDouble(vals2[1][1]),
                     Double.parseDouble(vals2[1][2]),
@@ -79,7 +80,7 @@ public class Profile {
         String data;
         for(String homeName : homes.keySet()) {
             location = homes.get(homeName);
-            data = homeName + ":" + location.getX() +","+ location.getY() +","+ location.getZ() +"," + location.getYaw() +","+ location.getPitch() +";";
+            data = homeName + ":" +location.getWorld().getUID() +","+ location.getX() +","+ location.getY() +","+ location.getZ() +"," + location.getYaw() +","+ location.getPitch() +";";
             raw.append(data);
         }
         return raw.toString();
@@ -92,6 +93,7 @@ public class Profile {
         homes.remove(homeName);
     }
 
+    @Nullable
     public Location getHome(final String homeName) {
         if(!homes.containsKey(homeName)) return null;
         return homes.get(homeName);
@@ -123,10 +125,11 @@ public class Profile {
 
     // Muting
     public String getMute() {
-        return Long.toString(muteFrom.getTime())+"/"+muteSeconds;
+        return (muteFrom==null?"none":muteFrom.getTime())+"/"+muteSeconds;
     }
     public void setMute(String m) {
-        muteFrom = Date.from(Instant.ofEpochMilli(Long.parseLong(m.split("/")[0])));
+        String mFrom = m.split("/")[0];
+        muteFrom = Objects.equals(mFrom, "none") ? null : Date.from(Instant.ofEpochMilli(Long.parseLong(mFrom)));
         muteSeconds = Integer.parseInt(m.split("/")[1]);
     }
     public boolean isMuted() {return muteFrom!=null && muteSeconds>-1;}

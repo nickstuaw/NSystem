@@ -13,6 +13,7 @@ import com.google.common.cache.RemovalNotification;
 import org.bukkit.Bukkit;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,7 +60,7 @@ public class SQLService {
     private void saveProfile(@NotNull final RemovalNotification<@NotNull UUID, @NotNull Profile> notification) {
         Profile profile = notification.getValue();
         // DISCORD , TRACK TP , HOMES , NOTES , MUTE
-        setRow( profileTable, profile.getUuid().toString(), profile.getDiscord(), Boolean.toString(profile.isTrackingTeleports()), profile.getHomesString(), profile.getPrivateNotesString(), profile.getMute());
+        setRow( profileTable, profile.getUuid().toString(), profile.getDiscord(), profile.isTrackingTeleports()?"1":"0", profile.getHomesString(), profile.getPrivateNotesString(), profile.getMute());
     }
 
     /*
@@ -82,6 +83,7 @@ public class SQLService {
         return null;
     }
 
+    @Nullable
     public Profile wrapIfLoaded(@NotNull final UUID uuid) {
         return profileCache.getIfPresent(uuid);
     }
