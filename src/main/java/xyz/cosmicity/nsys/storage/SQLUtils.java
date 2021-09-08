@@ -3,11 +3,12 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nebostats.storage;
+package xyz.cosmicity.nsys.storage;
 
 import co.aikar.idb.DB;
 import co.aikar.idb.Database;
 import org.bukkit.Bukkit;
+import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.Connection;
@@ -83,7 +84,7 @@ public class SQLUtils {
         });
     }
 
-    public static void update(final String query) {
+    public static void update(@Language("SQL") final String query) {
         try {
             db.executeUpdate(query);
         } catch (SQLException e) {

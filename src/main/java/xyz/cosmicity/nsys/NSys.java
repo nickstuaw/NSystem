@@ -3,27 +3,27 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nebostats;
+package xyz.cosmicity.nsys;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.cosmicity.nebostats.commands.DelHomeC;
-import xyz.cosmicity.nebostats.commands.HomeC;
-import xyz.cosmicity.nebostats.commands.HomesC;
-import xyz.cosmicity.nebostats.commands.SetHomeC;
-import xyz.cosmicity.nebostats.listeners.LoadingListener;
-import xyz.cosmicity.nebostats.storage.SQLService;
-import xyz.cosmicity.nebostats.storage.SQLUtils;
+import xyz.cosmicity.nsys.commands.DelHomeC;
+import xyz.cosmicity.nsys.commands.HomeC;
+import xyz.cosmicity.nsys.commands.HomesC;
+import xyz.cosmicity.nsys.commands.SetHomeC;
+import xyz.cosmicity.nsys.listeners.LoadingListener;
+import xyz.cosmicity.nsys.storage.SQLService;
+import xyz.cosmicity.nsys.storage.SQLUtils;
 
 import java.util.Objects;
 
-public final class NeboStats extends JavaPlugin {
+public final class NSys extends JavaPlugin {
     private SQLService sql;
 
     @Override
     public void onEnable() {
-        getLogger().info("Enabling NeboStats...");
+        getLogger().info("Enabling NSys...");
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         ConfigurationSection sqlConfig = getConfig().getConfigurationSection("mysql");

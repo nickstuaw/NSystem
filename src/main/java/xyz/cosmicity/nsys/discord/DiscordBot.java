@@ -3,14 +3,14 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nebostats.discord;
+package xyz.cosmicity.nsys.discord;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.bukkit.configuration.ConfigurationSection;
-import xyz.cosmicity.nebostats.NeboStats;
+import xyz.cosmicity.nsys.NSys;
 
 import javax.security.auth.login.LoginException;
 
@@ -18,7 +18,7 @@ public class DiscordBot {
 
     private JDA jda;
 
-    public DiscordBot(NeboStats pl) {
+    public DiscordBot(NSys pl) {
 
         try {
             ConfigurationSection config = pl.getConfig().getConfigurationSection("discord");

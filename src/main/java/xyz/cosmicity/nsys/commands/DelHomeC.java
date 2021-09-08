@@ -1,20 +1,19 @@
-package xyz.cosmicity.nebostats.commands;
+package xyz.cosmicity.nsys.commands;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import xyz.cosmicity.nebostats.NeboStats;
-import xyz.cosmicity.nebostats.storage.Profile;
+import xyz.cosmicity.nsys.NSys;
+import xyz.cosmicity.nsys.storage.Profile;
 
 public class DelHomeC implements CommandExecutor {
 
-    private final NeboStats pl;
+    private final NSys pl;
 
-    public DelHomeC(NeboStats plg) {
+    public DelHomeC(NSys plg) {
         pl = plg;
     }
 

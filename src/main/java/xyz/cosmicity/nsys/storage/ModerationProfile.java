@@ -1,4 +1,4 @@
-package xyz.cosmicity.nebostats.storage;
+package xyz.cosmicity.nsys.storage;
 
 import java.time.Instant;
 import java.util.Arrays;

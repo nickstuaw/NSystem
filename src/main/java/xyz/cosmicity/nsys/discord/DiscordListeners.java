@@ -3,7 +3,7 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nebostats.discord;
+package xyz.cosmicity.nsys.discord;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -12,8 +12,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import xyz.cosmicity.nebostats.NeboStats;
-import xyz.cosmicity.nebostats.storage.Profile;
+import xyz.cosmicity.nsys.NSys;
+import xyz.cosmicity.nsys.storage.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,9 +21,9 @@ import java.util.Objects;
 
 public class DiscordListeners extends ListenerAdapter {
 
-    private final NeboStats plugin;
+    private final NSys plugin;
 
-    public DiscordListeners(NeboStats pl) {plugin = pl;}
+    public DiscordListeners(NSys pl) {plugin = pl;}
 
     @Override
     public void onPrivateMessageReceived(@NotNull PrivateMessageReceivedEvent e) {

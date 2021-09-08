@@ -3,7 +3,7 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nebostats.listeners;
+package xyz.cosmicity.nsys.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.ChatColor;
@@ -12,14 +12,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import xyz.cosmicity.nebostats.NeboStats;
-import xyz.cosmicity.nebostats.storage.Profile;
+import xyz.cosmicity.nsys.NSys;
+import xyz.cosmicity.nsys.storage.Profile;
 
 public class LoadingListener implements Listener {
 
-    private final NeboStats pl;
+    private final NSys pl;
 
-    public LoadingListener(final NeboStats plugin) {pl = plugin;}
+    public LoadingListener(final NSys plugin) {pl = plugin;}
 
     @EventHandler
     public void onJoin(final PlayerJoinEvent e) {

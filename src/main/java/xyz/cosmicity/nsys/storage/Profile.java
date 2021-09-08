@@ -3,7 +3,7 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nebostats.storage;
+package xyz.cosmicity.nsys.storage;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
