@@ -1,2 +1,2 @@
 # NSys
-### [Player Profiles](https://github.com/Nebula-O/NebSystem/wiki/Player-Profiles)
+## [Documentation](https://nsys.nsgw.xyz/)
