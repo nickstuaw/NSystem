@@ -11,6 +11,7 @@ import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.nsgw.nsys.commands.CommandHandler;
 import xyz.nsgw.nsys.config.SettingsHandler;
 import xyz.nsgw.nsys.config.settings.StartupSettings;
 import xyz.nsgw.nsys.listeners.LoadingListener;
@@ -23,13 +24,12 @@ public final class NSys extends JavaPlugin {
     private SQLService sql;
     private SettingsHandler settingsHandler;
     private PaperCommandManager commandManager;
+    private CommandHandler commandHandler;
 
     @Override
     public void onEnable() {
 
         getLogger().info("Enabling NSys...");
-
-        commandManager = new PaperCommandManager(this);
 
         settingsHandler = new SettingsHandler(this.getDataFolder());
 
@@ -42,6 +42,10 @@ public final class NSys extends JavaPlugin {
                 startup.getProperty(StartupSettings.MYSQL_PASS));
 
         Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
+
+        commandManager = new PaperCommandManager(this);
+
+        commandHandler = new CommandHandler(this, commandManager);
     }
 
     public PaperCommandManager getCommandManager() {
