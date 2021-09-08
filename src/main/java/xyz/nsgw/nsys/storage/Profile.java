@@ -24,7 +24,7 @@ public class Profile {
 
     private List<String> privateNotes;
 
-    private HashMap<String, Location> homes;
+    private HashMap<String, Home> homes;
 
     private Date muteFrom;
     private int muteSeconds;
@@ -70,7 +70,7 @@ public class Profile {
         for(String home : homesRaw) {
             vals1 = home.split(":");
             vals2 = new String[][]{vals1[0].split(","), vals1[1].split(",")};
-            homes.put(vals2[0][0],new Location(Bukkit.getWorld(UUID.fromString(vals2[1][0])),
+            homes.put(vals2[0][0],new Home(Bukkit.getWorld(UUID.fromString(vals2[1][0])),
                     Double.parseDouble(vals2[1][1]),
                     Double.parseDouble(vals2[1][2]),
                     Double.parseDouble(vals2[1][3]),
@@ -92,7 +92,7 @@ public class Profile {
     }
 
     public void setHome(final String homeName, final Location location) {
-        homes.put(homeName, location);
+        homes.put(homeName, new Home(location));
     }
     public void delHome(final String homeName) {
         homes.remove(homeName);
@@ -106,7 +106,7 @@ public class Profile {
     public boolean hasHome(String name) {
         return homes.containsKey(name);
     }
-    public HashMap<String,Location> getHomes() {
+    public HashMap<String,Home> getHomes() {
         return homes;
     }
 

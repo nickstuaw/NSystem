@@ -3,16 +3,3 @@ version: ${project.version}
 main: xyz.nsgw.nsys.NSys
 api-version: 1.16
 authors: [ nsgw ]
-commands:
-  home:
-    description: Teleport to a home.
-    usage: /home
-  homes:
-    description: List your homes.
-    usage: /homes
-  sethome:
-    description: Set a home.
-    usage: /sethome
-  delhome:
-    description: Delete a home.
-    usage: /delhome [name]
