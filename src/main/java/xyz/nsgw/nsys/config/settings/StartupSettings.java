@@ -1,4 +1,4 @@
-package xyz.cosmicity.nsys.config.settings;
+package xyz.nsgw.nsys.config.settings;
 
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;

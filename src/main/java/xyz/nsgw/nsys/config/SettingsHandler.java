@@ -1,8 +1,8 @@
-package xyz.cosmicity.nsys.config;
+package xyz.nsgw.nsys.config;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
-import xyz.cosmicity.nsys.config.settings.StartupSettings;
+import xyz.nsgw.nsys.config.settings.StartupSettings;
 
 import java.io.File;
 

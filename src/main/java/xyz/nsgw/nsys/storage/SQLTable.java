@@ -3,7 +3,7 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nsys.storage;
+package xyz.nsgw.nsys.storage;
 
 import co.aikar.idb.Database;
 

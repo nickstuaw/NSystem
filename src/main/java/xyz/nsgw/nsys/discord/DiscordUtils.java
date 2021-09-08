@@ -3,7 +3,7 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nsys.discord;
+package xyz.nsgw.nsys.discord;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;

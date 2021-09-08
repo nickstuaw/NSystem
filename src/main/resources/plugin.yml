@@ -1,8 +1,8 @@
-name: NeboStats
+name: NSys
 version: ${project.version}
-main: xyz.cosmicity.nsys.NSys
+main: xyz.nsgw.nsys.NSys
 api-version: 1.16
-authors: [ Nebula_1, CosmicSilence, DistantNeb ]
+authors: [ nsgw ]
 commands:
   home:
     description: Teleport to a home.

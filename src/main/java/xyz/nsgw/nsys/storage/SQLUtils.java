@@ -3,7 +3,7 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nsys.storage;
+package xyz.nsgw.nsys.storage;
 
 import co.aikar.idb.DB;
 import co.aikar.idb.Database;
@@ -17,7 +17,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 

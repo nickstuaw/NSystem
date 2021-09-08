@@ -3,7 +3,7 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nsys.listeners;
+package xyz.nsgw.nsys.listeners;
 
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.ChatColor;
@@ -12,9 +12,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import xyz.cosmicity.nsys.NSys;
-import xyz.cosmicity.nsys.config.settings.GeneralSettings;
-import xyz.cosmicity.nsys.storage.Profile;
+import xyz.nsgw.nsys.NSys;
+import xyz.nsgw.nsys.config.settings.GeneralSettings;
+import xyz.nsgw.nsys.storage.Profile;
 
 public class LoadingListener implements Listener {
 

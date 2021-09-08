@@ -3,20 +3,20 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nsys;
+package xyz.nsgw.nsys;
 
 import ch.jalu.configme.SettingsManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import xyz.cosmicity.nsys.commands.DelHomeC;
-import xyz.cosmicity.nsys.commands.HomeC;
-import xyz.cosmicity.nsys.commands.HomesC;
-import xyz.cosmicity.nsys.commands.SetHomeC;
-import xyz.cosmicity.nsys.config.SettingsHandler;
-import xyz.cosmicity.nsys.config.settings.StartupSettings;
-import xyz.cosmicity.nsys.listeners.LoadingListener;
-import xyz.cosmicity.nsys.storage.SQLService;
-import xyz.cosmicity.nsys.storage.SQLUtils;
+import xyz.nsgw.nsys.commands.DelHomeC;
+import xyz.nsgw.nsys.commands.HomeC;
+import xyz.nsgw.nsys.commands.HomesC;
+import xyz.nsgw.nsys.commands.SetHomeC;
+import xyz.nsgw.nsys.config.SettingsHandler;
+import xyz.nsgw.nsys.config.settings.StartupSettings;
+import xyz.nsgw.nsys.listeners.LoadingListener;
+import xyz.nsgw.nsys.storage.SQLService;
+import xyz.nsgw.nsys.storage.SQLUtils;
 
 import java.util.Objects;
 
@@ -50,7 +50,7 @@ public final class NSys extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().info("Disabling NeboStats...");
+        getLogger().info("Disabling NSys...");
         sql.onDisable();
         SQLUtils.close();
     }

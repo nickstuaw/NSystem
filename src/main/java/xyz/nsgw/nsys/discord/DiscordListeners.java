@@ -3,7 +3,7 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.cosmicity.nsys.discord;
+package xyz.nsgw.nsys.discord;
 
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
@@ -12,8 +12,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import xyz.cosmicity.nsys.NSys;
-import xyz.cosmicity.nsys.storage.Profile;
+import xyz.nsgw.nsys.NSys;
+import xyz.nsgw.nsys.storage.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
