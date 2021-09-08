@@ -20,7 +20,7 @@ public class HomesC implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof Player) {
-            Profile p = pl.sql().wrap(((Player)sender).getUniqueId());
+            Profile p = pl.sql().wrapProfile(((Player)sender).getUniqueId());
             if(p != null) {
                 sender.sendMessage(ChatColor.BLUE +""+p.getHomes().size()+ "/10 "+ChatColor.GREEN+"Homes: "+ChatColor.RESET+ String.join(", ", p.getHomes().keySet()));
             }

@@ -8,6 +8,7 @@ package xyz.cosmicity.nsys.storage;
 import co.aikar.idb.DB;
 import co.aikar.idb.Database;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
 
@@ -16,7 +17,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class SQLUtils {
 
@@ -124,5 +127,38 @@ public class SQLUtils {
             throwables.printStackTrace();
         }
         return size>0;
+    }
+
+    public static String getBoolInSQL(boolean b) {
+        return b?"1":"0";
+    }
+
+    public static Location stringToLocation(String raw) {
+        String[] values = raw.split(",");
+        //worlduuid,x,y,z,yaw,pitch
+        return new Location(Bukkit.getWorld(UUID.fromString(values[0])),
+                Double.parseDouble(values[0]),
+                Double.parseDouble(values[1]),
+                Double.parseDouble(values[2]),
+                Float.parseFloat(values[3]),
+                Float.parseFloat(values[4]));
+    }
+    public static String locationToString(Location loc) {
+        return loc.getWorld().getUID().toString()+','+loc.getX()+','+loc.getY()+','+loc.getZ()+','+loc.getYaw()+','+loc.getPitch();
+    }
+    public static List<Location> stringToLocations(String raw) {
+        List<Location> locations = new ArrayList<>();
+        for(String location : raw.split(";")) {
+            locations.add(stringToLocation(location));
+        }
+        return locations;
+    }
+    public static String locationsToString(Location[] locations) {
+        StringBuilder raw = new StringBuilder();
+        for(Location loc : locations) {
+            raw.append(locationToString(loc)).append(';');
+        }
+        raw.deleteCharAt(raw.length()-1);
+        return raw.toString();
     }
 }

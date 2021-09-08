@@ -30,8 +30,11 @@ public class Profile {
     private int muteSeconds;
     private boolean shadowMute;
 
+    // Temporary - not for saving/loading
     private Date lastChat;
-
+    private int duplicateMessageCounter;
+    private int spamTimeCounter;
+    private String lastChatMsg;
 
     public Profile(final UUID uuid) {
         key = uuid;
@@ -44,9 +47,11 @@ public class Profile {
         muteSeconds = -1;
         lastChat = null;
         shadowMute = false;
+
+        initiateSpamCounters(5,5);
     }
 
-    public UUID getUuid() {
+    public UUID getKey() {
         return key;
     }
     public void setDiscord(final String dId) {
@@ -150,6 +155,21 @@ public class Profile {
     public void setMuted(boolean m) {muteFrom=(m?new Date():null);}
     public long getSecsSinceChat(){return TimeUnit.SECONDS.convert(Math.abs((new Date()).getTime()- lastChat.getTime()),TimeUnit.MILLISECONDS);}
     public void recordChatAttempt(){lastChat=new Date();}
+    public int getDuplicateMessageCounter() {return duplicateMessageCounter;}
+    public boolean isDupeMsgCounterLow(int max) {return duplicateMessageCounter<max;}
+    public void increaseDupeMsgCounter() {duplicateMessageCounter++;}
+    public void decreaseDupeMsgCounter() {duplicateMessageCounter--;}
+    public void resetDupeMsgCounter() {duplicateMessageCounter=0;}
+    public String getLastChatMsg() {return lastChatMsg;}
+    public void setLastChatMsg(String m) {lastChatMsg=m;}
+    public int getSpamTimeCounter() {return duplicateMessageCounter;}
+    public boolean isSpamTimeCounterLow(int max) {return duplicateMessageCounter<max;}
+    public void increaseSpamTimeCounter() {duplicateMessageCounter++;}
+    public void decreaseSpamTimeCounter() {duplicateMessageCounter--;}
+    public void resetSpamTimeCounter() {duplicateMessageCounter=0;}
+
+    private void initiateSpamCounters(int maxDupeMsg,int maxSpamInterval) {duplicateMessageCounter=maxDupeMsg;spamTimeCounter=maxSpamInterval;}
+
 
     public Profile loadAttributes(final SQLTable table) {
         List<Object> row = SQLUtils.getRow(table, "\""+key.toString()+"\"",Arrays.stream(DbData.PROFILE_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));
@@ -159,6 +179,19 @@ public class Profile {
         setHomes((String) row.get(2));
         setPrivateNotes((String) row.get(3));
         setMute((String) row.get(4));
+
+        initiateSpamCounters(5,5);
         return this;
+    }
+
+    public Object[] getDbValues() {
+        return new Object[] {
+                // DISCORD , TRACK TP , HOMES , NOTES , MUTE
+                /*DISCORD*/getDiscord(),
+                /*TRACK TP*/SQLUtils.getBoolInSQL(isTrackingTeleports()),
+                /*HOMES*/getHomesString(),
+                /*NOTES*/getPrivateNotesString(),
+                /*MUTE*/getMute()
+        };
     }
 }

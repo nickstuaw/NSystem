@@ -23,7 +23,7 @@ public class HomeC implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
         if(sender instanceof Player) {
-            Profile p = pl.sql().wrap(((Player)sender).getUniqueId());
+            Profile p = pl.sql().wrapProfile(((Player)sender).getUniqueId());
             if(p != null) {
                 if(args.length > 0) {
                     Location loc = p.getHome(args[0]);

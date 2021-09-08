@@ -124,5 +124,10 @@
             <artifactId>triumph-gui</artifactId>
             <version>3.0.3</version> <!-- replace version here -->
         </dependency>
+        <dependency>
+            <groupId>ch.jalu</groupId>
+            <artifactId>configme</artifactId>
+            <version>1.2.0</version>
+        </dependency>
     </dependencies>
 </project>

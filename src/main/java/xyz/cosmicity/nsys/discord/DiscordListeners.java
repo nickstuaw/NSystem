@@ -41,11 +41,11 @@ public class DiscordListeners extends ListenerAdapter {
 
             validName = true;
 
-            Profile profile = plugin.sql().wrapIfLoaded(player.getUniqueId());
+            Profile profile = plugin.sql().wrapProfileIfLoaded(player.getUniqueId());
 
             profile.setDiscord(e.getAuthor().getId());
 
-            plugin.sql().validate(profile);
+            plugin.sql().invalidateProfile(profile);
 
         }
 
@@ -102,7 +102,7 @@ public class DiscordListeners extends ListenerAdapter {
                 int c = 0;
                 for(Player p : Bukkit.getServer().getOnlinePlayers()) {
                     c++;
-                    dcId = plugin.sql().wrapIfLoaded(p.getUniqueId()).getDiscord();
+                    dcId = plugin.sql().wrapProfileIfLoaded(p.getUniqueId()).getDiscord();
                     if(!dcId.isEmpty()) {
                         dcUser = DiscordUtils.getJda().getUserById(dcId);
                         assert dcUser != null;

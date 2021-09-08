@@ -24,9 +24,11 @@ import java.util.concurrent.ExecutionException;
 public class SQLService {
 
     private final SQLTable profileTable;
+    private final SQLTable warpTable;
 
     @NonNull
     private final LoadingCache<@NotNull UUID, @NotNull Profile> profileCache;
+    private final LoadingCache<@NotNull String, @NotNull Warp> warpCache;
 
     public SQLService(String host, String database, String username, String password) {
 
@@ -38,11 +40,17 @@ public class SQLService {
 
         SQLUtils.setDb(PooledDatabaseOptions.builder().options(options).createHikariDatabase());
 
-        profileTable = new SQLTable("profiles", DbData.PROFILE_PK , DbData.PROFILE_COLUMNS);
+        profileTable = new SQLTable("nsys_profiles", DbData.PROFILE_PK , DbData.PROFILE_COLUMNS);
 
         profileCache = CacheBuilder.newBuilder()
                 .removalListener(this::saveProfile)
                 .build(CacheLoader.from(this::loadProfile));
+
+        warpTable = new SQLTable("nsys_warps", DbData.WARP_PK , DbData.WARP_COLUMNS);
+
+        warpCache = CacheBuilder.newBuilder()
+                .removalListener(this::saveWarp)
+                .build(CacheLoader.from(this::loadWarp));
     }
 
     public void onDisable() {
@@ -50,30 +58,27 @@ public class SQLService {
         profileCache.cleanUp();
     }
 
+    /*  ------------------------------------
+        ------------- PROFILES -------------
+        ------------------------------------    */
+
     @NonNull
     private Profile loadProfile(@NotNull final UUID uuid) {
         Profile profile = new Profile(uuid);
         if(! SQLUtils.holdsKey(profileTable, "\""+uuid+"\"")) return profile;
         return profile.loadAttributes(profileTable);
     }
-
     private void saveProfile(@NotNull final RemovalNotification<@NotNull UUID, @NotNull Profile> notification) {
         Profile profile = notification.getValue();
-        // DISCORD , TRACK TP , HOMES , NOTES , MUTE
-        setRow( profileTable, profile.getUuid().toString(), profile.getDiscord(), profile.isTrackingTeleports()?"1":"0", profile.getHomesString(), profile.getPrivateNotesString(), profile.getMute());
+        setRow( profileTable, profile.getKey().toString(), profile.getDbValues());
     }
-
-    /*
-     * load or unload a profile from cache
-     */
-    public void validate(@NotNull final Profile profile) {
-        this.profileCache.put(profile.getUuid(), profile);
+    public void invalidateProfile(@NotNull final Profile profile) {
+        this.profileCache.put(profile.getKey(), profile);
     }
-    public void invalidate(@NotNull final Profile profile) {
-        this.profileCache.invalidate(profile.getUuid());
+    public void validateProfile(@NotNull final Profile profile) {
+        this.profileCache.invalidate(profile.getKey());
     }
-
-    public Profile wrap(@NotNull final UUID uuid) {
+    public Profile wrapProfile(@NotNull final UUID uuid) {
         try {
             return profileCache.get(uuid);
         }
@@ -82,11 +87,47 @@ public class SQLService {
         }
         return null;
     }
-
     @Nullable
-    public Profile wrapIfLoaded(@NotNull final UUID uuid) {
+    public Profile wrapProfileIfLoaded(@NotNull final UUID uuid) {
         return profileCache.getIfPresent(uuid);
     }
+
+    /*  -------------------------------------
+        --------------- WARPS ---------------
+        -------------------------------------   */
+
+    @NonNull
+    private Warp loadWarp(@NotNull final String name) {
+        Warp warp = new Warp(name);
+        if(! SQLUtils.holdsKey(warpTable, "\""+name+"\"")) return warp;
+        return warp.loadAttributes(warpTable);
+    }
+    private void saveWarp(@NotNull final RemovalNotification<@NotNull String, @NotNull Warp> notification) {
+        Warp warp = notification.getValue();
+        // OWNER_UUID,
+        setRow( warpTable, warp.getKey(), warp.getDbValues());
+    }
+    public void invalidateWarp(@NotNull final Warp warp) {
+        this.warpCache.put(warp.getKey(), warp);
+    }
+    public void validateWarp(@NotNull final Warp warp) {
+        this.warpCache.invalidate(warp.getKey());
+    }
+    public Warp wrapWarp(@NotNull final String name) {
+        try {
+            return warpCache.get(name);
+        }
+        catch(final ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    @Nullable
+    public Warp wrapWarpIfLoaded(@NotNull final String name) {
+        return warpCache.getIfPresent(name);
+    }
+
+
 
 
     /**
@@ -113,5 +154,4 @@ public class SQLService {
             return true;
         });
     }
-
 }
