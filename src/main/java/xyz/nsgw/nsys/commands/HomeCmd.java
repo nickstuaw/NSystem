@@ -17,6 +17,7 @@ import xyz.nsgw.nsys.storage.Profile;
 import java.util.ArrayList;
 
 @CommandAlias("home")
+@CommandPermission("nsys.homes.teleport")
 public class HomeCmd extends BaseCommand {
 
     @Default

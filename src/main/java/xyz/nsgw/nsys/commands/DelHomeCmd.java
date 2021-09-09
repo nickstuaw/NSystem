@@ -14,6 +14,7 @@ import xyz.nsgw.nsys.storage.Profile;
 
 
 @CommandAlias("delhome")
+@CommandPermission("nsys.homes.delete")
 public class DelHomeCmd extends BaseCommand {
 
     private final NSys pl;

@@ -15,6 +15,7 @@ import xyz.nsgw.nsys.storage.Home;
 import xyz.nsgw.nsys.storage.Profile;
 
 @CommandAlias("sethome")
+@CommandPermission("nsys.homes.set")
 public class SetHomeCmd extends BaseCommand {
 
     private final NSys pl;

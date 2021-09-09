@@ -3,3 +3,19 @@ version: ${project.version}
 main: xyz.nsgw.nsys.NSys
 api-version: 1.16
 authors: [ nsgw ]
+permissions:
+  nsys.homes.*:
+    description: Homes wildcard.
+    default: op
+  nsys.homes.view:
+    description: View own homes.
+    default: not op
+  nsys.homes.set:
+    description: Set own homes.
+    default: not op
+  nsys.homes.delete:
+    description: Delete own homes.
+    default: not op
+  nsys.homes.admin:
+    description: Admin commands.
+    default: op

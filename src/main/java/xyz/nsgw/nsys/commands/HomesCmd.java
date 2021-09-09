@@ -13,6 +13,7 @@ import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.storage.Profile;
 
 @CommandAlias("homes")
+@CommandPermission("nsys.homes.view")
 public class HomesCmd extends BaseCommand {
 
     private final NSys pl;
