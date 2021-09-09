@@ -2,6 +2,7 @@ package xyz.nsgw.nsys.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CatchUnknown;
+import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.CommandCompletion;
 import co.aikar.commands.annotation.Default;
 import org.bukkit.ChatColor;
@@ -17,6 +18,7 @@ import xyz.nsgw.nsys.storage.Profile;
 
 import java.util.ArrayList;
 
+@CommandAlias("home")
 public class HomeCmd extends BaseCommand {
 
     @Default

@@ -41,13 +41,14 @@ public final class NSys extends JavaPlugin {
                 startup.getProperty(StartupSettings.MYSQL_USER),
                 startup.getProperty(StartupSettings.MYSQL_PASS));
 
-        Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
-
         commandManager = new PaperCommandManager(this);
 
         commandManager.enableUnstableAPI("brigadier");
+        commandManager.enableUnstableAPI("help");
 
         commandHandler = new CommandHandler(this, commandManager);
+
+        Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
     }
 
     public PaperCommandManager getCommandManager() {
