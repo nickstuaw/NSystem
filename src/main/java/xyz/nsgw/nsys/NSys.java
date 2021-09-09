@@ -6,24 +6,19 @@ Credit should be given to the original author where this code is used.
 package xyz.nsgw.nsys;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.nsgw.nsys.commands.CommandHandler;
 import xyz.nsgw.nsys.config.SettingsHandler;
 import xyz.nsgw.nsys.config.settings.StartupSettings;
 import xyz.nsgw.nsys.listeners.LoadingListener;
-import xyz.nsgw.nsys.storage.Home;
-import xyz.nsgw.nsys.storage.Profile;
 import xyz.nsgw.nsys.storage.SQLService;
 import xyz.nsgw.nsys.storage.SQLUtils;
 
 public final class NSys extends JavaPlugin {
     private SQLService sql;
     private SettingsHandler settingsHandler;
-    private PaperCommandManager commandManager;
     private CommandHandler commandHandler;
 
     @Override
@@ -41,18 +36,10 @@ public final class NSys extends JavaPlugin {
                 startup.getProperty(StartupSettings.MYSQL_USER),
                 startup.getProperty(StartupSettings.MYSQL_PASS));
 
-        commandManager = new PaperCommandManager(this);
-
-        commandManager.enableUnstableAPI("brigadier");
-        commandManager.enableUnstableAPI("help");
-
-        commandHandler = new CommandHandler(this, commandManager);
-
         Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
-    }
 
-    public PaperCommandManager getCommandManager() {
-        return commandManager;
+        commandHandler = new CommandHandler(this);
+
     }
 
     public SettingsManager getGenSettings() {
@@ -62,9 +49,9 @@ public final class NSys extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabling NSys...");
+        commandHandler.onDisable();
         sql.onDisable();
         SQLUtils.close();
-        commandManager.unregisterCommands();
     }
 
     public SQLService sql() {

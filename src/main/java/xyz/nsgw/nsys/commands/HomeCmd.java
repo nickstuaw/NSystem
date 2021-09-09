@@ -1,6 +1,7 @@
 package xyz.nsgw.nsys.commands;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -25,9 +26,14 @@ public class HomeCmd extends BaseCommand {
         p.sendMessage(ChatColor.GREEN+"Teleported!");
     }
 
+
     @CatchUnknown
     public static void onUnknown(CommandSender sender) {
         sender.sendMessage("UNKNOWN! You aren't a player...!");
     }
 
+    @HelpCommand
+    public static void onHelp(CommandSender sender, CommandHelp help) {
+        help.showHelp();
+    }
 }

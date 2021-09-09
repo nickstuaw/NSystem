@@ -1,10 +1,8 @@
 package xyz.nsgw.nsys.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CatchUnknown;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.Default;
+import co.aikar.commands.CommandHelp;
+import co.aikar.commands.annotation.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -34,4 +32,8 @@ public class HomesCmd extends BaseCommand {
         sender.sendMessage("You aren't a player!");
     }
 
+    @HelpCommand
+    public static void onHelp(CommandSender sender, CommandHelp help) {
+        help.showHelp();
+    }
 }
