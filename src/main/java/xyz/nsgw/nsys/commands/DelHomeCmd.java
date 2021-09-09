@@ -25,7 +25,7 @@ public class DelHomeCmd extends BaseCommand {
     }
 
     @Default
-    @CommandCompletion("@home")
+    @CommandCompletion("@homes")
     public void onDelHome(Player p, @Default("home") String home) {
         Profile profile = pl.sql().wrapProfile(p.getUniqueId());
         profile.delHome(home);

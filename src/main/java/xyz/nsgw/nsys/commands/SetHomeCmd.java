@@ -21,11 +21,12 @@ public class SetHomeCmd extends BaseCommand {
 
     private final NSys pl;
 
-    public SetHomeCmd(NSys pl) {this.pl=pl;}
+    public SetHomeCmd(NSys pl) {this.pl=pl;
+    }
 
     @Default
     @CommandCompletion("@home")
-    public void onSetHome(Player p, @Default("home") String home) {
+    public void onSetHome(Player p, @Default("homes") String home) {
         Profile profile = pl.sql().wrapProfile(p.getUniqueId());
         profile.setHome(home, p.getLocation());
         p.sendMessage(ChatColor.GREEN + "Home '" + home + "' set.");

@@ -24,7 +24,7 @@ public class HomesCmd extends BaseCommand {
     }
 
     @Default
-    public void onHomes(Player p, @Default("home") String home) {
+    public void onHomes(Player p) {
         Profile profile = pl.sql().wrapProfile(p.getUniqueId());
         p.sendMessage(ChatColor.BLUE +""+profile.getHomes().size()+ "/10 "+ChatColor.GREEN+"Homes: "+ChatColor.RESET+ String.join(", ", profile.getHomes().keySet()));
     }

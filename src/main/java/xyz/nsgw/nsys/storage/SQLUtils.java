@@ -136,11 +136,11 @@ public class SQLUtils {
         String[] values = raw.split(",");
         //worlduuid,x,y,z,yaw,pitch
         return new Location(Bukkit.getWorld(UUID.fromString(values[0])),
-                Double.parseDouble(values[0]),
                 Double.parseDouble(values[1]),
                 Double.parseDouble(values[2]),
-                Float.parseFloat(values[3]),
-                Float.parseFloat(values[4]));
+                Double.parseDouble(values[3]),
+                Float.parseFloat(values[4]),
+                Float.parseFloat(values[5]));
     }
     public static String locationToString(Location loc) {
         return loc.getWorld().getUID().toString()+','+loc.getX()+','+loc.getY()+','+loc.getZ()+','+loc.getYaw()+','+loc.getPitch();

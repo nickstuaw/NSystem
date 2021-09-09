@@ -60,9 +60,6 @@ public class Profile {
 
     public void setHomes(String raw) {
         homes = new HashMap<>();
-        if(raw.length()<"homename:worlduuid,x,y,z,yaw,pitch;".length()) {
-            return;
-        }
         String[] values;
         // homename:worlduuid,x,y,z,yaw,pitch;
         for(String home : raw.split(";")) {
