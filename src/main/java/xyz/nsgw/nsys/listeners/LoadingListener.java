@@ -31,16 +31,15 @@ public class LoadingListener implements Listener {
 
     @EventHandler
     public void onQuit(final PlayerQuitEvent e) {
-        Profile profile = pl.sql().wrapProfileIfLoaded(e.getPlayer().getUniqueId());
+        Profile profile = pl.sql().wrapProfile(e.getPlayer().getUniqueId());
         pl.sql().invalidateProfile(profile);
         pl.getLogger().info(e.getPlayer().getName()+" teleport tracking: " + profile.isTrackingTeleports());
     }
 
     @EventHandler
     public void onTp(final PlayerTeleportEvent e) {
-        Profile profile = pl.sql().wrapProfileIfLoaded(e.getPlayer().getUniqueId());
-        assert profile != null;
-        pl.sql().invalidateProfile(profile);
+        Profile profile = pl.sql().wrapProfile(e.getPlayer().getUniqueId());
+        pl.sql().validateProfile(profile);
         if(!profile.isTrackingTeleports()) return;
         String out = "[/!\\] "+ e.getPlayer().getName() +" teleported ";
         switch(pl.getGenSettings().getProperty(GeneralSettings.TRACKTP_PLAYER_MODE)){

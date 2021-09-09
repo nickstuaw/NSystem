@@ -72,10 +72,10 @@ public class SQLService {
         Profile profile = notification.getValue();
         setRow( profileTable, profile.getKey().toString(), profile.getDbValues());
     }
-    public void invalidateProfile(@NotNull final Profile profile) {
+    public void validateProfile(@NotNull final Profile profile) {
         this.profileCache.put(profile.getKey(), profile);
     }
-    public void validateProfile(@NotNull final Profile profile) {
+    public void invalidateProfile(@NotNull final Profile profile) {
         this.profileCache.invalidate(profile.getKey());
     }
     public Profile wrapProfile(@NotNull final UUID uuid) {
@@ -107,10 +107,10 @@ public class SQLService {
         // OWNER_UUID,
         setRow( warpTable, warp.getKey(), warp.getDbValues());
     }
-    public void invalidateWarp(@NotNull final Warp warp) {
+    public void validateWarp(@NotNull final Warp warp) {
         this.warpCache.put(warp.getKey(), warp);
     }
-    public void validateWarp(@NotNull final Warp warp) {
+    public void invalidateWarp(@NotNull final Warp warp) {
         this.warpCache.invalidate(warp.getKey());
     }
     public Warp wrapWarp(@NotNull final String name) {

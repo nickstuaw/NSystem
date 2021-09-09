@@ -21,13 +21,13 @@ public class HomeCmd extends BaseCommand {
 
     @Default
     @CommandCompletion("@homes")
-    public void onHome(Player p, Home home) {
+    public static void onHome(Player p, Home home) {
         p.teleport(home);
         p.sendMessage(ChatColor.GREEN+"Teleported!");
     }
 
     @CatchUnknown
-    public void onUnknown(CommandSender sender) {
+    public static void onUnknown(CommandSender sender) {
         sender.sendMessage("UNKNOWN! You aren't a player...!");
     }
 

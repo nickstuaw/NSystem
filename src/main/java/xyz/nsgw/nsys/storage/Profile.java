@@ -20,8 +20,6 @@ public class Profile {
     private String discord;
     private boolean trackingTeleports;
 
-    private List<String> homesRaw;
-
     private List<String> privateNotes;
 
     private HashMap<String, Home> homes;
@@ -40,7 +38,6 @@ public class Profile {
         key = uuid;
         discord = "";
         trackingTeleports = false;
-        homesRaw = new ArrayList<>();
         homes = new HashMap<>();
         privateNotes = new ArrayList<>();
         muteFrom = null;
@@ -63,29 +60,23 @@ public class Profile {
 
     public void setHomes(String raw) {
         homes = new HashMap<>();
-        homesRaw = Arrays.asList(raw.split(";"));
-        String[] vals1;
-        String[][] vals2;
+        if(raw.length()<"homename:worlduuid,x,y,z,yaw,pitch;".length()) {
+            return;
+        }
+        String[] values;
         // homename:worlduuid,x,y,z,yaw,pitch;
-        for(String home : homesRaw) {
-            vals1 = home.split(":");
-            vals2 = new String[][]{vals1[0].split(","), vals1[1].split(",")};
-            homes.put(vals2[0][0],new Home(Bukkit.getWorld(UUID.fromString(vals2[1][0])),
-                    Double.parseDouble(vals2[1][1]),
-                    Double.parseDouble(vals2[1][2]),
-                    Double.parseDouble(vals2[1][3]),
-                    Float.parseFloat(vals2[1][4]),
-                    Float.parseFloat(vals2[1][5])));
+        for(String home : raw.split(";")) {
+            values = home.split(":");
+            homes.put(values[0].split(",")[0],new Home(SQLUtils.stringToLocation(values[1])));
         }
     }
 
     public String getHomesString() {
+        if(homes.isEmpty()) return "";
         StringBuilder raw = new StringBuilder();
-        Location location;
         String data;
         for(String homeName : homes.keySet()) {
-            location = homes.get(homeName);
-            data = homeName + ":" +location.getWorld().getUID() +","+ location.getX() +","+ location.getY() +","+ location.getZ() +"," + location.getYaw() +","+ location.getPitch() +";";
+            data = homeName + ":" + SQLUtils.locationToString(homes.get(homeName)) +";";
             raw.append(data);
         }
         return raw.toString();
@@ -153,7 +144,7 @@ public class Profile {
     public Date getMuteFrom() {return muteFrom;}
     public void setMuteSeconds(int s){muteSeconds=s;}
     public void setMuted(boolean m) {muteFrom=(m?new Date():null);}
-    public long getSecsSinceChat(){return TimeUnit.SECONDS.convert(Math.abs((new Date()).getTime()- lastChat.getTime()),TimeUnit.MILLISECONDS);}
+    public long getSecsSinceChat(){return lastChat==null?60:TimeUnit.SECONDS.convert(Math.abs((new Date()).getTime()- lastChat.getTime()),TimeUnit.MILLISECONDS);}
     public void recordChatAttempt(){lastChat=new Date();}
     public int getDuplicateMessageCounter() {return duplicateMessageCounter;}
     public boolean isDupeMsgCounterLow(int max) {return duplicateMessageCounter<max;}

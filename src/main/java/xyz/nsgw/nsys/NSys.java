@@ -45,6 +45,8 @@ public final class NSys extends JavaPlugin {
 
         commandManager = new PaperCommandManager(this);
 
+        commandManager.enableUnstableAPI("brigadier");
+
         commandHandler = new CommandHandler(this, commandManager);
     }
 
@@ -61,6 +63,7 @@ public final class NSys extends JavaPlugin {
         getLogger().info("Disabling NSys...");
         sql.onDisable();
         SQLUtils.close();
+        commandManager.unregisterCommands();
     }
 
     public SQLService sql() {
