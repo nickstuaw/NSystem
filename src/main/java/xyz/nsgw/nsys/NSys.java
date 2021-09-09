@@ -6,20 +6,21 @@ Credit should be given to the original author where this code is used.
 package xyz.nsgw.nsys;
 
 import ch.jalu.configme.SettingsManager;
-import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.nsgw.nsys.commands.CommandHandler;
 import xyz.nsgw.nsys.config.SettingsHandler;
 import xyz.nsgw.nsys.config.settings.StartupSettings;
 import xyz.nsgw.nsys.listeners.LoadingListener;
-import xyz.nsgw.nsys.storage.SQLService;
-import xyz.nsgw.nsys.storage.SQLUtils;
+import xyz.nsgw.nsys.storage.sql.SQLService;
+import xyz.nsgw.nsys.storage.sql.SQLUtils;
+import xyz.nsgw.nsys.utils.GUIHandler;
 
 public final class NSys extends JavaPlugin {
     private SQLService sql;
     private SettingsHandler settingsHandler;
     private CommandHandler commandHandler;
+    private GUIHandler guiHandler;
 
     @Override
     public void onEnable() {
@@ -38,6 +39,8 @@ public final class NSys extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
 
+        guiHandler = new GUIHandler();
+
         commandHandler = new CommandHandler(this);
 
     }
@@ -45,6 +48,8 @@ public final class NSys extends JavaPlugin {
     public SettingsManager getGenSettings() {
         return settingsHandler.gen();
     }
+
+    public GUIHandler guiHandler() {return guiHandler;}
 
     @Override
     public void onDisable() {

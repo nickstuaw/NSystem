@@ -1,4 +1,4 @@
-package xyz.nsgw.nsys.storage;
+package xyz.nsgw.nsys.storage.objects;
 
 import org.bukkit.Location;
 import org.bukkit.World;

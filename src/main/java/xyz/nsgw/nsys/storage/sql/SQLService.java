@@ -3,7 +3,7 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.nsgw.nsys.storage;
+package xyz.nsgw.nsys.storage.sql;
 
 import co.aikar.idb.*;
 import com.google.common.cache.CacheBuilder;
@@ -14,6 +14,8 @@ import org.bukkit.Bukkit;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import xyz.nsgw.nsys.storage.objects.Profile;
+import xyz.nsgw.nsys.storage.objects.Warp;
 
 import java.util.ArrayList;
 import java.util.Arrays;

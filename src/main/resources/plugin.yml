@@ -10,6 +10,9 @@ permissions:
   nsys.homes.view:
     description: View own homes.
     default: not op
+  nsys.homes.teleport:
+    description: View own homes.
+    default: not op
   nsys.homes.set:
     description: Set own homes.
     default: not op

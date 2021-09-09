@@ -4,17 +4,14 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import xyz.nsgw.nsys.NSys;
-import xyz.nsgw.nsys.storage.Profile;
+import xyz.nsgw.nsys.storage.objects.Profile;
 
 
 @CommandAlias("delhome")
-@CommandPermission("nsys.homes.delete")
+//@CommandPermission("nsys.homes.delete")
 public class DelHomeCmd extends BaseCommand {
 
     private final NSys pl;

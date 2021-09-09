@@ -3,7 +3,7 @@
 Credit should be given to the original author where this code is used.
  */
 
-package xyz.nsgw.nsys.storage;
+package xyz.nsgw.nsys.storage.sql;
 
 public class DbData {
     public static final String[] PROFILE_PK = {"uuid","VARCHAR(36)"};

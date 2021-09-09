@@ -4,16 +4,14 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
 import xyz.nsgw.nsys.NSys;
-import xyz.nsgw.nsys.storage.Profile;
+import xyz.nsgw.nsys.storage.objects.Profile;
+import xyz.nsgw.nsys.utils.GUIHandler;
 
 @CommandAlias("homes")
-@CommandPermission("nsys.homes.view")
+//@CommandPermission("nsys.homes.view")
 public class HomesCmd extends BaseCommand {
 
     private final NSys pl;
@@ -25,7 +23,8 @@ public class HomesCmd extends BaseCommand {
     @Default
     public void onHomes(Player p) {
         Profile profile = pl.sql().wrapProfile(p.getUniqueId());
-        p.sendMessage(ChatColor.BLUE +""+profile.getHomes().size()+ "/10 "+ChatColor.GREEN+"Homes: "+ChatColor.RESET+ String.join(", ", profile.getHomes().keySet()));
+        pl.guiHandler().homes(profile, p);
+        //p.sendMessage(ChatColor.BLUE +""+profile.getHomes().size()+ "/10 "+ChatColor.GREEN+"Homes: "+ChatColor.RESET+ String.join(", ", profile.getHomes().keySet()));
     }
 
     @CatchUnknown

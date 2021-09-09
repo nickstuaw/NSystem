@@ -14,7 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.config.settings.GeneralSettings;
-import xyz.nsgw.nsys.storage.Profile;
+import xyz.nsgw.nsys.storage.objects.Profile;
 
 public class LoadingListener implements Listener {
 

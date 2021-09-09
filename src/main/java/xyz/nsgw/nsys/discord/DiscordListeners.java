@@ -13,7 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import xyz.nsgw.nsys.NSys;
-import xyz.nsgw.nsys.storage.Profile;
+import xyz.nsgw.nsys.storage.objects.Profile;
 
 import java.util.ArrayList;
 import java.util.List;
