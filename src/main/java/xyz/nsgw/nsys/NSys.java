@@ -39,6 +39,8 @@ public final class NSys extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
 
+        sql.validateList(sql.wrapList("warps"));
+
         guiHandler = new GUIHandler();
 
         commandHandler = new CommandHandler(this);

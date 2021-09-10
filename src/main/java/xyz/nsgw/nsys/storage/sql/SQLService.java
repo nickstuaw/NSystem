@@ -15,7 +15,8 @@ import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import xyz.nsgw.nsys.storage.objects.Profile;
-import xyz.nsgw.nsys.storage.objects.Warp;
+import xyz.nsgw.nsys.storage.objects.SettingsList;
+import xyz.nsgw.nsys.storage.objects.locations.Warp;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,10 +26,13 @@ import java.util.concurrent.ExecutionException;
 
 public class SQLService {
 
+    private final SQLTable listsTable;
     private final SQLTable profileTable;
     private final SQLTable warpTable;
 
     @NonNull
+    private final LoadingCache<@NotNull String, @NotNull SettingsList> listsCache;
+
     private final LoadingCache<@NotNull UUID, @NotNull Profile> profileCache;
     private final LoadingCache<@NotNull String, @NotNull Warp> warpCache;
 
@@ -48,16 +52,57 @@ public class SQLService {
                 .removalListener(this::saveProfile)
                 .build(CacheLoader.from(this::loadProfile));
 
+        listsTable = new SQLTable("nsys_settings", DbData.LISTS_PK , DbData.LISTS_COLUMNS);
+
+        listsCache = CacheBuilder.newBuilder()
+                .removalListener(this::saveList)
+                .build(CacheLoader.from(this::loadList));
+
         warpTable = new SQLTable("nsys_warps", DbData.WARP_PK , DbData.WARP_COLUMNS);
 
         warpCache = CacheBuilder.newBuilder()
                 .removalListener(this::saveWarp)
                 .build(CacheLoader.from(this::loadWarp));
+
     }
 
     public void onDisable() {
         profileCache.invalidateAll();
         profileCache.cleanUp();
+    }
+
+    /*  ------------------------------------
+        ------------- LISTS -------------
+        ------------------------------------    */
+
+    @NonNull
+    private SettingsList loadList(@NotNull final String name) {
+        SettingsList list = new SettingsList(name);
+        if(! SQLUtils.holdsKey(listsTable, "\""+name+"\"")) return list;
+        return list.loadAttributes(listsTable);
+    }
+    private void saveList(@NotNull final RemovalNotification<@NotNull String, @NotNull SettingsList> notification) {
+        SettingsList list = notification.getValue();
+        setRow( listsTable, list.getKey(), list.getDbValues());
+    }
+    public void validateList(@NotNull final SettingsList list) {
+        this.listsCache.put(list.getKey(), list);
+    }
+    public void invalidateList(@NotNull final SettingsList list) {
+        this.listsCache.invalidate(list.getKey());
+    }
+    public SettingsList wrapList(@NotNull final String name) {
+        try {
+            return listsCache.get(name);
+        }
+        catch(final ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    @Nullable
+    public SettingsList wrapListIfLoaded(@NotNull final String name) {
+        return listsCache.getIfPresent(name);
     }
 
     /*  ------------------------------------
@@ -127,6 +172,11 @@ public class SQLService {
     @Nullable
     public Warp wrapWarpIfLoaded(@NotNull final String name) {
         return warpCache.getIfPresent(name);
+    }
+
+    public void invalidateAndDeleteWarp(@NotNull final Warp warp) {
+        invalidateWarp(warp);
+        SQLUtils.delRow(warpTable, warp.getKey());
     }
 
 

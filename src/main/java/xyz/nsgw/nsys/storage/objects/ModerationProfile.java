@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 public class ModerationProfile {
 
     private final int key;
-    private boolean trackingTeleports;
     private Integer mute;
     private Date muteStart;
     private String muteReason, kickReason;
@@ -24,7 +23,6 @@ public class ModerationProfile {
 
     public ModerationProfile(final int k) {
         key = k;
-        trackingTeleports = false;
         mute = 0;
         muteStart = null;
         muteReason = "";
@@ -70,7 +68,6 @@ public class ModerationProfile {
 
     public ModerationProfile loadAttributes(final SQLTable table) {
         List<Object> row = SQLUtils.getRow(table, "\""+key+"\"", Arrays.stream(DbData.PROFILE_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));
-        trackingTeleports = (Boolean) row.get(0);
         mute = (Integer) row.get(1);
         muteStart = Date.from(Instant.ofEpochMilli(Long.parseLong((String) row.get(2))));
         muteReason = (String) row.get(3);

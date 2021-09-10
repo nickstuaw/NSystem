@@ -60,4 +60,7 @@ public class GUIHandler {
         homes.open(player);
     }
 
+    public void warps(Player player) {
+    }
+
 }

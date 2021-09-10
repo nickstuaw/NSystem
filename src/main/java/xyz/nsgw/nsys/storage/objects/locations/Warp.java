@@ -1,24 +1,30 @@
-package xyz.nsgw.nsys.storage.objects;
+package xyz.nsgw.nsys.storage.objects.locations;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import xyz.nsgw.nsys.storage.sql.DbData;
 import xyz.nsgw.nsys.storage.sql.SQLTable;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
+import xyz.nsgw.nsys.utils.LocationUtils;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class Warp {
+public class Warp extends Loc {
 
     private final String key;
 
     private UUID ownerUuid;
     private boolean trackingTeleports;
-    private Location location;
 
+    public Warp(final String name, final Location location) {
+        super(location);
+        key = name;
+    }
     public Warp(final String name) {
+        super(Bukkit.getWorlds().get(0).getSpawnLocation());
         key = name;
     }
 
@@ -38,12 +44,6 @@ public class Warp {
         trackingTeleports = b;
     }
 
-    public Location getLocation() {
-        return location;
-    }
-    public void setLocation(Location loc) {
-        location = loc;
-    }
 
     public Warp loadAttributes(final SQLTable table) {
         List<Object> row = SQLUtils.getRow(table, "\""+key+"\"", Arrays.stream(DbData.WARP_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));
@@ -57,7 +57,7 @@ public class Warp {
         return new Object[]{
                 /*OWNER UUID*/getOwnerUuid().toString(),
                 /*TRACK TELEPORTS*/SQLUtils.getBoolInSQL(isTrackingTeleports()),
-                /*LOCATION*/SQLUtils.locationToString(getLocation())
+                /*LOCATION*/SQLUtils.locationToString(this)
         };
     }
 

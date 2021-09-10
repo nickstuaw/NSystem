@@ -1,4 +1,4 @@
-package xyz.nsgw.nsys.commands;
+package xyz.nsgw.nsys.commands.homes;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
@@ -9,23 +9,21 @@ import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.storage.objects.Profile;
 
-
-@CommandAlias("delhome")
-//@CommandPermission("nsys.homes.delete")
-public class DelHomeCmd extends BaseCommand {
+@CommandAlias("sethome")
+//@CommandPermission("nsys.homes.set")
+public class SetHomeCmd extends BaseCommand {
 
     private final NSys pl;
 
-    public DelHomeCmd(NSys pl) {
-        this.pl = pl;
+    public SetHomeCmd(NSys pl) {this.pl=pl;
     }
 
     @Default
-    @CommandCompletion("@homes")
-    public void onDelHome(Player p, @Default("home") String home) {
+    @CommandCompletion("@home")
+    public void onSetHome(Player p, @Default("homes") String home) {
         Profile profile = pl.sql().wrapProfile(p.getUniqueId());
-        profile.delHome(home);
-        p.sendMessage(ChatColor.GREEN + "Home '"+home+"' deleted.");
+        profile.setHome(home, p.getLocation());
+        p.sendMessage(ChatColor.GREEN + "Home '" + home + "' set.");
     }
 
     @CatchUnknown

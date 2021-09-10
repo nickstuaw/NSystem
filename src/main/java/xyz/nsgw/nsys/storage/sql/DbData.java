@@ -6,6 +6,10 @@ Credit should be given to the original author where this code is used.
 package xyz.nsgw.nsys.storage.sql;
 
 public class DbData {
+    public static final String[] LISTS_PK = {"name","VARCHAR(36)"};
+    //
+    public static final String[][] LISTS_COLUMNS = {{}};
+
     public static final String[] PROFILE_PK = {"uuid","VARCHAR(36)"};
     // DISCORD , TRACK TP , HOMES , NOTES , MUTE
     public static final String[][] PROFILE_COLUMNS = {{"discordid","VARCHAR(32)"},{"tracktp","BOOLEAN"},{"homes","TEXT"},{"privatenotes","TEXT"},{"mute","VARCHAR(256)"}};
