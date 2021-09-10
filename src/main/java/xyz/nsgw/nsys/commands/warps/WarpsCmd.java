@@ -6,6 +6,7 @@ import co.aikar.commands.annotation.CatchUnknown;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.HelpCommand;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.NSys;
@@ -28,6 +29,7 @@ public class WarpsCmd extends BaseCommand {
 
     @CatchUnknown
     public void onUnknown(CommandSender sender) {
+        sender.sendMessage(ChatColor.YELLOW+"Warps: "+ String.join(", ",pl.sql().wrapList("warps").getList()));
         sender.sendMessage("You aren't a player!");
     }
 
