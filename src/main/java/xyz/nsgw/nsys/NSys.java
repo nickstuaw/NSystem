@@ -29,6 +29,10 @@ public final class NSys extends JavaPlugin {
     private CommandHandler commandHandler;
     private GUIHandler guiHandler;
 
+    public static String version() {
+        return "v1.0.0";
+    }
+
     @Override
     public void onEnable() {
 
@@ -107,5 +111,9 @@ public final class NSys extends JavaPlugin {
     }
     private void setLogger(final Logger lgr) {
         logger = lgr;
+    }
+
+    public static void reload() {
+        settingsHandler.gen().reload();
     }
 }

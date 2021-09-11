@@ -89,6 +89,8 @@ public class CommandHandler {
             return false;// mark as unhandled, sender will see default message
         });
 
+        manager.registerCommand(new MainCmd());
+
         manager.registerCommand(new HomeCmd());
         manager.registerCommand(new HomesCmd(pl));
 
