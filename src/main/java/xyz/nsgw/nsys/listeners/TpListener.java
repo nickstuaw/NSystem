@@ -23,7 +23,7 @@ public class TpListener implements Listener {
                 out += "from "+ e.getFrom().getWorld().getName() +" "+ e.getFrom().getBlockX() +" "+ e.getFrom().getBlockY() +" "+ e.getFrom().getBlockZ();
                 break;
             default:
-                out += " to "+ e.getTo().getWorld().getName() +" "+ e.getTo().getBlockX() +" "+ e.getTo().getBlockY() +" "+ e.getTo().getBlockZ()
+                out += "to "+ e.getTo().getWorld().getName() +" "+ e.getTo().getBlockX() +" "+ e.getTo().getBlockY() +" "+ e.getTo().getBlockZ()
                         +" from "+ e.getFrom().getWorld().getName() +" "+ e.getFrom().getBlockX() +" "+ e.getFrom().getBlockY() +" "+ e.getFrom().getBlockZ();
                 break;
         }
