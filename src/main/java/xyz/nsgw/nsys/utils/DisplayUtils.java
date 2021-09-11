@@ -9,6 +9,7 @@ import java.sql.Date;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class DisplayUtils {
 
@@ -24,7 +25,7 @@ public class DisplayUtils {
     }
 
     public static String rawProfileMeta(Profile profile, OfflinePlayer human) {
-        return ChatColor.LIGHT_PURPLE+(human.isOnline()?ChatColor.GREEN+"Online"+(profile.isAfk()?ChatColor.YELLOW+""+ChatColor.BOLD+" (AFK)":""):"Last seen: "+ ChatColor.GREEN+ date(human.getLastSeen())) +"\n"+
+        return ChatColor.LIGHT_PURPLE+(human.isOnline()?ChatColor.GREEN+"Online"+(profile.isAfk()?ChatColor.YELLOW+""+ChatColor.BOLD+" (AFK)":""):"Last seen: "+ ChatColor.GREEN+ time(System.currentTimeMillis() - human.getLastSeen())+" ago.") +"\n"+
                 ChatColor.LIGHT_PURPLE+"First joined: "+ChatColor.GREEN+ date(human.getFirstPlayed())+"\n"+
                 ChatColor.LIGHT_PURPLE+"Total logins: "+ChatColor.GREEN+ profile.getMaxLogins();
     }
@@ -41,6 +42,30 @@ public class DisplayUtils {
 
     public static String date(Long date) {
         return Date.from(Instant.ofEpochMilli(date)).toString();
+    }
+
+    public static String time(Long millis) {
+        long days = TimeUnit.MILLISECONDS.toDays(millis),
+        hours = TimeUnit.MILLISECONDS.toHours(millis) -
+                TimeUnit.DAYS.toHours(days),
+        minutes = TimeUnit.MILLISECONDS.toMinutes(millis) -
+                TimeUnit.HOURS.toMinutes(hours),
+        seconds = TimeUnit.MILLISECONDS.toSeconds(millis) -
+                TimeUnit.MINUTES.toSeconds(minutes);
+        String res = "";
+        if(days > 0) {
+            res += days + " day"+(days!=1?"s ":" ");
+        }
+        if(hours > 0) {
+            res += hours + " hour"+(hours!=1?"s ":" ");
+        }
+        if(minutes > 0) {
+            res += minutes + " minute"+(minutes!=1?"s ":" ");
+        }
+        if(seconds > 0) {
+            res += seconds + " second"+(seconds!=1?"s":"");
+        }
+        return res;
     }
 
 }
