@@ -32,8 +32,7 @@ public class DisplayUtils {
     public static String rawAdminProfileMeta(Profile profile, OfflinePlayer human) {
         return rawProfileMeta(profile,human)+"\n"
                 +(profile.isMuted()?ChatColor.DARK_RED+"Muted"+(profile.isShadowMute()?" (Shadow).\n":".\n"):ChatColor.DARK_GREEN+"Not muted.\n")
-                +(profile.isTrackingTeleports()?ChatColor.GREEN+"Tracking teleports atm.":ChatColor.RED+"Not tracking teleports.")+"\n"
-                +"Assigned tp-tracking level: "+profile.getTrackingTeleportsLevel();
+                +(profile.isTrackingTeleports()?ChatColor.GREEN+"Tracking teleports.":ChatColor.RED+"Not tracking teleports.");
     }
 
     public static Component txt(String txt) {
