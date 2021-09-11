@@ -25,8 +25,4 @@ public class HomeCmd extends BaseCommand {
         sender.sendMessage("UNKNOWN! You aren't a player...!");
     }
 
-    @HelpCommand
-    public static void onHelp(CommandSender sender, CommandHelp help) {
-        help.showHelp();
-    }
 }

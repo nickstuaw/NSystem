@@ -12,12 +12,13 @@ import xyz.nsgw.nsys.commands.CommandHandler;
 import xyz.nsgw.nsys.config.SettingsHandler;
 import xyz.nsgw.nsys.config.settings.StartupSettings;
 import xyz.nsgw.nsys.listeners.LoadingListener;
+import xyz.nsgw.nsys.storage.objects.SettingsList;
 import xyz.nsgw.nsys.storage.sql.SQLService;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
 import xyz.nsgw.nsys.utils.GUIHandler;
 
 public final class NSys extends JavaPlugin {
-    private SQLService sql;
+    private static SQLService sql;
     private SettingsHandler settingsHandler;
     private CommandHandler commandHandler;
     private GUIHandler guiHandler;
@@ -31,15 +32,16 @@ public final class NSys extends JavaPlugin {
 
         SettingsManager startup = settingsHandler.startup();
 
-        sql = new SQLService(
+        setSql(new SQLService(
                 startup.getProperty(StartupSettings.MYSQL_HOST),
                 startup.getProperty(StartupSettings.MYSQL_DB),
                 startup.getProperty(StartupSettings.MYSQL_USER),
-                startup.getProperty(StartupSettings.MYSQL_PASS));
+                startup.getProperty(StartupSettings.MYSQL_PASS)));
 
         Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
 
-        sql.validateList(sql.wrapList("warps"));
+        SettingsList warps = sql.wrapList("warps");
+        sql.validateList(warps);
 
         guiHandler = new GUIHandler();
 
@@ -56,12 +58,17 @@ public final class NSys extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabling NSys...");
+        sql.invalidateList(sql.wrapList("warps"));
         commandHandler.onDisable();
         sql.onDisable();
         SQLUtils.close();
     }
 
-    public SQLService sql() {
+    public static SQLService sql() {
         return sql;
+    }
+
+    private static void setSql(SQLService s) {
+        sql = s;
     }
 }

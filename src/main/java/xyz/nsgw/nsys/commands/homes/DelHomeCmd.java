@@ -23,7 +23,7 @@ public class DelHomeCmd extends BaseCommand {
     @Default
     @CommandCompletion("@homes")
     public void onDelHome(Player p, @Default("home") String home) {
-        Profile profile = pl.sql().wrapProfile(p.getUniqueId());
+        Profile profile = NSys.sql().wrapProfile(p.getUniqueId());
         profile.delHome(home);
         p.sendMessage(ChatColor.GREEN + "Home '"+home+"' deleted.");
     }
@@ -33,8 +33,4 @@ public class DelHomeCmd extends BaseCommand {
         sender.sendMessage("You aren't a player!");
     }
 
-    @HelpCommand
-    public static void onHelp(CommandSender sender, CommandHelp help) {
-        help.showHelp();
-    }
 }

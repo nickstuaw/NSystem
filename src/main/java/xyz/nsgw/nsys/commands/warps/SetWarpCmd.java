@@ -21,12 +21,13 @@ public class SetWarpCmd extends BaseCommand {
     }
 
     @Default
-    @CommandCompletion("@warp")
-    public void onSetWarp(Player p, @Default("warps") String warpName) {
-        Warp warp = pl.sql().wrapWarp(warpName);
+    @CommandCompletion("@warps")
+    public void onSetWarp(Player p, String warpName) {
+        Warp warp = NSys.sql().wrapWarp(warpName);
         warp.setOwnerUuid(p.getUniqueId());
         warp.setLocation(p.getLocation());
-        pl.sql().validateWarp(warp);
+        NSys.sql().validateWarp(warp);
+        NSys.sql().wrapList("warps").add(warpName);
         p.sendMessage(ChatColor.YELLOW + "Warp set: \"" + warp + "\", "+ warp.simplify() +".");
     }
 
@@ -35,8 +36,4 @@ public class SetWarpCmd extends BaseCommand {
         sender.sendMessage("You aren't a player!");
     }
 
-    @HelpCommand
-    public static void onHelp(CommandSender sender, CommandHelp help) {
-        help.showHelp();
-    }
 }

@@ -31,10 +31,10 @@ public class CommandHandler {
         manager = new PaperCommandManager(pl);
 
         manager.enableUnstableAPI("brigadier");
-        manager.enableUnstableAPI("help");
+        //manager.enableUnstableAPI("help");
 
         manager.getCommandContexts().registerContext(Warp.class, c-> {
-            Warp warp = pl.sql().wrapWarp(c.popFirstArg());
+            Warp warp = NSys.sql().wrapWarp(c.popFirstArg());
             if(!warp.exists()) {
                 throw new InvalidCommandArgument("A warp could not be found.");
             }
@@ -42,7 +42,7 @@ public class CommandHandler {
         });
 
         manager.getCommandContexts().registerContext(Home.class, c-> {
-            Profile p = pl.sql().wrapProfile(c.getPlayer().getUniqueId());
+            Profile p = NSys.sql().wrapProfile(c.getPlayer().getUniqueId());
             Location loc = p.getHome(c.popFirstArg());
             if(loc == null) {
                 throw new InvalidCommandArgument("A home could not be found.");
@@ -50,12 +50,12 @@ public class CommandHandler {
             return new Home(loc);
         });
 
-        manager.getCommandCompletions().registerCompletion("warps",c-> pl.sql().wrapList("warps").getList());
+        manager.getCommandCompletions().registerCompletion("@warps",c-> NSys.sql().wrapList("warps").getList());
 
-        manager.getCommandCompletions().registerCompletion("homes",c-> {
+        manager.getCommandCompletions().registerCompletion("@homes",c-> {
             CommandSender sender = c.getSender();
             if (sender instanceof Player) {
-                return pl.sql().wrapProfile(c.getPlayer().getUniqueId()).getHomes().keySet().stream().collect(Collectors.toList());
+                return NSys.sql().wrapProfile(c.getPlayer().getUniqueId()).getHomes().keySet().stream().collect(Collectors.toList());
             }
             return null;
         });

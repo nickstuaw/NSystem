@@ -21,18 +21,10 @@ public class DelWarpCmd extends BaseCommand {
 
     @Default
     @CommandCompletion("@warps")
-    public void onDelWarp(CommandSender s, @Default("warp") String warp) {
-        Warp w = pl.sql().wrapWarpIfLoaded(warp);
-        if(w != null) {
-            pl.sql().invalidateAndDeleteWarp(w);
-            s.sendMessage(ChatColor.YELLOW + "Warp \"" + warp + "\" deleted.");
-        } else {
-            s.sendMessage(ChatColor.RED+"The warp \""+warp+"\" doesn't exist.");
-        }
+    public void onDelWarp(CommandSender s, Warp warp) {
+        NSys.sql().invalidateAndDeleteWarp(warp);
+        NSys.sql().wrapList("warps").del(warp.getKey());
+        s.sendMessage(ChatColor.YELLOW + "Warp \"" + warp + "\" deleted.");
     }
 
-    @HelpCommand
-    public static void onHelp(CommandSender sender, CommandHelp help) {
-        help.showHelp();
-    }
 }

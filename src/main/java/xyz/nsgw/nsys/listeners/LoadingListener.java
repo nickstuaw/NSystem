@@ -24,22 +24,22 @@ public class LoadingListener implements Listener {
 
     @EventHandler
     public void onJoin(final PlayerJoinEvent e) {
-        Profile profile = pl.sql().wrapProfile(e.getPlayer().getUniqueId());
-        pl.sql().validateProfile(profile);
+        Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
+        NSys.sql().validateProfile(profile);
         pl.getLogger().info(e.getPlayer().getName()+" teleport tracking: " + profile.isTrackingTeleports());
     }
 
     @EventHandler
     public void onQuit(final PlayerQuitEvent e) {
-        Profile profile = pl.sql().wrapProfile(e.getPlayer().getUniqueId());
-        pl.sql().invalidateProfile(profile);
+        Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
+        NSys.sql().invalidateProfile(profile);
         pl.getLogger().info(e.getPlayer().getName()+" teleport tracking: " + profile.isTrackingTeleports());
     }
 
     @EventHandler
     public void onTp(final PlayerTeleportEvent e) {
-        Profile profile = pl.sql().wrapProfile(e.getPlayer().getUniqueId());
-        pl.sql().validateProfile(profile);
+        Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
+        NSys.sql().validateProfile(profile);
         if(!profile.isTrackingTeleports()) return;
         String out = "[/!\\] "+ e.getPlayer().getName() +" teleported ";
         switch(pl.getGenSettings().getProperty(GeneralSettings.TRACKTP_PLAYER_MODE)){
@@ -59,7 +59,7 @@ public class LoadingListener implements Listener {
 
     @EventHandler
     public void onChat(final AsyncChatEvent e) {
-        Profile profile = pl.sql().wrapProfileIfLoaded(e.getPlayer().getUniqueId());
+        Profile profile = NSys.sql().wrapProfileIfLoaded(e.getPlayer().getUniqueId());
         if(profile==null) return;
         // muting
         if(profile.isMuted()) {

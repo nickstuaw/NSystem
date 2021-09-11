@@ -22,7 +22,7 @@ public class HomesCmd extends BaseCommand {
 
     @Default
     public void onHomes(Player p) {
-        Profile profile = pl.sql().wrapProfile(p.getUniqueId());
+        Profile profile = NSys.sql().wrapProfile(p.getUniqueId());
         pl.guiHandler().homes(profile, p);
         //p.sendMessage(ChatColor.BLUE +""+profile.getHomes().size()+ "/10 "+ChatColor.GREEN+"Homes: "+ChatColor.RESET+ String.join(", ", profile.getHomes().keySet()));
     }
@@ -32,8 +32,4 @@ public class HomesCmd extends BaseCommand {
         sender.sendMessage("You aren't a player!");
     }
 
-    @HelpCommand
-    public static void onHelp(CommandSender sender, CommandHelp help) {
-        help.showHelp();
-    }
 }

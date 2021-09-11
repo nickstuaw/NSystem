@@ -22,6 +22,14 @@ public class SettingsList {
         list = new ArrayList<>();
     }
 
+    public void add(final String element) {
+        list.add(element);
+    }
+
+    public void del(final String element) {
+        list.remove(element);
+    }
+
     public String getKey() {return key;}
 
     public void setList(String raw) {

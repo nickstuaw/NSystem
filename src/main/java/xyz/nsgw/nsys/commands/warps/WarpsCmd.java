@@ -23,18 +23,8 @@ public class WarpsCmd extends BaseCommand {
     }
 
     @Default
-    public void onWarps(Player p) {
-        pl.guiHandler().warps(p);
+    public void onWarps(CommandSender s) {
+        s.sendMessage(ChatColor.YELLOW+"Warps: "+ String.join(", ",NSys.sql().wrapList("warps").getList()));
     }
 
-    @CatchUnknown
-    public void onUnknown(CommandSender sender) {
-        sender.sendMessage(ChatColor.YELLOW+"Warps: "+ String.join(", ",pl.sql().wrapList("warps").getList()));
-        sender.sendMessage("You aren't a player!");
-    }
-
-    @HelpCommand
-    public static void onHelp(CommandSender sender, CommandHelp help) {
-        help.showHelp();
-    }
 }
