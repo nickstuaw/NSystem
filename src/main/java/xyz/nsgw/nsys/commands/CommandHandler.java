@@ -34,6 +34,7 @@ public class CommandHandler {
 
         manager.getCommandContexts().registerContext(OnlineHome.class, c-> {
             String[] arg = c.popFirstArg().split(":");
+            if(arg.length < 2) throw new InvalidCommandArgument("Invalid argument.");
             if(NSys.sql().wrapMap("players").hasVal(arg[0])) {
                 Profile p = NSys.sql().wrapProfile(UUID.fromString(NSys.sql().wrapMap("players")
                                 .getFromVal(arg[0])));

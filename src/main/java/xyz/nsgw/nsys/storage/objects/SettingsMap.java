@@ -41,6 +41,7 @@ public class SettingsMap {
 
     public void setMap(String raw) {
         map = new HashMap<>();
+        if(raw.isEmpty()) return;
         String[] spl;
         for(String s : raw.split(SEPARATOR)) {
             spl = s.split(",");
