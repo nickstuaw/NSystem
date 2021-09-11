@@ -12,6 +12,7 @@ import xyz.nsgw.nsys.commands.CommandHandler;
 import xyz.nsgw.nsys.config.SettingsHandler;
 import xyz.nsgw.nsys.config.settings.StartupSettings;
 import xyz.nsgw.nsys.listeners.LoadingListener;
+import xyz.nsgw.nsys.listeners.TpListener;
 import xyz.nsgw.nsys.storage.objects.SettingsList;
 import xyz.nsgw.nsys.storage.objects.SettingsMap;
 import xyz.nsgw.nsys.storage.sql.SQLService;
@@ -52,6 +53,7 @@ public final class NSys extends JavaPlugin {
         setLogger(this.getServer().getLogger());
 
         Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
+        Bukkit.getPluginManager().registerEvents(new TpListener(), this);
 
         SettingsList warps = sql.wrapList("warps");
         sql.validateList(warps);
@@ -62,6 +64,8 @@ public final class NSys extends JavaPlugin {
         guiHandler = new GUIHandler();
 
         commandHandler = new CommandHandler(this);
+
+        log().info("NSys Enabled!");
 
     }
 
