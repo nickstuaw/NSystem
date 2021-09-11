@@ -43,7 +43,6 @@ public class LoadingListener implements Listener {
     public void onQuit(final PlayerQuitEvent e) {
         Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
         NSys.sql().invalidateProfile(profile);
-        pl.getLogger().info(e.getPlayer().getName()+" teleport tracking: " + profile.isTrackingTeleports());
         lastChats.remove(e.getPlayer().getName());
     }
 

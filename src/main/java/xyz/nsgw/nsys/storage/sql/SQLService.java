@@ -195,11 +195,11 @@ public class SQLService {
         objs.add(key);
         objs.addAll(Arrays.asList(values));
         objs.addAll(Arrays.asList(values));
-        Bukkit.getServer().getLogger().info("INSERT INTO "+table.getName()+" ("+table.getPkLabel()+","+String.join(",",columnLabels) + ") VALUES (?" + ",?".repeat(columnLabels.size())+")" +
+        /*Bukkit.getServer().getLogger().info("INSERT INTO "+table.getName()+" ("+table.getPkLabel()+","+String.join(",",columnLabels) + ") VALUES (?" + ",?".repeat(columnLabels.size())+")" +
                 " ON DUPLICATE KEY UPDATE " + String.join(", ",equivalents));
         for(Object o : objs) {
             Bukkit.getServer().getLogger().info(o.toString());
-        }
+        }//debug*/
         SQLUtils.getDb().createTransaction(stm -> {
             stm.executeUpdateQuery("INSERT INTO "+table.getName()+" ("+table.getPkLabel()+","+String.join(",",columnLabels) + ") VALUES (?" + ",?".repeat(columnLabels.size())+")" +
                     " ON DUPLICATE KEY UPDATE " + String.join(", ",equivalents) + ";", objs.toArray(Object[]::new));
