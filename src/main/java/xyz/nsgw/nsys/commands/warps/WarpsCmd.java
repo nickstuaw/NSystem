@@ -23,8 +23,8 @@ public class WarpsCmd extends BaseCommand {
     }
 
     @Default
-    public void onWarps(CommandSender s) {
-        s.sendMessage(ChatColor.YELLOW+"Warps: "+ String.join(", ",NSys.sql().wrapList("warps").getList()));
+    public void onWarps(Player p) {
+        pl.guiHandler().warps(p);
     }
 
 }

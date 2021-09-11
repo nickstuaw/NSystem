@@ -12,8 +12,6 @@ import xyz.nsgw.nsys.commands.homes.DelHomeCmd;
 import xyz.nsgw.nsys.commands.homes.HomeCmd;
 import xyz.nsgw.nsys.commands.homes.HomesCmd;
 import xyz.nsgw.nsys.commands.homes.SetHomeCmd;
-import xyz.nsgw.nsys.commands.warps.DelWarpCmd;
-import xyz.nsgw.nsys.commands.warps.SetWarpCmd;
 import xyz.nsgw.nsys.commands.warps.WarpCmd;
 import xyz.nsgw.nsys.commands.warps.WarpsCmd;
 import xyz.nsgw.nsys.storage.objects.locations.Home;
@@ -31,7 +29,7 @@ public class CommandHandler {
         manager = new PaperCommandManager(pl);
 
         manager.enableUnstableAPI("brigadier");
-        //manager.enableUnstableAPI("help");
+        manager.enableUnstableAPI("help");
 
         manager.getCommandContexts().registerContext(Warp.class, c-> {
             Warp warp = NSys.sql().wrapWarp(c.popFirstArg());
@@ -64,16 +62,12 @@ public class CommandHandler {
             return true;
         }));
         manager.registerCommand(new HomesCmd(pl));
-        manager.registerCommand(new SetHomeCmd(pl));
-        manager.registerCommand(new DelHomeCmd(pl));
 
         manager.registerCommand(new WarpCmd().setExceptionHandler((command, registeredCommand, sender, args, t) -> {
             sender.sendMessage(MessageType.ERROR, MessageKeys.ERROR_GENERIC_LOGGED);
             return true;
         }));
         manager.registerCommand(new WarpsCmd(pl));
-        manager.registerCommand(new SetWarpCmd(pl));
-        manager.registerCommand(new DelWarpCmd(pl));
     }
 
     public void onDisable() {
