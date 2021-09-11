@@ -37,10 +37,6 @@ public class GUIHandler {
                 .name(txt(ChatColor.YELLOW+name))
                 .lore(DisplayUtils.loreProfileMeta(profile, human))
                 .asGuiItem();
-        skull.setAction(e -> {
-            gui.close(player);
-            player.performCommand("nsys:profile");
-        });
 
         gui.setItem(1,1,skull);
 

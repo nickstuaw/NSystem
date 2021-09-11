@@ -29,6 +29,7 @@ public class Profile {
     private final UUID key;
     private String discord;
     private boolean trackingTeleports;
+    private int trackingTeleportsLevel;
 
     private List<String> privateNotes;
 
@@ -55,6 +56,7 @@ public class Profile {
         key = uuid;
         discord = "";
         trackingTeleports = true;
+        trackingTeleportsLevel = NSys.sh().gen().getProperty(GeneralSettings.TRACKTP_PLAYER_MODE);
         homes = new HashMap<>();
         privateNotes = new ArrayList<>();
         muteFrom = null;
@@ -224,6 +226,13 @@ public class Profile {
         lastActive = new Date();
     }
 
+    public void setTrackingTeleportsLevel(int l) {
+        trackingTeleportsLevel = l;
+    }
+    public int getTrackingTeleportsLevel() {
+        return trackingTeleportsLevel;
+    }
+
     public Profile loadAttributes(final SQLTable table) {
         List<Object> row = SQLUtils.getRow(table, "\""+key.toString()+"\"",Arrays.stream(DbData.PROFILE_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));
         // DISCORD , TRACK TP , HOMES , NOTES , MUTE, LOGINS, AFK LOC
@@ -237,6 +246,7 @@ public class Profile {
         setAfkLocation(SQLUtils.stringToLocation((String) row.get(7)));
         setLastActive(ArithmeticUtils.dateFromStr((String) row.get(8)));
         setLastName((String) row.get(9));
+        setTrackingTeleportsLevel((Integer) row.get(10));
         return this;
     }
 
@@ -252,7 +262,8 @@ public class Profile {
                 /*IS AFK*/SQLUtils.getBoolInSQL(isAfk()),
                 /*LAST LOCATION*/SQLUtils.locationToString(afkLocation),
                 /*LAST ACTIVE*/Long.toString(getLastActive().getTime()),
-                /*LAST NAME*/getLastName()
+                /*LAST NAME*/getLastName(),
+                /*TRACK TP LVL*/getTrackingTeleportsLevel()
         };
     }
 }

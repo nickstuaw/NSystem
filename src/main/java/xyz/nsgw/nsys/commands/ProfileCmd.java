@@ -34,7 +34,7 @@ public class ProfileCmd extends BaseCommand {
     @CommandCompletion("@players")
     public void onView(CommandSender s, OfflinePlayer target) {
         Profile p = NSys.sql().wrapProfile(target.getUniqueId());
-        s.sendMessage(txt(ChatColor.YELLOW+target.getName()+"'s profile:\n"+DisplayUtils.rawProfileMeta(p, target)));
+        s.sendMessage(txt(ChatColor.YELLOW+target.getName()+"'s profile:\n"+DisplayUtils.rawAdminProfileMeta(p, target)));
     }
 
 }

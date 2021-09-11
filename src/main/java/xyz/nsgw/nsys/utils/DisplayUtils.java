@@ -24,9 +24,16 @@ public class DisplayUtils {
     }
 
     public static String rawProfileMeta(Profile profile, OfflinePlayer human) {
-        return ChatColor.LIGHT_PURPLE+(human.isOnline()?ChatColor.GREEN+"Online"+(profile.isAfk()?ChatColor.YELLOW+""+ChatColor.BOLD+" (AFK)":""):ChatColor.GREEN+"Last seen: "+ date(human.getLastSeen())) +"\n"+
-                ChatColor.LIGHT_PURPLE+"Joined at: "+ date(human.getFirstPlayed())+"\n"+
-                ChatColor.LIGHT_PURPLE+"Total logins: "+ profile.getMaxLogins();
+        return ChatColor.LIGHT_PURPLE+(human.isOnline()?ChatColor.GREEN+"Online"+(profile.isAfk()?ChatColor.YELLOW+""+ChatColor.BOLD+" (AFK)":""):"Last seen: "+ ChatColor.GREEN+ date(human.getLastSeen())) +"\n"+
+                ChatColor.LIGHT_PURPLE+"First joined: "+ChatColor.GREEN+ date(human.getFirstPlayed())+"\n"+
+                ChatColor.LIGHT_PURPLE+"Total logins: "+ChatColor.GREEN+ profile.getMaxLogins();
+    }
+
+    public static String rawAdminProfileMeta(Profile profile, OfflinePlayer human) {
+        return rawProfileMeta(profile,human)+"\n"
+                +(profile.isMuted()?ChatColor.DARK_RED+"Muted"+(profile.isShadowMute()?" (Shadow).\n":".\n"):ChatColor.DARK_GREEN+"Not muted.\n")
+                +(profile.isTrackingTeleports()?ChatColor.GREEN+"Tracking teleports atm.":ChatColor.RED+"Not tracking teleports.")+"\n"
+                +"Assigned tp-tracking level: "+profile.getTrackingTeleportsLevel();
     }
 
     public static Component txt(String txt) {
