@@ -8,6 +8,7 @@ package xyz.nsgw.nsys.listeners;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -30,10 +31,10 @@ public class LoadingListener implements Listener {
         lastChats = new HashMap<>();
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onJoin(final PlayerJoinEvent e) {
         Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
-        profile.login();
+        profile.login(e.getPlayer().getName());
         NSys.sql().validateProfile(profile);
         lastChats.put(e.getPlayer().getName(),new Chat(""));
         NSys.sql().wrapMap("players").put(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
@@ -46,7 +47,7 @@ public class LoadingListener implements Listener {
         lastChats.remove(e.getPlayer().getName());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onChat(final AsyncChatEvent e) {
         Profile profile = NSys.sql().wrapProfileIfLoaded(e.getPlayer().getUniqueId());
         if(profile==null) return;
@@ -56,7 +57,8 @@ public class LoadingListener implements Listener {
                 e.setCancelled(true);
                 if(!profile.isShadowMute()) {
                     e.getPlayer().sendMessage(ChatColor.RED + "You are muted.");return;
-                } else {
+                }
+                else {
                     e.getPlayer().sendMessage(e.message());
                 }
             }
@@ -69,10 +71,12 @@ public class LoadingListener implements Listener {
                 e.setCancelled(true);
                 e.getPlayer().sendMessage(ChatColor.RED+ "Slow down!");
                 return;
-            } else {
+            }
+            else {
                 last.spam++;
             }
-        } else if (last.spam> 1) {
+        }
+        else if (last.spam> 1) {
             last.spam = 1;
         }
         if(last.dupes == NSys.sh().gen().getProperty(GeneralSettings.CHAT_MESSAGE_REPEAT_LIMIT)) {
@@ -80,12 +84,15 @@ public class LoadingListener implements Listener {
                 e.setCancelled(true);
                 e.getPlayer().sendMessage(ChatColor.RED + "Stop spamming!");
                 return;
-            } else if (!e.originalMessage().toString().equals(last.msg)) {
+            }
+            else if (!e.originalMessage().toString().equals(last.msg)) {
                 last.dupes = 1;
             }
-        }else if(e.originalMessage().toString().equals(last.msg)) {
+        }
+        else if(e.originalMessage().toString().equals(last.msg)) {
             last.dupes++;
-        } else if(last.dupes > 1) {
+        }
+        else if(last.dupes > 1) {
             last.dupes = 1;
         }
         last.msg = e.originalMessage().toString();

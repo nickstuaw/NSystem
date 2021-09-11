@@ -186,6 +186,10 @@ public class SQLService {
     public Profile wrapProfileIfLoaded(@NotNull final UUID uuid) {
         return profileCache.getIfPresent(uuid);
     }
+    @Nullable
+    public Profile wrapProfileIfLoaded(@NotNull final Player p) {
+        return profileCache.getIfPresent(p);
+    }
 
     /*  -------------------------------------
         --------------- WARPS ---------------

@@ -12,6 +12,7 @@ public class TpListener implements Listener {
     @EventHandler
     public void onTp(final PlayerTeleportEvent e) {
         Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
+        profile.updateActivity();
         NSys.sql().validateProfile(profile);
         if(!profile.isTrackingTeleports()) return;
         String out = "[/!\\] "+ e.getPlayer().getName() +" teleported ";

@@ -5,6 +5,9 @@ Credit should be given to the original author where this code is used.
 
 package xyz.nsgw.nsys.storage.objects;
 
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
 import xyz.nsgw.nsys.NSys;
@@ -13,6 +16,8 @@ import xyz.nsgw.nsys.storage.objects.locations.Home;
 import xyz.nsgw.nsys.storage.sql.DbData;
 import xyz.nsgw.nsys.storage.sql.SQLTable;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
+import xyz.nsgw.nsys.utils.ArithmeticUtils;
+import xyz.nsgw.nsys.utils.LocationUtils;
 
 import java.time.Instant;
 import java.util.*;
@@ -39,6 +44,13 @@ public class Profile {
     private int muteSeconds;
     private boolean shadowMute;
 
+    private boolean afk;
+    private Location afkLocation;
+
+    private Date lastActive;
+
+    private String lastName;
+
     public Profile(final UUID uuid) {
         key = uuid;
         discord = "";
@@ -50,6 +62,10 @@ public class Profile {
         shadowMute = false;
         maxHomes = NSys.sh().gen().getProperty(GeneralSettings.HOMES_MAXIMUM_DEFAULT);
         maxLogins = 0;
+        afk = false;
+        afkLocation = Bukkit.getWorlds().get(0).getSpawnLocation();
+        lastActive = new Date();
+        lastName = "";
     }
 
     public UUID getKey() {
@@ -155,8 +171,10 @@ public class Profile {
     public void setMuteSeconds(int s){muteSeconds=s;}
     public void setMuted(boolean m) {muteFrom=(m?new Date():null);}
 
-    public void login() {
+    public void login(String ign) {
         maxLogins++;
+        setLastName(ign);
+        updateActivity();
     }
     private void setMaxLogins(int mx) {
         maxLogins = mx;
@@ -165,15 +183,60 @@ public class Profile {
         return maxLogins;
     }
 
+    public void setAfk(boolean a, boolean silent) {
+        if(!silent) Bukkit.broadcast(Component.text(ChatColor.GRAY+lastName+" is "+(a?"now":"no longer")+" AFK."));
+        afk = a;
+    }
+
+    public boolean isAfk() {
+        return afk;
+    }
+
+    public Location getAfkLocation() {
+        return afkLocation;
+    }
+
+    public void setAfkLocation(Location afkLocation) {
+        this.afkLocation = afkLocation;
+    }
+
+    public Date getLastActive() {
+        return lastActive;
+    }
+
+    private void setLastActive(Date lA) {
+        lastActive = lA;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String ign) {
+        lastName = ign;
+    }
+
+    public void updateActivity() {
+        lastActive = new Date();
+        if(afk) setAfk(false,false);
+    }
+    public void updateActivitySilently() {
+        lastActive = new Date();
+    }
+
     public Profile loadAttributes(final SQLTable table) {
         List<Object> row = SQLUtils.getRow(table, "\""+key.toString()+"\"",Arrays.stream(DbData.PROFILE_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));
-        // DISCORD , TRACK TP , HOMES , NOTES , MUTE
+        // DISCORD , TRACK TP , HOMES , NOTES , MUTE, LOGINS, AFK LOC
         setDiscord((String) row.get(0));
         setTrackingTeleports((Boolean) row.get(1));
         setHomes((String) row.get(2));
         setPrivateNotes((String) row.get(3));
         setMute((String) row.get(4));
         setMaxLogins((Integer) row.get(5));
+        setAfk((Boolean) row.get(6), true);
+        setAfkLocation(SQLUtils.stringToLocation((String) row.get(7)));
+        setLastActive(ArithmeticUtils.dateFromStr((String) row.get(8)));
+        setLastName((String) row.get(9));
         return this;
     }
 
@@ -185,7 +248,11 @@ public class Profile {
                 /*HOMES*/getHomesString(),
                 /*NOTES*/getPrivateNotesString(),
                 /*MUTE*/getMute(),
-                /*MAXLOGINS*/getMaxLogins()
+                /*MAXLOGINS*/getMaxLogins(),
+                /*IS AFK*/SQLUtils.getBoolInSQL(isAfk()),
+                /*LAST LOCATION*/SQLUtils.locationToString(afkLocation),
+                /*LAST ACTIVE*/Long.toString(getLastActive().getTime()),
+                /*LAST NAME*/getLastName()
         };
     }
 }

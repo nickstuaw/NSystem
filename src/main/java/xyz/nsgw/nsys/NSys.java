@@ -12,6 +12,7 @@ import xyz.nsgw.nsys.commands.CommandHandler;
 import xyz.nsgw.nsys.config.SettingsHandler;
 import xyz.nsgw.nsys.config.settings.StartupSettings;
 import xyz.nsgw.nsys.listeners.LoadingListener;
+import xyz.nsgw.nsys.listeners.PlayerListener;
 import xyz.nsgw.nsys.listeners.TpListener;
 import xyz.nsgw.nsys.storage.objects.SettingsList;
 import xyz.nsgw.nsys.storage.objects.SettingsMap;
@@ -58,6 +59,7 @@ public final class NSys extends JavaPlugin {
 
         Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
         Bukkit.getPluginManager().registerEvents(new TpListener(), this);
+        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 
         SettingsList warps = sql.wrapList("warps");
         sql.validateList(warps);
@@ -68,6 +70,8 @@ public final class NSys extends JavaPlugin {
         guiHandler = new GUIHandler();
 
         commandHandler = new CommandHandler(this);
+
+        scheduleRepeatingTask(new Timer(), 10, 50);
 
         log().info("NSys Enabled!");
 
@@ -115,5 +119,9 @@ public final class NSys extends JavaPlugin {
 
     public static void reload() {
         settingsHandler.gen().reload();
+    }
+
+    private void scheduleRepeatingTask(Runnable runnable, final long del, final long per) {
+        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, runnable, del, per);
     }
 }

@@ -93,6 +93,8 @@ public class CommandHandler {
 
         manager.registerCommand(new ProfileCmd(pl));
 
+        manager.registerCommand(new AfkCmd());
+
         manager.registerCommand(new HomeCmd());
         manager.registerCommand(new HomesCmd(pl));
 

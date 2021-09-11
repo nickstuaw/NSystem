@@ -6,31 +6,19 @@ import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import dev.triumphteam.gui.guis.ScrollingGui;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.storage.objects.Profile;
 import xyz.nsgw.nsys.storage.objects.locations.Warp;
 
-import java.sql.Date;
-import java.time.Instant;
+import static xyz.nsgw.nsys.utils.DisplayUtils.txt;
 
 public class GUIHandler {
 
     private PaginatedGui menu;
 
     public GUIHandler() {
-    }
-
-    private Component txt(String txt) {
-        return Component.text(txt);
-    }
-
-    private String date(Long date) {
-        return Date.from(Instant.ofEpochMilli(date)).toString();
     }
 
     public void profile(Profile profile, Player player, boolean self) {
@@ -47,10 +35,12 @@ public class GUIHandler {
 
         GuiItem skull = ItemBuilder.skull().owner(human)
                 .name(txt(ChatColor.YELLOW+name))
-                .lore(txt(ChatColor.LIGHT_PURPLE+"Last seen: "+ (human.isOnline()?ChatColor.GREEN+"Online":date(human.getLastSeen()))),
-                        txt(ChatColor.LIGHT_PURPLE+"Joined at: "+ date(human.getFirstPlayed())),
-                        txt(ChatColor.LIGHT_PURPLE+"Total logins: "+ profile.getMaxLogins()))
+                .lore(DisplayUtils.loreProfileMeta(profile, human))
                 .asGuiItem();
+        skull.setAction(e -> {
+            gui.close(player);
+            player.performCommand("nsys:profile");
+        });
 
         gui.setItem(1,1,skull);
 
