@@ -13,6 +13,7 @@ import xyz.nsgw.nsys.config.SettingsHandler;
 import xyz.nsgw.nsys.config.settings.StartupSettings;
 import xyz.nsgw.nsys.listeners.LoadingListener;
 import xyz.nsgw.nsys.storage.objects.SettingsList;
+import xyz.nsgw.nsys.storage.objects.SettingsMap;
 import xyz.nsgw.nsys.storage.sql.SQLService;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
 import xyz.nsgw.nsys.utils.GUIHandler;
@@ -48,16 +49,19 @@ public final class NSys extends JavaPlugin {
                 startup.getProperty(StartupSettings.MYSQL_USER),
                 startup.getProperty(StartupSettings.MYSQL_PASS)));
 
+        setLogger(this.getServer().getLogger());
+
         Bukkit.getPluginManager().registerEvents(new LoadingListener(this), this);
 
         SettingsList warps = sql.wrapList("warps");
         sql.validateList(warps);
 
+        SettingsMap players = sql.wrapMap("players");
+        sql.validateMap(players);
+
         guiHandler = new GUIHandler();
 
         commandHandler = new CommandHandler(this);
-
-        setLogger(this.getServer().getLogger());
 
     }
 

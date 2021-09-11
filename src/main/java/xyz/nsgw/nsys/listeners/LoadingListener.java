@@ -37,6 +37,7 @@ public class LoadingListener implements Listener {
         Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
         NSys.sql().validateProfile(profile);
         lastChats.put(e.getPlayer().getName(),new Chat(""));
+        NSys.sql().wrapMap("players").put(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());
     }
 
     @EventHandler

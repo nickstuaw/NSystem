@@ -1,12 +1,12 @@
 package xyz.nsgw.nsys.commands.homes;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.NSys;
+import xyz.nsgw.nsys.storage.objects.OnlineHome;
 import xyz.nsgw.nsys.storage.objects.Profile;
 import xyz.nsgw.nsys.storage.objects.locations.Home;
 
@@ -17,12 +17,17 @@ public class HomeCmd extends BaseCommand {
     @Subcommand("tp")
     @CommandCompletion("@homes")
     public static void onHome(Player p, Home home) {
+        p.sendMessage(ChatColor.GREEN + "You're teleporting...");
         p.teleport(home);
     }
 
     @Subcommand("set")
     @CommandCompletion("@homes")
     public void onSetHome(Player p, @Default("homes") String home) {
+        if(home.contains(":")) {
+            p.sendMessage(ChatColor.RED + "Home names cannot contain ':'.");
+            return;
+        }
         Profile profile = NSys.sql().wrapProfile(p.getUniqueId());
         if(profile.setHome(home, p.getLocation())) {
             p.sendMessage(ChatColor.GREEN + "Home '" + home + "' set.");
@@ -49,6 +54,13 @@ public class HomeCmd extends BaseCommand {
     @CatchUnknown
     public static void onUnknown(CommandSender sender) {
         sender.sendMessage("UNKNOWN! You aren't a player...!");
+    }
+
+    @Subcommand("forcetp|ftp")
+    @CommandCompletion("@onlinehomes")
+    public static void onVisit(Player p, OnlineHome target) {
+        Home home = target.getHome();
+        p.teleport(home);
     }
 
 }

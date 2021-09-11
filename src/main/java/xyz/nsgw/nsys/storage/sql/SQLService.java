@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import xyz.nsgw.nsys.storage.objects.Profile;
 import xyz.nsgw.nsys.storage.objects.SettingsList;
+import xyz.nsgw.nsys.storage.objects.SettingsMap;
 import xyz.nsgw.nsys.storage.objects.locations.Warp;
 
 import java.util.ArrayList;
@@ -27,11 +28,13 @@ import java.util.concurrent.ExecutionException;
 public class SQLService {
 
     private final SQLTable listsTable;
+    private final SQLTable mapsTable;
     private final SQLTable profileTable;
     private final SQLTable warpTable;
 
     @NonNull
     private final LoadingCache<@NotNull String, @NotNull SettingsList> listsCache;
+    private final LoadingCache<@NotNull String, @NotNull SettingsMap> mapsCache;
 
     private final LoadingCache<@NotNull UUID, @NotNull Profile> profileCache;
     private final LoadingCache<@NotNull String, @NotNull Warp> warpCache;
@@ -57,6 +60,12 @@ public class SQLService {
         listsCache = CacheBuilder.newBuilder()
                 .removalListener(this::saveList)
                 .build(CacheLoader.from(this::loadList));
+
+        mapsTable = new SQLTable("nsys_settings_maps", DbData.MAPS_PK , DbData.MAPS_COLUMNS);
+
+        mapsCache = CacheBuilder.newBuilder()
+                .removalListener(this::saveMap)
+                .build(CacheLoader.from(this::loadMap));
 
         warpTable = new SQLTable("nsys_warps", DbData.WARP_PK , DbData.WARP_COLUMNS);
 
@@ -103,6 +112,41 @@ public class SQLService {
     @Nullable
     public SettingsList wrapListIfLoaded(@NotNull final String name) {
         return listsCache.getIfPresent(name);
+    }
+
+
+    /*  ------------------------------------
+        ------------- MAPS -------------
+        ------------------------------------    */
+
+    @NonNull
+    private SettingsMap loadMap(@NotNull final String name) {
+        SettingsMap map = new SettingsMap(name);
+        if(! SQLUtils.holdsKey(mapsTable, "\""+name+"\"")) return map;
+        return map.loadAttributes(mapsTable);
+    }
+    private void saveMap(@NotNull final RemovalNotification<@NotNull String, @NotNull SettingsMap> notification) {
+        SettingsMap map = notification.getValue();
+        setRow( mapsTable, map.getKey(), map.getDbValues());
+    }
+    public void validateMap(@NotNull final SettingsMap map) {
+        this.mapsCache.put(map.getKey(), map);
+    }
+    public void invalidateMap( final SettingsMap map) {
+        this.mapsCache.invalidate(map.getKey());
+    }
+    public SettingsMap wrapMap(@NotNull final String name) {
+        try {
+            return mapsCache.get(name);
+        }
+        catch(final ExecutionException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    @Nullable
+    public SettingsMap wrapMapIfLoaded(@NotNull final String name) {
+        return mapsCache.getIfPresent(name);
     }
 
     /*  ------------------------------------

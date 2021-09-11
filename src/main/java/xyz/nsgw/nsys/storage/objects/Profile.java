@@ -96,7 +96,7 @@ public class Profile {
     }
 
     @Nullable
-    public Location getHome(final String homeName) {
+    public Home getHome(final String homeName) {
         if(!homes.containsKey(homeName)) return null;
         return homes.get(homeName);
     }
@@ -106,6 +106,7 @@ public class Profile {
     public HashMap<String,Home> getHomes() {
         return homes;
     }
+    public Set<String> getHomeNames() {return homes.keySet();}
 
     // Private notes
     public List<String> getPrivateNotes() {
