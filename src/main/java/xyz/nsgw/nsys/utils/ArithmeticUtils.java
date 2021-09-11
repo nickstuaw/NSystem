@@ -1,0 +1,12 @@
+package xyz.nsgw.nsys.utils;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
+public class ArithmeticUtils {
+
+    public static long secondsSince(Date d1) {
+        return TimeUnit.SECONDS.convert(Math.abs((new Date()).getTime() - d1.getTime()), TimeUnit.MILLISECONDS);
+    }
+
+}

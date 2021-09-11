@@ -100,6 +100,11 @@ public class SQLUtils {
             e.printStackTrace();
         }
     }
+    public static void updateAndIgnore(@Language("SQL") final String query) {
+        try {
+            db.executeUpdate(query);
+        } catch (SQLException ignored) {}
+    }
 
     public static void update(@NotNull final String SQL_QUERY, Object... objects) {
         try (Connection con = db.getConnection();

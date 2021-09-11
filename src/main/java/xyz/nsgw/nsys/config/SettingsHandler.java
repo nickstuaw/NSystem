@@ -2,6 +2,7 @@ package xyz.nsgw.nsys.config;
 
 import ch.jalu.configme.SettingsManager;
 import ch.jalu.configme.SettingsManagerBuilder;
+import xyz.nsgw.nsys.config.settings.GeneralSettings;
 import xyz.nsgw.nsys.config.settings.StartupSettings;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class SettingsHandler {
             .create();
         generalSettingsManager = SettingsManagerBuilder
             .withYamlFile(new File(folder,"general_config.yml"))
-            .configurationData(StartupSettings.class)
+            .configurationData(GeneralSettings.class)
             .useDefaultMigrationService()
             .create();
     }

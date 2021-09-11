@@ -18,7 +18,6 @@ public class HomeCmd extends BaseCommand {
     @CommandCompletion("@homes")
     public static void onHome(Player p, Home home) {
         p.teleport(home);
-        p.sendMessage(ChatColor.GREEN+"Teleported!");
     }
 
     @Subcommand("set")

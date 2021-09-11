@@ -15,18 +15,29 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.config.settings.GeneralSettings;
 import xyz.nsgw.nsys.storage.objects.Profile;
+import xyz.nsgw.nsys.utils.ArithmeticUtils;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 public class LoadingListener implements Listener {
 
     private final NSys pl;
 
-    public LoadingListener(final NSys plugin) {pl = plugin;}
+    private final HashMap<String, Chat> lastChats;
+
+    public LoadingListener(final NSys plugin) {
+        pl = plugin;
+        lastChats = new HashMap<>();
+    }
 
     @EventHandler
     public void onJoin(final PlayerJoinEvent e) {
         Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
         NSys.sql().validateProfile(profile);
         pl.getLogger().info(e.getPlayer().getName()+" teleport tracking: " + profile.isTrackingTeleports());
+        lastChats.put(e.getPlayer().getName(),new Chat(""));
     }
 
     @EventHandler
@@ -34,6 +45,7 @@ public class LoadingListener implements Listener {
         Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
         NSys.sql().invalidateProfile(profile);
         pl.getLogger().info(e.getPlayer().getName()+" teleport tracking: " + profile.isTrackingTeleports());
+        lastChats.remove(e.getPlayer().getName());
     }
 
     @EventHandler
@@ -74,31 +86,39 @@ public class LoadingListener implements Listener {
         }
         // spamming
         // spamTimeCounter is incremented by 1 when the player sends a message within secondsLimit secs of their last message.
-        int secondsLimit = 2;
-        if(profile.isSpamTimeCounterLow(5) && profile.getSecsSinceChat() < secondsLimit) {
-            if (profile.getSecsSinceChat() < secondsLimit) {
-                profile.increaseSpamTimeCounter();
-            } else if(profile.getSpamTimeCounter() > 0) {
-                profile.decreaseSpamTimeCounter();
+        Chat last = lastChats.get(e.getPlayer().getName());
+        if (ArithmeticUtils.secondsSince(last.date) < NSys.sh().gen().getProperty(GeneralSettings.CHAT_MESSAGE_SPEED_SECS)) {
+            if (last.spam == NSys.sh().gen().getProperty(GeneralSettings.CHAT_MESSAGE_SPEED_LIMIT)) {
+                e.setCancelled(true);
+                e.getPlayer().sendMessage(ChatColor.RED+ "Slow down!");
+                return;
+            } else {
+                last.spam++;
             }
-        } else if (profile.getSecsSinceChat() < secondsLimit) {
-            e.setCancelled(true);
-            //notify mods about the spam attempt once when the counter has reached 4 (this can be the default value) (which is a speed of over 1 message per second)
+        } else if (last.spam> 1) {
+            last.spam = 1;
         }
-        if(profile.isDupeMsgCounterLow(5)) {
-            if (e.message().toString().equals(profile.getLastChatMsg())) {
-                if (profile.getSecsSinceChat() < 5) {
-                    profile.increaseDupeMsgCounter();
-                    // message match found within 5 seconds of last chat - add a config option
-                } else if (profile.getDuplicateMessageCounter() > 0) {
-                    profile.resetDupeMsgCounter();
-                    // they stopped spamming
-                }
+        if(last.dupes == NSys.sh().gen().getProperty(GeneralSettings.CHAT_MESSAGE_REPEAT_LIMIT)) {
+            if (ArithmeticUtils.secondsSince(last.date) < NSys.sh().gen().getProperty(GeneralSettings.CHAT_MESSAGE_REPEAT_COOLDOWN) && e.originalMessage().toString().equals(last.msg)) {
+                e.setCancelled(true);
+                e.getPlayer().sendMessage(ChatColor.RED + "Stop spamming!");
+                return;
+            } else if (!e.originalMessage().toString().equals(last.msg)) {
+                last.dupes = 1;
             }
-        } else {
-            e.setCancelled(true);
-            //notify mods about the spam attempt when the counter has reached 4
+        }else if(e.originalMessage().toString().equals(last.msg)) {
+            last.dupes++;
+        } else if(last.dupes > 1) {
+            last.dupes = 1;
         }
-        profile.recordChatAttempt();
+        last.msg = e.originalMessage().toString();
+        last.date = new Date();
+        lastChats.put(e.getPlayer().getName(),last);
     }
+}
+class Chat {
+    public Date date;
+    public String msg;
+    public int spam=1, dupes=1;
+    public Chat(String msg) {date = new Date();this.msg=msg;}
 }

@@ -47,10 +47,10 @@ public class Profile {
         privateNotes = new ArrayList<>();
         muteFrom = null;
         muteSeconds = -1;
-        lastChat = null;
         shadowMute = false;
-
-        initiateSpamCounters(5,5);
+        lastChat = new Date();
+        resetDupeMsgCounter();
+        resetSpamTimeCounter();
     }
 
     public UUID getKey() {
@@ -65,6 +65,7 @@ public class Profile {
 
     public void setHomes(String raw) {
         homes = new HashMap<>();
+        if(raw.isEmpty()) return;
         String[] values;
         // homename:worlduuid,x,y,z,yaw,pitch;
         for(String home : raw.split(";")) {
@@ -152,16 +153,16 @@ public class Profile {
     public boolean isDupeMsgCounterLow(int max) {return duplicateMessageCounter<max;}
     public void increaseDupeMsgCounter() {duplicateMessageCounter++;}
     public void decreaseDupeMsgCounter() {duplicateMessageCounter--;}
-    public void resetDupeMsgCounter() {duplicateMessageCounter=0;}
+    public void resetDupeMsgCounter() {duplicateMessageCounter=1;}
     public String getLastChatMsg() {return lastChatMsg;}
     public void setLastChatMsg(String m) {lastChatMsg=m;}
     public int getSpamTimeCounter() {return duplicateMessageCounter;}
     public boolean isSpamTimeCounterLow(int max) {return duplicateMessageCounter<max;}
     public void increaseSpamTimeCounter() {duplicateMessageCounter++;}
     public void decreaseSpamTimeCounter() {duplicateMessageCounter--;}
-    public void resetSpamTimeCounter() {duplicateMessageCounter=0;}
+    public void resetSpamTimeCounter() {duplicateMessageCounter=1;}
 
-    private void initiateSpamCounters(int maxDupeMsg,int maxSpamInterval) {duplicateMessageCounter=maxDupeMsg;spamTimeCounter=maxSpamInterval;}
+    private void initiateSpamCounters() {duplicateMessageCounter=0;spamTimeCounter=0;}
 
 
     public Profile loadAttributes(final SQLTable table) {
@@ -173,7 +174,6 @@ public class Profile {
         setPrivateNotes((String) row.get(3));
         setMute((String) row.get(4));
 
-        initiateSpamCounters(0,0);
         return this;
     }
 

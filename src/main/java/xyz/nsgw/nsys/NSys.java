@@ -19,7 +19,7 @@ import xyz.nsgw.nsys.utils.GUIHandler;
 
 public final class NSys extends JavaPlugin {
     private static SQLService sql;
-    private SettingsHandler settingsHandler;
+    private static SettingsHandler settingsHandler;
     private CommandHandler commandHandler;
     private GUIHandler guiHandler;
 
@@ -28,7 +28,7 @@ public final class NSys extends JavaPlugin {
 
         getLogger().info("Enabling NSys...");
 
-        settingsHandler = new SettingsHandler(this.getDataFolder());
+        setSettingsHandler(new SettingsHandler(this.getDataFolder()));
 
         SettingsManager startup = settingsHandler.startup();
 
@@ -70,5 +70,13 @@ public final class NSys extends JavaPlugin {
 
     private static void setSql(SQLService s) {
         sql = s;
+    }
+
+    public static SettingsHandler sh(){
+        return settingsHandler;
+    }
+
+    private void setSettingsHandler(SettingsHandler handler) {
+        settingsHandler = handler;
     }
 }

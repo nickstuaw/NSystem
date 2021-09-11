@@ -39,6 +39,7 @@ public class SQLTable {
     public void init() {
         SQLUtils.update("CREATE TABLE IF NOT EXISTS "+ name
                 + " (" + String.join(" ",pk) +", "+ colsJoined + ", PRIMARY KEY ("+pk[0]+"));");
+        //SQLUtils.updateAndIgnore("ALTER TABLE "+name+" ADD ("+ colsJoined +");");
     }
 
     public String getName() {
