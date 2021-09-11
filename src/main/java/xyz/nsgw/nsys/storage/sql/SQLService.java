@@ -88,7 +88,7 @@ public class SQLService {
     public void validateList(@NotNull final SettingsList list) {
         this.listsCache.put(list.getKey(), list);
     }
-    public void invalidateList(@NotNull final SettingsList list) {
+    public void invalidateList( final SettingsList list) {
         this.listsCache.invalidate(list.getKey());
     }
     public SettingsList wrapList(@NotNull final String name) {

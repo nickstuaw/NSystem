@@ -15,7 +15,7 @@ public class StartupSettings implements SettingsHolder {
     }
     // MySQL
     public static final Property<String> MYSQL_HOST =
-            newProperty("mysql.host", "localhost:3306");
+            newProperty("mysql.host", "not set");
     public static final Property<String> MYSQL_DB =
             newProperty("mysql.database", "database");
     public static final Property<String> MYSQL_USER =

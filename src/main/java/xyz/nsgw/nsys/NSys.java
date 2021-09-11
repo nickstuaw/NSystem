@@ -17,6 +17,7 @@ import xyz.nsgw.nsys.storage.sql.SQLService;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
 import xyz.nsgw.nsys.utils.GUIHandler;
 
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class NSys extends JavaPlugin {
@@ -35,6 +36,12 @@ public final class NSys extends JavaPlugin {
 
         SettingsManager startup = settingsHandler.startup();
 
+        if(Objects.equals(startup.getProperty(StartupSettings.MYSQL_HOST), "not set")) {
+            getLogger().warning("Please change the database options in general_config.yml accordingly.");
+            getLogger().info("Disabling NSys due to missing settings.");
+            Bukkit.getPluginManager().disablePlugin(this);
+            return;
+        }
         setSql(new SQLService(
                 startup.getProperty(StartupSettings.MYSQL_HOST),
                 startup.getProperty(StartupSettings.MYSQL_DB),
@@ -63,10 +70,12 @@ public final class NSys extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("Disabling NSys...");
-        sql.invalidateList(sql.wrapList("warps"));
-        commandHandler.onDisable();
-        sql.onDisable();
-        SQLUtils.close();
+        if(sql != null) {
+            sql.invalidateList(sql.wrapList("warps"));
+            commandHandler.onDisable();
+            sql.onDisable();
+            SQLUtils.close();
+        }
     }
 
     public static SQLService sql() {

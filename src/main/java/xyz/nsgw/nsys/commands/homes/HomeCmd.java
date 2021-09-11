@@ -24,8 +24,11 @@ public class HomeCmd extends BaseCommand {
     @CommandCompletion("@homes")
     public void onSetHome(Player p, @Default("homes") String home) {
         Profile profile = NSys.sql().wrapProfile(p.getUniqueId());
-        profile.setHome(home, p.getLocation());
-        p.sendMessage(ChatColor.GREEN + "Home '" + home + "' set.");
+        if(profile.setHome(home, p.getLocation())) {
+            p.sendMessage(ChatColor.GREEN + "Home '" + home + "' set.");
+        } else {
+            p.sendMessage(ChatColor.RED + "You have reached your maximum amount of homes.");
+        }
     }
 
     @Subcommand("delete")
@@ -34,6 +37,12 @@ public class HomeCmd extends BaseCommand {
         Profile profile = NSys.sql().wrapProfile(p.getUniqueId());
         profile.delHome(home);
         p.sendMessage(ChatColor.GREEN + "Home '"+home+"' deleted.");
+    }
+
+    @Subcommand("list|ls")
+    public void onHomes(Player p) {
+        Profile profile = NSys.sql().wrapProfile(p.getUniqueId());
+        p.sendMessage(ChatColor.BLUE +""+profile.getHomes().size()+ "/"+profile.getMaxHomes()+ChatColor.GREEN+" Homes: "+ChatColor.RESET+ String.join(", ", profile.getHomes().keySet()));
     }
 
 

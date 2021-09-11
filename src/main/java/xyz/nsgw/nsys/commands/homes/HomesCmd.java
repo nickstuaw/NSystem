@@ -24,7 +24,6 @@ public class HomesCmd extends BaseCommand {
     public void onHomes(Player p) {
         Profile profile = NSys.sql().wrapProfile(p.getUniqueId());
         pl.guiHandler().homes(profile, p);
-        //p.sendMessage(ChatColor.BLUE +""+profile.getHomes().size()+ "/10 "+ChatColor.GREEN+"Homes: "+ChatColor.RESET+ String.join(", ", profile.getHomes().keySet()));
     }
 
     @CatchUnknown

@@ -7,6 +7,8 @@ package xyz.nsgw.nsys.storage.objects;
 
 import org.bukkit.Location;
 import org.jetbrains.annotations.Nullable;
+import xyz.nsgw.nsys.NSys;
+import xyz.nsgw.nsys.config.settings.GeneralSettings;
 import xyz.nsgw.nsys.storage.objects.locations.Home;
 import xyz.nsgw.nsys.storage.sql.DbData;
 import xyz.nsgw.nsys.storage.sql.SQLTable;
@@ -29,6 +31,8 @@ public class Profile {
 
     private HashMap<String, Home> homes;
 
+    private final int maxHomes;
+
     private Date muteFrom;
     private int muteSeconds;
     private boolean shadowMute;
@@ -42,6 +46,7 @@ public class Profile {
         muteFrom = null;
         muteSeconds = -1;
         shadowMute = false;
+        maxHomes = NSys.sh().gen().getProperty(GeneralSettings.HOMES_MAXIMUM_DEFAULT);
     }
 
     public UUID getKey() {
@@ -54,6 +59,9 @@ public class Profile {
         return discord;
     }
 
+    public int getMaxHomes() {
+        return maxHomes;
+    }
     public void setHomes(String raw) {
         homes = new HashMap<>();
         if(raw.isEmpty()) return;
@@ -76,8 +84,12 @@ public class Profile {
         return raw.toString();
     }
 
-    public void setHome(final String homeName, final Location location) {
-        homes.put(homeName, new Home(location));
+    public boolean setHome(final String homeName, final Location location) {
+        if(homes.size() < maxHomes || (homes.size() == maxHomes && homes.containsKey(homeName))) {
+            homes.put(homeName, new Home(location));
+            return true;
+        }
+        return false;
     }
     public void delHome(final String homeName) {
         homes.remove(homeName);
