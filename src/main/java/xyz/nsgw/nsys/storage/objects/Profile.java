@@ -25,7 +25,7 @@ public class Profile {
 
     private List<String> privateNotes;
 
-    private List<String> staffAlerts;
+    private List<String> staffAlerts;//todo
 
     private HashMap<String, Home> homes;
 
@@ -33,24 +33,15 @@ public class Profile {
     private int muteSeconds;
     private boolean shadowMute;
 
-    // Temporary - not for saving/loading
-    private Date lastChat;
-    private int duplicateMessageCounter;
-    private int spamTimeCounter;
-    private String lastChatMsg;
-
     public Profile(final UUID uuid) {
         key = uuid;
         discord = "";
-        trackingTeleports = false;
+        trackingTeleports = true;
         homes = new HashMap<>();
         privateNotes = new ArrayList<>();
         muteFrom = null;
         muteSeconds = -1;
         shadowMute = false;
-        lastChat = new Date();
-        resetDupeMsgCounter();
-        resetSpamTimeCounter();
     }
 
     public UUID getKey() {
@@ -147,23 +138,6 @@ public class Profile {
     public Date getMuteFrom() {return muteFrom;}
     public void setMuteSeconds(int s){muteSeconds=s;}
     public void setMuted(boolean m) {muteFrom=(m?new Date():null);}
-    public long getSecsSinceChat(){return lastChat==null?60:TimeUnit.SECONDS.convert(Math.abs((new Date()).getTime()- lastChat.getTime()),TimeUnit.MILLISECONDS);}
-    public void recordChatAttempt(){lastChat=new Date();}
-    public int getDuplicateMessageCounter() {return duplicateMessageCounter;}
-    public boolean isDupeMsgCounterLow(int max) {return duplicateMessageCounter<max;}
-    public void increaseDupeMsgCounter() {duplicateMessageCounter++;}
-    public void decreaseDupeMsgCounter() {duplicateMessageCounter--;}
-    public void resetDupeMsgCounter() {duplicateMessageCounter=1;}
-    public String getLastChatMsg() {return lastChatMsg;}
-    public void setLastChatMsg(String m) {lastChatMsg=m;}
-    public int getSpamTimeCounter() {return duplicateMessageCounter;}
-    public boolean isSpamTimeCounterLow(int max) {return duplicateMessageCounter<max;}
-    public void increaseSpamTimeCounter() {duplicateMessageCounter++;}
-    public void decreaseSpamTimeCounter() {duplicateMessageCounter--;}
-    public void resetSpamTimeCounter() {duplicateMessageCounter=1;}
-
-    private void initiateSpamCounters() {duplicateMessageCounter=0;spamTimeCounter=0;}
-
 
     public Profile loadAttributes(final SQLTable table) {
         List<Object> row = SQLUtils.getRow(table, "\""+key.toString()+"\"",Arrays.stream(DbData.PROFILE_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));
@@ -173,7 +147,6 @@ public class Profile {
         setHomes((String) row.get(2));
         setPrivateNotes((String) row.get(3));
         setMute((String) row.get(4));
-
         return this;
     }
 

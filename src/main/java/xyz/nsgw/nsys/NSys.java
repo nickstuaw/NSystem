@@ -17,9 +17,12 @@ import xyz.nsgw.nsys.storage.sql.SQLService;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
 import xyz.nsgw.nsys.utils.GUIHandler;
 
+import java.util.logging.Logger;
+
 public final class NSys extends JavaPlugin {
     private static SQLService sql;
     private static SettingsHandler settingsHandler;
+    private static Logger logger;
     private CommandHandler commandHandler;
     private GUIHandler guiHandler;
 
@@ -46,6 +49,8 @@ public final class NSys extends JavaPlugin {
         guiHandler = new GUIHandler();
 
         commandHandler = new CommandHandler(this);
+
+        setLogger(this.getServer().getLogger());
 
     }
 
@@ -78,5 +83,12 @@ public final class NSys extends JavaPlugin {
 
     private void setSettingsHandler(SettingsHandler handler) {
         settingsHandler = handler;
+    }
+
+    public static Logger log() {
+        return logger;
+    }
+    private void setLogger(final Logger lgr) {
+        logger = lgr;
     }
 }

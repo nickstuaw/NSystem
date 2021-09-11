@@ -1,7 +1,7 @@
 package xyz.nsgw.nsys.utils.alerts;
 
 import net.kyori.adventure.text.Component;
-
+//todo
 public class StaffAlert {
 
     // Recipients according to priority level (all means players and console):

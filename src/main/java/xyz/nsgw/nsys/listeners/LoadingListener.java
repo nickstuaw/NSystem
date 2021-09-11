@@ -36,7 +36,6 @@ public class LoadingListener implements Listener {
     public void onJoin(final PlayerJoinEvent e) {
         Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
         NSys.sql().validateProfile(profile);
-        pl.getLogger().info(e.getPlayer().getName()+" teleport tracking: " + profile.isTrackingTeleports());
         lastChats.put(e.getPlayer().getName(),new Chat(""));
     }
 
@@ -46,27 +45,6 @@ public class LoadingListener implements Listener {
         NSys.sql().invalidateProfile(profile);
         pl.getLogger().info(e.getPlayer().getName()+" teleport tracking: " + profile.isTrackingTeleports());
         lastChats.remove(e.getPlayer().getName());
-    }
-
-    @EventHandler
-    public void onTp(final PlayerTeleportEvent e) {
-        Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
-        NSys.sql().validateProfile(profile);
-        if(!profile.isTrackingTeleports()) return;
-        String out = "[/!\\] "+ e.getPlayer().getName() +" teleported ";
-        switch(pl.getGenSettings().getProperty(GeneralSettings.TRACKTP_PLAYER_MODE)){
-            case 1:
-                out += "to "+ e.getTo().getWorld().getName() +" "+ e.getTo().getBlockX() +" "+ e.getTo().getBlockY() +" "+ e.getTo().getBlockZ();
-                break;
-            case 2:
-                out += "from "+ e.getFrom().getWorld().getName() +" "+ e.getFrom().getBlockX() +" "+ e.getFrom().getBlockY() +" "+ e.getFrom().getBlockZ();
-                break;
-            default:
-                out += " to "+ e.getTo().getWorld().getName() +" "+ e.getTo().getBlockX() +" "+ e.getTo().getBlockY() +" "+ e.getTo().getBlockZ()
-                        +" from "+ e.getFrom().getWorld().getName() +" "+ e.getFrom().getBlockX() +" "+ e.getFrom().getBlockY() +" "+ e.getFrom().getBlockZ();
-                break;
-        }
-        pl.getLogger().info(out);// change this to an alert
     }
 
     @EventHandler

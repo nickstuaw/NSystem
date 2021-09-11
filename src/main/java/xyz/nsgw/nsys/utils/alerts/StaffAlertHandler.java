@@ -8,7 +8,7 @@ import xyz.nsgw.nsys.NSys;
 
 import java.util.ArrayList;
 import java.util.List;
-
+//todo
 public class StaffAlertHandler {
 
     private List<Player> onlineRecipients;
