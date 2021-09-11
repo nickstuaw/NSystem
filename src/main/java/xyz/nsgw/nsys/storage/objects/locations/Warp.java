@@ -19,15 +19,19 @@ public class Warp extends Loc {
     private UUID ownerUuid;
     private boolean trackingTeleports;
 
-    public Warp(final String name, final Location location) {
+    public Warp(final String name, final Location location, final UUID uuid) {
         super(location);
         key = name;
+        ownerUuid = uuid;
     }
     public Warp(final String name) {
-        super(Bukkit.getWorlds().get(0).getSpawnLocation());
+        super(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
         key = name;
     }
 
+    public boolean exists() {
+        return this.ownerUuid!=null;
+    }
     public String getKey() {return key;}
 
     public UUID getOwnerUuid() {

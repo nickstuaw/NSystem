@@ -25,6 +25,8 @@ public class Profile {
 
     private List<String> privateNotes;
 
+    private List<String> staffAlerts;
+
     private HashMap<String, Home> homes;
 
     private Date muteFrom;
@@ -171,7 +173,7 @@ public class Profile {
         setPrivateNotes((String) row.get(3));
         setMute((String) row.get(4));
 
-        initiateSpamCounters(5,5);
+        initiateSpamCounters(0,0);
         return this;
     }
 

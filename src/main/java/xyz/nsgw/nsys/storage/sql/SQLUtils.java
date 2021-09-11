@@ -88,7 +88,7 @@ public class SQLUtils {
 
     public static void delRow(final SQLTable table, final String key) {
         db.createTransaction(stm -> {
-            stm.executeUpdateQuery("DELETE FROM "+table.getName()+" WHERE "+table.getPkLabel()+" = "+key+";");
+            stm.executeUpdateQuery("DELETE FROM "+table.getName()+" WHERE "+table.getPkLabel()+"="+key+";");
             return true;
         });
     }

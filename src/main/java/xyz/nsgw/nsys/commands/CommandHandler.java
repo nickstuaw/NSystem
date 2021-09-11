@@ -36,7 +36,7 @@ public class CommandHandler {
         manager.getCommandContexts().registerContext(Warp.class, c-> {
             Warp warp = pl.sql().wrapWarp(c.popFirstArg());
             if(!warp.exists()) {
-                throw new InvalidCommandArgument("A home could not be found.");
+                throw new InvalidCommandArgument("A warp could not be found.");
             }
             return warp;
         });

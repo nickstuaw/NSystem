@@ -8,7 +8,7 @@ package xyz.nsgw.nsys.storage.sql;
 public class DbData {
     public static final String[] LISTS_PK = {"name","VARCHAR(36)"};
     //
-    public static final String[][] LISTS_COLUMNS = {{}};
+    public static final String[][] LISTS_COLUMNS = {{"list","TEXT"}};
 
     public static final String[] PROFILE_PK = {"uuid","VARCHAR(36)"};
     // DISCORD , TRACK TP , HOMES , NOTES , MUTE

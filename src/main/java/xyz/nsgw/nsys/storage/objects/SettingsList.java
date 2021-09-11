@@ -4,6 +4,7 @@ import xyz.nsgw.nsys.storage.sql.DbData;
 import xyz.nsgw.nsys.storage.sql.SQLTable;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +19,7 @@ public class SettingsList {
 
     public SettingsList(final String name) {
         key = name;
+        list = new ArrayList<>();
     }
 
     public String getKey() {return key;}
@@ -40,7 +42,7 @@ public class SettingsList {
 
     public Object[] getDbValues() {
         return new Object[] {
-                /*LIST*/getList()
+                /*LIST*/getListString()
         };
     }
 

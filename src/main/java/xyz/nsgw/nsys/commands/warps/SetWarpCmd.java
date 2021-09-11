@@ -23,8 +23,9 @@ public class SetWarpCmd extends BaseCommand {
     @Default
     @CommandCompletion("@warp")
     public void onSetWarp(Player p, @Default("warps") String warpName) {
-        Warp warp = new Warp(warpName, p.getLocation());
-        pl.sql().wrapWarp(warpName);
+        Warp warp = pl.sql().wrapWarp(warpName);
+        warp.setOwnerUuid(p.getUniqueId());
+        warp.setLocation(p.getLocation());
         pl.sql().validateWarp(warp);
         p.sendMessage(ChatColor.YELLOW + "Warp set: \"" + warp + "\", "+ warp.simplify() +".");
     }

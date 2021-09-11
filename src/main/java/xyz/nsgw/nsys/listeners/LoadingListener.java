@@ -78,7 +78,7 @@ public class LoadingListener implements Listener {
         if(profile.isSpamTimeCounterLow(5) && profile.getSecsSinceChat() < secondsLimit) {
             if (profile.getSecsSinceChat() < secondsLimit) {
                 profile.increaseSpamTimeCounter();
-            } else {
+            } else if(profile.getSpamTimeCounter() > 0) {
                 profile.decreaseSpamTimeCounter();
             }
         } else if (profile.getSecsSinceChat() < secondsLimit) {

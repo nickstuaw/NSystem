@@ -176,7 +176,7 @@ public class SQLService {
 
     public void invalidateAndDeleteWarp(@NotNull final Warp warp) {
         invalidateWarp(warp);
-        SQLUtils.delRow(warpTable, warp.getKey());
+        SQLUtils.delRow(warpTable, "\""+warp.getKey()+"\"");
     }
 
 

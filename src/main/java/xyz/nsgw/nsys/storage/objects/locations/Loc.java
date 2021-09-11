@@ -1,6 +1,7 @@
 package xyz.nsgw.nsys.storage.objects.locations;
 
 import org.bukkit.Location;
+import org.jetbrains.annotations.Nullable;
 import xyz.nsgw.nsys.utils.LocationUtils;
 
 public class Loc extends Location {
@@ -17,8 +18,5 @@ public class Loc extends Location {
         this.setZ(loc.getZ());
         this.setYaw(loc.getYaw());
         this.setPitch(loc.getPitch());
-    }
-    public boolean exists() {
-        return this.getWorld()!=null;
     }
 }
