@@ -9,7 +9,9 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.storage.objects.Profile;
+import xyz.nsgw.nsys.storage.objects.locations.Warp;
 
 public class GUIHandler {
 
@@ -61,6 +63,23 @@ public class GUIHandler {
     }
 
     public void warps(Player player) {
+        PaginatedGui warps = Gui.paginated()
+                .title(Component.text("Warps"))
+                .rows(4)
+                .create();
+        Warp w;
+        for(String name : NSys.sql().wrapList("warps").getList()) {
+            w = NSys.sql().wrapWarp(name);
+            warps.addItem(new GuiItem(ItemBuilder.from(Material.ENDER_PEARL)
+                    .name(Component.text(ChatColor.LIGHT_PURPLE+""+ChatColor.BOLD+ name))
+                    .lore(Component.text(ChatColor.WHITE+"Owned by "+Bukkit.getOfflinePlayer(w.getOwnerUuid()).getName()))
+                    .build(), event -> {
+                Warp loc = NSys.sql().wrapWarp(name);
+                if(loc==null) return;
+                warps.close(player);
+                loc.teleport(player);
+            }));
+        }
+        warps.open(player);
     }
-
 }

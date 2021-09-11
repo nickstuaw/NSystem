@@ -2,6 +2,7 @@ package xyz.nsgw.nsys.storage.objects.locations;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.storage.sql.DbData;
 import xyz.nsgw.nsys.storage.sql.SQLTable;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
@@ -48,6 +49,9 @@ public class Warp extends Loc {
         trackingTeleports = b;
     }
 
+    public void teleport(final Player player) {
+        player.teleport(this);
+    }
 
     public Warp loadAttributes(final SQLTable table) {
         List<Object> row = SQLUtils.getRow(table, "\""+key+"\"", Arrays.stream(DbData.WARP_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));

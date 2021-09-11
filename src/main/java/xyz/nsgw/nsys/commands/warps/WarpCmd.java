@@ -9,6 +9,8 @@ import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.storage.objects.locations.Warp;
 
+import java.util.List;
+
 @CommandAlias("warp")
 //@CommandPermission("nsys.homes.teleport")
 public class WarpCmd extends BaseCommand {
@@ -47,6 +49,8 @@ public class WarpCmd extends BaseCommand {
     @Subcommand("list|ls")
     @Description("List existing warps.")
     public void onListWarps(CommandSender s) {
+        List<String> warps = NSys.sql().wrapList("warps").getList();
+        s.sendMessage(ChatColor.YELLOW +""+warps.size()+" warps: "+ChatColor.RESET+ String.join(", ", warps));
     }
 
     @HelpCommand

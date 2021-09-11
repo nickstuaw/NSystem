@@ -23,7 +23,7 @@ public class SettingsList {
     }
 
     public void add(final String element) {
-        list.add(element);
+        if(!list.contains(element)) list.add(element);
     }
 
     public void del(final String element) {
@@ -33,13 +33,13 @@ public class SettingsList {
     public String getKey() {return key;}
 
     public void setList(String raw) {
-        list = Arrays.stream(raw.split(SEPARATOR)).collect(Collectors.toList());
+        list = raw.isEmpty() ? new ArrayList<>() : Arrays.stream(raw.split(SEPARATOR)).collect(Collectors.toList());
     }
     public List<String> getList() {
         return list;
     }
-    public String getListString() {
-        return String.join(SEPARATOR, list);
+    private String getListString() {
+        return list.isEmpty() ? "" : String.join(SEPARATOR, list);
     }
 
     public SettingsList loadAttributes(final SQLTable table) {
