@@ -33,6 +33,8 @@ public class Profile {
 
     private final int maxHomes;
 
+    private int maxLogins;
+
     private Date muteFrom;
     private int muteSeconds;
     private boolean shadowMute;
@@ -47,6 +49,7 @@ public class Profile {
         muteSeconds = -1;
         shadowMute = false;
         maxHomes = NSys.sh().gen().getProperty(GeneralSettings.HOMES_MAXIMUM_DEFAULT);
+        maxLogins = 0;
     }
 
     public UUID getKey() {
@@ -152,6 +155,16 @@ public class Profile {
     public void setMuteSeconds(int s){muteSeconds=s;}
     public void setMuted(boolean m) {muteFrom=(m?new Date():null);}
 
+    public void login() {
+        maxLogins++;
+    }
+    private void setMaxLogins(int mx) {
+        maxLogins = mx;
+    }
+    public int getMaxLogins() {
+        return maxLogins;
+    }
+
     public Profile loadAttributes(final SQLTable table) {
         List<Object> row = SQLUtils.getRow(table, "\""+key.toString()+"\"",Arrays.stream(DbData.PROFILE_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));
         // DISCORD , TRACK TP , HOMES , NOTES , MUTE
@@ -160,6 +173,7 @@ public class Profile {
         setHomes((String) row.get(2));
         setPrivateNotes((String) row.get(3));
         setMute((String) row.get(4));
+        setMaxLogins((Integer) row.get(5));
         return this;
     }
 
@@ -170,7 +184,8 @@ public class Profile {
                 /*TRACK TP*/SQLUtils.getBoolInSQL(isTrackingTeleports()),
                 /*HOMES*/getHomesString(),
                 /*NOTES*/getPrivateNotesString(),
-                /*MUTE*/getMute()
+                /*MUTE*/getMute(),
+                /*MAXLOGINS*/getMaxLogins()
         };
     }
 }

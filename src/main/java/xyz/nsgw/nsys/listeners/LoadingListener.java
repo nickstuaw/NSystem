@@ -11,7 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.config.settings.GeneralSettings;
 import xyz.nsgw.nsys.storage.objects.Profile;
@@ -19,7 +18,6 @@ import xyz.nsgw.nsys.utils.ArithmeticUtils;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 public class LoadingListener implements Listener {
 
@@ -35,6 +33,7 @@ public class LoadingListener implements Listener {
     @EventHandler
     public void onJoin(final PlayerJoinEvent e) {
         Profile profile = NSys.sql().wrapProfile(e.getPlayer().getUniqueId());
+        profile.login();
         NSys.sql().validateProfile(profile);
         lastChats.put(e.getPlayer().getName(),new Chat(""));
         NSys.sql().wrapMap("players").put(e.getPlayer().getUniqueId().toString(), e.getPlayer().getName());

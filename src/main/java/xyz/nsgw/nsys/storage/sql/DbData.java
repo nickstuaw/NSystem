@@ -16,7 +16,7 @@ public class DbData {
 
     public static final String[] PROFILE_PK = {"uuid","VARCHAR(36)"};
     // DISCORD , TRACK TP , HOMES , NOTES , MUTE
-    public static final String[][] PROFILE_COLUMNS = {{"discordid","VARCHAR(32)"},{"tracktp","BOOLEAN"},{"homes","TEXT"},{"privatenotes","TEXT"},{"mute","VARCHAR(256)"}};
+    public static final String[][] PROFILE_COLUMNS = {{"discordid","VARCHAR(32)"},{"tracktp","BOOLEAN"},{"homes","TEXT"},{"privatenotes","TEXT"},{"mute","VARCHAR(256)"},{"cumulativelogons","INT"}};
 
     public static final String[] WARP_PK = {"name","VARCHAR(36)"};
     //

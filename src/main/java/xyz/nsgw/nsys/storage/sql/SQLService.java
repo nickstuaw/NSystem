@@ -11,6 +11,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalNotification;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -177,6 +178,9 @@ public class SQLService {
             e.printStackTrace();
         }
         return null;
+    }
+    public Profile wrapProfile(@NotNull final Player p) {
+        return wrapProfile(p.getUniqueId());
     }
     @Nullable
     public Profile wrapProfileIfLoaded(@NotNull final UUID uuid) {

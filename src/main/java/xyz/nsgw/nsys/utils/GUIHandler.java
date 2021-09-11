@@ -6,12 +6,17 @@ import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import dev.triumphteam.gui.guis.ScrollingGui;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.storage.objects.Profile;
 import xyz.nsgw.nsys.storage.objects.locations.Warp;
+
+import java.sql.Date;
+import java.time.Instant;
 
 public class GUIHandler {
 
@@ -20,24 +25,36 @@ public class GUIHandler {
     public GUIHandler() {
     }
 
-    public void profile(Profile profile, Player displayTo) {
-        ScrollingGui gui = Gui.scrolling()
-                .rows(6)
-                .pageSize(45)
-                .create();
-        ItemStack skull = ItemBuilder.skull().owner(Bukkit.getOfflinePlayer(profile.getKey()))
-                .lore().build();
+    private Component txt(String txt) {
+        return Component.text(txt);
     }
 
-    public void profile(Profile profile) {
+    private String date(Long date) {
+        return Date.from(Instant.ofEpochMilli(date)).toString();
+    }
+
+    public void profile(Profile profile, Player player, boolean self) {
+
+        OfflinePlayer human = self ? player : Bukkit.getOfflinePlayer(profile.getKey());
+        String name = human.getName();
+
         ScrollingGui gui = Gui.scrolling()
+                .title(txt(ChatColor.RED+human.getName()+"'s profile"))
                 .rows(6)
                 .pageSize(45)
+                .disableAllInteractions()
                 .create();
-        ItemStack skull = ItemBuilder.skull().owner(Bukkit.getOfflinePlayer(profile.getKey()))
-                .lore().build();
-        gui.getFiller().fill(ItemBuilder.from(Material.BLACK_STAINED_GLASS_PANE).name(Component.text(ChatColor.DARK_GRAY+"-")).asGuiItem());
-        gui.setItem(0,0,ItemBuilder.from(skull).name(Component.text(ChatColor.WHITE+Bukkit.getOfflinePlayer(profile.getKey()).getName())).asGuiItem());
+
+        GuiItem skull = ItemBuilder.skull().owner(human)
+                .name(txt(ChatColor.YELLOW+name))
+                .lore(txt(ChatColor.LIGHT_PURPLE+"Last seen: "+ (human.isOnline()?ChatColor.GREEN+"Online":date(human.getLastSeen()))),
+                        txt(ChatColor.LIGHT_PURPLE+"Joined at: "+ date(human.getFirstPlayed())),
+                        txt(ChatColor.LIGHT_PURPLE+"Total logins: "+ profile.getMaxLogins()))
+                .asGuiItem();
+
+        gui.setItem(1,1,skull);
+
+        gui.open(player);
     }
 
     public void homes(Profile profile, Player player) {
