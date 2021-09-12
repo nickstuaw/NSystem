@@ -51,6 +51,10 @@
                             <pattern>co.aikar.locales</pattern>
                             <shadedPattern>xyz.nsgw.nsys.libs.locales</shadedPattern> <!-- Replace this -->
                         </relocation>
+                        <relocation>
+                            <pattern>net.kyori</pattern>
+                            <shadedPattern>xyz.nsgw.nsys.libs.kyori</shadedPattern> <!-- Replace this -->
+                        </relocation>
                     </relocations>
                 </configuration>
                 <executions>

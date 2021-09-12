@@ -6,6 +6,7 @@ import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import dev.triumphteam.gui.guis.ScrollingGui;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.NSys;
@@ -74,7 +75,7 @@ public class GUIHandler {
         for(String name : NSys.sql().wrapList("warps").getList()) {
             w = NSys.sql().wrapWarp(name);
             warps.addItem(new GuiItem(ItemBuilder.from(Material.ENDER_PEARL)
-                    .name(Component.text(ChatColor.LIGHT_PURPLE+""+ChatColor.BOLD+ name))
+                    .name(MiniMessage.get().parse("<gradient:#33FFAA:#2233FF>"+name))
                     .lore(Component.text(ChatColor.WHITE+"Owned by "+Bukkit.getOfflinePlayer(w.getOwnerUuid()).getName()))
                     .build(), event -> {
                 Warp loc = NSys.sql().wrapWarp(name);

@@ -6,6 +6,7 @@ Credit should be given to the original author where this code is used.
 package xyz.nsgw.nsys;
 
 import ch.jalu.configme.SettingsManager;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.nsgw.nsys.commands.CommandHandler;
