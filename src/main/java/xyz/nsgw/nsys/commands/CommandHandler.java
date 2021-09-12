@@ -4,6 +4,7 @@ import co.aikar.commands.InvalidCommandArgument;
 import co.aikar.commands.PaperCommandManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.NSys;
@@ -37,7 +38,7 @@ public class CommandHandler {
             if(arg.length < 2) throw new InvalidCommandArgument("Invalid argument.");
             if(NSys.sql().wrapMap("players").hasVal(arg[0])) {
                 Profile p = NSys.sql().wrapProfile(UUID.fromString(NSys.sql().wrapMap("players")
-                                .getFromVal(arg[0])));
+                                .getKeyFromVal(arg[0])));
                 Home h = p.getHome(arg[1]);
                 if(h == null) {
                     throw new InvalidCommandArgument("No home found.");
@@ -45,6 +46,12 @@ public class CommandHandler {
                 return new OnlineHome(h);
             }
             return null;
+        });
+
+        manager.getCommandContexts().registerContext(Profile.class, c-> {
+            UUID uuid = UUID.fromString(NSys.sql().wrapMap("players").getKeyFromVal(c.popFirstArg()));
+            if(uuid.toString().isEmpty()) throw new InvalidCommandArgument("Player not found.");
+            return NSys.sql().wrapProfile(uuid);
         });
 
         manager.getCommandContexts().registerContext(Warp.class, c-> {
@@ -62,6 +69,15 @@ public class CommandHandler {
                 throw new InvalidCommandArgument("A home could not be found.");
             }
             return new Home(loc);
+        });
+
+        manager.getCommandContexts().registerContext(OfflinePlayer.class, c-> {
+                String str = NSys.sql()
+                        .wrapMap("players").getKeyFromVal(c.popFirstArg());
+                if(str.isEmpty()) {
+                    throw new InvalidCommandArgument("No player found.");
+                }
+                return Bukkit.getOfflinePlayer(UUID.fromString(str));
         });
 
         manager.getCommandCompletions().registerCompletion("@warps",c-> NSys.sql().wrapList("warps")
@@ -84,6 +100,8 @@ public class CommandHandler {
             return res;
         });
 
+        manager.getCommandCompletions().registerCompletion("@globalplayers", c-> NSys.sql().wrapMap("players").getMap().values());
+
         manager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             NSys.log().warning("Error occurred while executing command " + command.getName());
             return false;// mark as unhandled, sender will see default message
@@ -94,6 +112,8 @@ public class CommandHandler {
         manager.registerCommand(new ProfileCmd(pl));
 
         manager.registerCommand(new AfkCmd());
+
+        manager.registerCommand(new SeenCmd());
 
         manager.registerCommand(new HomeCmd());
         manager.registerCommand(new HomesCmd(pl));

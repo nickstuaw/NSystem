@@ -89,6 +89,7 @@ public final class NSys extends JavaPlugin {
         getLogger().info("Disabling NSys...");
         if(sql != null) {
             sql.invalidateList(sql.wrapList("warps"));
+            sql.invalidateMap(sql.wrapMap("players"));
             commandHandler.onDisable();
             sql.onDisable();
             SQLUtils.close();

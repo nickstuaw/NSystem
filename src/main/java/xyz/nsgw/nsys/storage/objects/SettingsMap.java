@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class SettingsMap {
 
-    public static final String SEPARATOR = ",";
+    public static final String SEPARATOR = ";";
 
     private final String key;
 
@@ -24,7 +24,7 @@ public class SettingsMap {
         map.put(s1,s2);
     }
 
-    public String getFromVal(final String v) {
+    public String getKeyFromVal(final String v) {
         Optional<String> o = map.keySet().stream().filter(k->map.get(k).equals(v)).findFirst();
         return o.orElse("");
     }
