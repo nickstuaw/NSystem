@@ -9,18 +9,17 @@ import dev.triumphteam.gui.guis.Gui;
 import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import xyz.nsgw.nsys.NSys;
+import xyz.nsgw.nsys.config.settings.GeneralSettings;
+import xyz.nsgw.nsys.events.BanEvent;
 import xyz.nsgw.nsys.storage.objects.Profile;
 import xyz.nsgw.nsys.storage.objects.locations.Loc;
 import xyz.nsgw.nsys.utils.DisplayUtils;
 import xyz.nsgw.nsys.utils.gui.items.ActiveItem;
-import xyz.nsgw.nsys.utils.gui.items.SkullItem;
+import xyz.nsgw.nsys.utils.gui.items.ClickableSkullItem;
 
 import java.util.Collection;
 import java.util.UUID;
@@ -49,12 +48,28 @@ public class GUIHandler {
 
         gui.setItem(6, 7, new GuiItem(ItemBuilder.from(Material.PAPER).name(DisplayUtils.txt("Next")).build(), event -> gui.next()));
 
-        if(isAdmin) {
-            gui.setItem(6, 8, new ActiveItem("<red>Kick "+name,Material.CHAINMAIL_BOOTS,e -> {
-            }, DisplayUtils.txt("")).build());
-        }
+        gui.addItem(new ClickableSkullItem(name, uuid, e -> {
+        }, DisplayUtils.loreProfileMeta(profile, isAdmin)).build());
 
-        gui.addItem(new SkullItem(name, uuid, DisplayUtils.loreProfileMeta(profile, human, isAdmin)).build());
+        if(isAdmin) {
+            gui.setItem(6, 8, new ActiveItem("<red>Kick "+name,Material.FIRE_CHARGE,e -> {
+                if(profile.isOnline()) {
+                    profile.player().kick(DisplayUtils.txt("<red>You've been kicked."));
+                }
+            }, DisplayUtils.txt("<red>You've been kicked.")).build());
+            gui.setItem(6, 9, new ActiveItem("<red><bold>"+(profile.isBanned()?"Unban":"Ban")+" "+name,Material.BARRIER,e -> {
+                BanEvent banEvent = new BanEvent(player, !profile.isBanned(), profile.offlinePlayer());
+                Bukkit.getPluginManager().callEvent(banEvent);
+                if(!banEvent.isCancelled()) {
+                    if (!profile.isBanned()) {
+                        profile.offlinePlayer().banPlayer("You have been banned indefinitely. " + NSys.sh().gen().getProperty(GeneralSettings.BAN_SUFFIX));
+                    } else {
+                        Bukkit.getBanList(BanList.Type.NAME).pardon(profile.getLastName());
+                    }
+                    gui.close(player);
+                }
+            }, DisplayUtils.txt(profile.isBanned()?"":"<red>Indefinite ban. You can unban after.")).build());
+        }
 
         gui.open(player);
     }

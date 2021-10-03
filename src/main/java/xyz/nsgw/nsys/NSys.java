@@ -17,6 +17,7 @@ import xyz.nsgw.nsys.storage.objects.SettingsList;
 import xyz.nsgw.nsys.storage.objects.SettingsMap;
 import xyz.nsgw.nsys.storage.sql.SQLService;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
+import xyz.nsgw.nsys.utils.alerts.StaffAlertHandler;
 import xyz.nsgw.nsys.utils.gui.GUIHandler;
 
 import java.util.Objects;
@@ -28,6 +29,7 @@ public final class NSys extends JavaPlugin {
     private static Logger logger;
     private CommandHandler commandHandler;
     private GUIHandler guiHandler;
+    private static StaffAlertHandler staffAlertHandler;
 
     public static String version() {
         return "v1.0.0";
@@ -67,6 +69,8 @@ public final class NSys extends JavaPlugin {
         sql.validateMap(players);
 
         guiHandler = new GUIHandler();
+
+        staffAlertHandler = new StaffAlertHandler(this);
 
         commandHandler = new CommandHandler(this);
 
@@ -109,6 +113,8 @@ public final class NSys extends JavaPlugin {
     private void setSettingsHandler(SettingsHandler handler) {
         settingsHandler = handler;
     }
+
+    public static StaffAlertHandler alerts() {return staffAlertHandler;}
 
     public static Logger log() {
         return logger;

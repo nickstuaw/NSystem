@@ -33,9 +33,6 @@ public class StaffAlertHandler {
     }
 
     public void send(@NotNull final StaffAlert alert) {
-    }
-
-    public void parseRecipients(@NotNull final StaffAlert alert) {
         Component component = alert.component();
         switch(alert.priority()) {
             // change all of these to select the targets
@@ -57,10 +54,6 @@ public class StaffAlertHandler {
                 consoleOut(component);
                 break;
         }
-        // return the array of targets
-    }
-
-    private void choosePlayers() {
     }
 
     private void playersOut(final Component c) {

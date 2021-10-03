@@ -15,8 +15,10 @@ public class GeneralSettings implements SettingsHolder {
 
     private static final String PFX_GAMEPLAY = "gameplay.";
     private static final String PFX_MODERATION = "moderation.";
+    private static final String PFX_ALERTS = "alerts.";
     private static final String PFX_CHAT = "chat.";
     private static final String PFX_CHAT_ANTISPAM = "anti-spam.";
+    private static final String PFX_BANS = "bans.";
     private static final String PFX_TRACKTP = "tracktp.";
     private static final String PFX_PLAYER = "player.";
     private static final String PFX_AFK = "afk.";
@@ -66,6 +68,16 @@ public class GeneralSettings implements SettingsHolder {
     public static final Property<Integer> CHAT_MESSAGE_SPEED_SECS =
             newProperty(PFX_MODERATION + PFX_CHAT + PFX_CHAT_ANTISPAM
                     + "maximum-consecutive-messages-breaking-the-interval", 3);
+
+    @Comment("Staff alert prefix.")
+    public static final Property<String> STAFFALERT_PREFIX =
+            newProperty(PFX_MODERATION + PFX_ALERTS
+                    + "staff-alert-prefix", "[!] ");
+
+    @Comment("Ban suffix. This one doesn't support colors.")
+    public static final Property<String> BAN_SUFFIX =
+            newProperty(PFX_MODERATION + PFX_BANS
+                    + "ban-suffix", "Appeal on our website.");
 
     // ----------
     // Q . O . L . Configurations

@@ -8,6 +8,8 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.config.settings.GeneralSettings;
@@ -70,6 +72,18 @@ public class Profile {
 
     public UUID getKey() {
         return key;
+    }
+    public boolean isOnline() {
+        return Bukkit.getPlayer(key)!=null;
+    }
+    public Player player() {
+        return Bukkit.getPlayer(key);
+    }
+    public OfflinePlayer offlinePlayer() {
+        return Bukkit.getOfflinePlayer(key);
+    }
+    public boolean isBanned() {
+        return Bukkit.getOfflinePlayer(key).isBanned();
     }
     public void setDiscord(final String dId) {
         discord = dId;

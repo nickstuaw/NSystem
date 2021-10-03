@@ -6,6 +6,7 @@ package xyz.nsgw.nsys.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import xyz.nsgw.nsys.storage.objects.Profile;
@@ -22,7 +23,8 @@ public class DisplayUtils {
         return txt(rawProfileMeta(profile,human));
     }
 
-    public static List<Component> loreProfileMeta(Profile profile, OfflinePlayer human, boolean admin) {
+    public static List<Component> loreProfileMeta(Profile profile, boolean admin) {
+        OfflinePlayer human = Bukkit.getOfflinePlayer(profile.getKey());
         List<Component> res = new ArrayList<>();
         for(String ln :
                 (admin ? rawAdminProfileMeta(profile,human) : rawProfileMeta(profile,human)).split("\n"))
@@ -31,7 +33,7 @@ public class DisplayUtils {
     }
 
     public static String rawProfileMeta(Profile profile, OfflinePlayer human) {
-        return ChatColor.LIGHT_PURPLE+(human.isOnline()?ChatColor.GREEN+"Online"+(profile.isAfk()?ChatColor.YELLOW+""+ChatColor.BOLD+" (AFK)":""):"Last seen: "+ ChatColor.GREEN+ time(System.currentTimeMillis() - human.getLastSeen())+" ago.") +"\n"+
+        return ChatColor.LIGHT_PURPLE+(profile.isOnline()?ChatColor.GREEN+"Online"+(profile.isAfk()?ChatColor.YELLOW+""+ChatColor.BOLD+" (AFK)":""):"Last seen: "+ ChatColor.GREEN+ time(System.currentTimeMillis() - human.getLastSeen())+" ago.") +"\n"+
                 ChatColor.LIGHT_PURPLE+"First joined: "+ChatColor.GREEN+ date(human.getFirstPlayed())+"\n"+
                 ChatColor.LIGHT_PURPLE+"Total logins: "+ChatColor.GREEN+ profile.getMaxLogins();
     }

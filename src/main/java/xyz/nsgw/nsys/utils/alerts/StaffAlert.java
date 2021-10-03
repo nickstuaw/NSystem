@@ -5,8 +5,15 @@
 package xyz.nsgw.nsys.utils.alerts;
 
 import net.kyori.adventure.text.Component;
+import org.jetbrains.annotations.NotNull;
+import xyz.nsgw.nsys.config.settings.GeneralSettings;
+import xyz.nsgw.nsys.utils.DisplayUtils;
+
 //todo
 public class StaffAlert {
+
+    // To be used for opting out
+    private String id;
 
     // Recipients according to priority level (all means players and console):
     // 0 = force all
@@ -16,18 +23,22 @@ public class StaffAlert {
     // 4 = console only
     private int priority;
 
-    private String identifier;
-
     private Component component;
 
-    public StaffAlert() {}
+    private boolean warning;
 
-    public String identifier() {
-        return identifier;
+    public StaffAlert(final int priority, final boolean warning, final String id, final @NotNull String msg) {
+        this.id = id;
+        this.priority = priority;
+        this.component = DisplayUtils.txt((warning ? "<yellow>" : "") + GeneralSettings.STAFFALERT_PREFIX + msg);
     }
 
-    public void setIdentifier(final String id) {
-        this.identifier = id;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public int priority() {
