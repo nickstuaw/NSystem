@@ -1,11 +1,11 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.commands;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.CommandCompletion;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Subcommand;
-import net.kyori.adventure.text.Component;
+import co.aikar.commands.annotation.*;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -17,6 +17,7 @@ import xyz.nsgw.nsys.utils.DisplayUtils;
 import static xyz.nsgw.nsys.utils.DisplayUtils.txt;
 
 @CommandAlias("profile|prof")
+@CommandPermission("nsys.cmd.profile")
 public class ProfileCmd extends BaseCommand {
 
     private final NSys pl;

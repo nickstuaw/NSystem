@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.commands;
 
 import co.aikar.commands.InvalidCommandArgument;
@@ -13,8 +17,8 @@ import xyz.nsgw.nsys.commands.homes.HomesCmd;
 import xyz.nsgw.nsys.commands.warps.WarpCmd;
 import xyz.nsgw.nsys.commands.warps.WarpsCmd;
 import xyz.nsgw.nsys.storage.objects.OnlineHome;
-import xyz.nsgw.nsys.storage.objects.locations.Home;
 import xyz.nsgw.nsys.storage.objects.Profile;
+import xyz.nsgw.nsys.storage.objects.locations.Home;
 import xyz.nsgw.nsys.storage.objects.locations.Warp;
 
 import java.util.ArrayList;

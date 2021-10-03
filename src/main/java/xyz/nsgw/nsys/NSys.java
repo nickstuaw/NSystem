@@ -1,12 +1,10 @@
 /*
-© Copyright Nick Williams 2021.
-Credit should be given to the original author where this code is used.
+ * Copyright (c) Nicholas Williams 2021.
  */
 
 package xyz.nsgw.nsys;
 
 import ch.jalu.configme.SettingsManager;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import xyz.nsgw.nsys.commands.CommandHandler;
@@ -19,7 +17,7 @@ import xyz.nsgw.nsys.storage.objects.SettingsList;
 import xyz.nsgw.nsys.storage.objects.SettingsMap;
 import xyz.nsgw.nsys.storage.sql.SQLService;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
-import xyz.nsgw.nsys.utils.GUIHandler;
+import xyz.nsgw.nsys.utils.gui.GUIHandler;
 
 import java.util.Objects;
 import java.util.logging.Logger;

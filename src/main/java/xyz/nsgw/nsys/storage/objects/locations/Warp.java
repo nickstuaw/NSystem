@@ -1,12 +1,14 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.storage.objects.locations;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.storage.sql.DbData;
 import xyz.nsgw.nsys.storage.sql.SQLTable;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
-import xyz.nsgw.nsys.utils.LocationUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -47,10 +49,6 @@ public class Warp extends Loc {
     }
     public void setTrackingTeleports(boolean b) {
         trackingTeleports = b;
-    }
-
-    public void teleport(final Player player) {
-        player.teleport(this);
     }
 
     public Warp loadAttributes(final SQLTable table) {

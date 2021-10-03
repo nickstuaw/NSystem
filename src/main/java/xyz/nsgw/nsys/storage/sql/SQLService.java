@@ -1,16 +1,15 @@
 /*
-© Copyright Nick Williams 2021.
-Credit should be given to the original author where this code is used.
+ * Copyright (c) Nicholas Williams 2021.
  */
 
 package xyz.nsgw.nsys.storage.sql;
 
-import co.aikar.idb.*;
+import co.aikar.idb.DatabaseOptions;
+import co.aikar.idb.PooledDatabaseOptions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalNotification;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.jetbrains.annotations.NotNull;

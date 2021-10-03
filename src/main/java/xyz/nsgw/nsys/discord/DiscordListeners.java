@@ -1,6 +1,5 @@
 /*
-© Copyright Nick Williams 2021.
-Credit should be given to the original author where this code is used.
+ * Copyright (c) Nicholas Williams 2021.
  */
 
 package xyz.nsgw.nsys.discord;

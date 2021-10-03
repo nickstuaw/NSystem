@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.config;
 
 import ch.jalu.configme.SettingsManager;

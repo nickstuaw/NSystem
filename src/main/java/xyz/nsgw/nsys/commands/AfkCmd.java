@@ -1,13 +1,19 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
 import co.aikar.commands.annotation.Default;
 import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.storage.objects.Profile;
 
 @CommandAlias("afk")
+@CommandPermission("nsys.cmd.afk")
 public class AfkCmd extends BaseCommand {
 
     @Default

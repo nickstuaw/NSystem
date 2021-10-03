@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.listeners;
 
 import org.bukkit.event.EventHandler;

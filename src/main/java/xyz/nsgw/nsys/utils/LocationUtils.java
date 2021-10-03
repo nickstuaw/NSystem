@@ -1,7 +1,10 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.utils;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 
 public class LocationUtils {
     

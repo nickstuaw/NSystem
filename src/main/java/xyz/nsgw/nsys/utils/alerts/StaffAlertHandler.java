@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.utils.alerts;
 
 import net.kyori.adventure.text.Component;

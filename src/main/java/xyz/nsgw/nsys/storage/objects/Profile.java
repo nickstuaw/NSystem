@@ -1,6 +1,5 @@
 /*
-© Copyright Nick Williams 2021.
-Credit should be given to the original author where this code is used.
+ * Copyright (c) Nicholas Williams 2021.
  */
 
 package xyz.nsgw.nsys.storage.objects;
@@ -17,7 +16,6 @@ import xyz.nsgw.nsys.storage.sql.DbData;
 import xyz.nsgw.nsys.storage.sql.SQLTable;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
 import xyz.nsgw.nsys.utils.ArithmeticUtils;
-import xyz.nsgw.nsys.utils.LocationUtils;
 
 import java.time.Instant;
 import java.util.*;

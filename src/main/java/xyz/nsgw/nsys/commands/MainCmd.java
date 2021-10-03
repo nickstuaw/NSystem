@@ -1,16 +1,18 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.HelpCommand;
-import co.aikar.commands.annotation.Subcommand;
+import co.aikar.commands.annotation.*;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import xyz.nsgw.nsys.NSys;
 
 @CommandAlias("nsys")
+@CommandPermission("nsys.cmd.admin")
 public class MainCmd extends BaseCommand {
 
     @Default

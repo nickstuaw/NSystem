@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.commands.warps;
 
 import co.aikar.commands.BaseCommand;
@@ -12,12 +16,11 @@ import xyz.nsgw.nsys.storage.objects.locations.Warp;
 import java.util.List;
 
 @CommandAlias("warp")
-//@CommandPermission("nsys.homes.teleport")
+@CommandPermission("nsys.cmd.warp")
 public class WarpCmd extends BaseCommand {
 
-
-
     @Subcommand("tp")
+    @CommandPermission("nsys.cmd.warp.tp")
     @CommandCompletion("@warps")
     @Description("Teleport to a warp.")
     public static void onWarp(Player p, Warp warp) {
@@ -26,6 +29,7 @@ public class WarpCmd extends BaseCommand {
     }
 
     @Subcommand("set")
+    @CommandPermission("nsys.cmd.warp.set")
     @CommandCompletion("@warps")
     @Description("Set a warp.")
     public void onSetWarp(Player p, String warpName) {
@@ -38,6 +42,7 @@ public class WarpCmd extends BaseCommand {
     }
 
     @Subcommand("delete")
+    @CommandPermission("nsys.cmd.warp.delete")
     @CommandCompletion("@warps")
     @Description("Delete a warp.")
     public void onDelWarp(CommandSender s, Warp warp) {
@@ -47,6 +52,7 @@ public class WarpCmd extends BaseCommand {
     }
 
     @Subcommand("list|ls")
+    @CommandPermission("nsys.cmd.warp.list")
     @Description("List existing warps.")
     public void onListWarps(CommandSender s) {
         List<String> warps = NSys.sql().wrapList("warps").getList();

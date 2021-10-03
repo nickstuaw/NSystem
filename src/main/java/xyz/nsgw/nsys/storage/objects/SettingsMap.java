@@ -1,10 +1,17 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.storage.objects;
 
 import xyz.nsgw.nsys.storage.sql.DbData;
 import xyz.nsgw.nsys.storage.sql.SQLTable;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class SettingsMap {

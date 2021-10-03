@@ -1,17 +1,19 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.commands.homes;
 
 import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.*;
-import org.bukkit.ChatColor;
-import org.bukkit.command.CommandSender;
+import co.aikar.commands.annotation.CommandAlias;
+import co.aikar.commands.annotation.CommandPermission;
+import co.aikar.commands.annotation.Default;
 import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.storage.objects.Profile;
-import xyz.nsgw.nsys.utils.GUIHandler;
 
 @CommandAlias("homes")
-//@CommandPermission("nsys.homes.view")
+@CommandPermission("nsys.cmd.homes")
 public class HomesCmd extends BaseCommand {
 
     private final NSys pl;
@@ -23,12 +25,7 @@ public class HomesCmd extends BaseCommand {
     @Default
     public void onHomes(Player p) {
         Profile profile = NSys.sql().wrapProfile(p.getUniqueId());
-        pl.guiHandler().homes(profile, p);
-    }
-
-    @CatchUnknown
-    public void onUnknown(CommandSender sender) {
-        sender.sendMessage("You aren't a player!");
+        pl.guiHandler().homes(profile,p);
     }
 
 }

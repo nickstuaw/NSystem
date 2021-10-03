@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Nicholas Williams 2021.
+ */
+
 package xyz.nsgw.nsys.utils;
 
 import net.kyori.adventure.text.Component;
@@ -37,7 +41,7 @@ public class DisplayUtils {
     }
 
     public static Component txt(String txt) {
-        return Component.text(txt);
+        return Component.text(ChatColor.YELLOW+txt);
     }
 
     public static String date(Long date) {
