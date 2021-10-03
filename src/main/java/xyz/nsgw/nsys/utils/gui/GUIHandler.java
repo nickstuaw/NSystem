@@ -35,7 +35,8 @@ public class GUIHandler {
 
         OfflinePlayer human = self ? player : Bukkit.getOfflinePlayer(profile.getKey());
         UUID uuid = human.getUniqueId();
-        String name = self ? player.getName() : profile.getLastName();
+        String name = profile.getLastName();
+        boolean isAdmin = player.hasPermission("nsys.profiles.admin");
 
         PaginatedGui gui = Gui.paginated()
                 .title(txt(ChatColor.RED+name+"'s profile"))
@@ -48,7 +49,12 @@ public class GUIHandler {
 
         gui.setItem(6, 7, new GuiItem(ItemBuilder.from(Material.PAPER).name(DisplayUtils.txt("Next")).build(), event -> gui.next()));
 
-        gui.setItem(1, 1,(new GuiItem(new SkullItem(name, uuid, DisplayUtils.loreProfileMeta(profile, human)).build())));
+        if(isAdmin) {
+            gui.setItem(6, 8, new ActiveItem("<red>Kick "+name,Material.CHAINMAIL_BOOTS,e -> {
+            }, DisplayUtils.txt("")).build());
+        }
+
+        gui.addItem(new SkullItem(name, uuid, DisplayUtils.loreProfileMeta(profile, human, isAdmin)).build());
 
         gui.open(player);
     }
@@ -79,7 +85,7 @@ public class GUIHandler {
                     locs.close(player);
                     loc.teleport(player);
                 });
-            locs.addItem(new GuiItem(activeItem.build(), activeItem.getACTION()));
+            locs.addItem(activeItem.build());
         }
 
         locs.open(player);

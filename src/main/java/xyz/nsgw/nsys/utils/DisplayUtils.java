@@ -5,6 +5,7 @@
 package xyz.nsgw.nsys.utils;
 
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import xyz.nsgw.nsys.storage.objects.Profile;
@@ -21,9 +22,10 @@ public class DisplayUtils {
         return txt(rawProfileMeta(profile,human));
     }
 
-    public static List<Component> loreProfileMeta(Profile profile, OfflinePlayer human) {
+    public static List<Component> loreProfileMeta(Profile profile, OfflinePlayer human, boolean admin) {
         List<Component> res = new ArrayList<>();
-        for(String ln : rawProfileMeta(profile,human).split("\n"))
+        for(String ln :
+                (admin ? rawAdminProfileMeta(profile,human) : rawProfileMeta(profile,human)).split("\n"))
             res.add(txt(ln));
         return res;
     }
@@ -41,7 +43,7 @@ public class DisplayUtils {
     }
 
     public static Component txt(String txt) {
-        return Component.text(ChatColor.YELLOW+txt);
+        return MiniMessage.get().parse(ChatColor.YELLOW+txt);
     }
 
     public static String date(Long date) {

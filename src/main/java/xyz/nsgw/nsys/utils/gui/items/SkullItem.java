@@ -5,10 +5,10 @@
 package xyz.nsgw.nsys.utils.gui.items;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -25,12 +25,12 @@ public class SkullItem extends MyItem {
     }
 
     @Override
-    public ItemStack build() {
+    public GuiItem build() {
         return ItemBuilder.skull()
                 .owner(Bukkit.getOfflinePlayer(OWNER))
                 .name(getName())
                 .amount(getQuantity())
                 .lore(getLore())
-                .build();
+                .asGuiItem();
     }
 }

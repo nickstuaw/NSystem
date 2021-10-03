@@ -5,9 +5,9 @@
 package xyz.nsgw.nsys.utils.gui.items;
 
 import dev.triumphteam.gui.builder.item.ItemBuilder;
+import dev.triumphteam.gui.guis.GuiItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import xyz.nsgw.nsys.utils.DisplayUtils;
 
@@ -60,11 +60,11 @@ public class MyItem {
         this.lore = lore;
     }
 
-    public ItemStack build() {
+    public GuiItem build() {
         return ItemBuilder.from(material)
                 .name(name)
                 .amount(quantity)
                 .lore(lore)
-                .build();
+                .asGuiItem();
     }
 }
