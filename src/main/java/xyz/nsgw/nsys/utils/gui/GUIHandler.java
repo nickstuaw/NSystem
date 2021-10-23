@@ -44,10 +44,6 @@ public class GUIHandler {
                 .disableAllInteractions()
                 .create();
 
-        gui.setItem(6, 3, new GuiItem(ItemBuilder.from(Material.PAPER).name(DisplayUtils.txt("Previous")).build(), event -> gui.previous()));
-
-        gui.setItem(6, 7, new GuiItem(ItemBuilder.from(Material.PAPER).name(DisplayUtils.txt("Next")).build(), event -> gui.next()));
-
         gui.addItem(new ClickableSkullItem(name, uuid, e -> {
         }, DisplayUtils.loreProfileMeta(profile, isAdmin)).build());
 
