@@ -4,9 +4,7 @@
 
 package xyz.nsgw.nsys.utils.gui;
 
-import dev.triumphteam.gui.builder.item.ItemBuilder;
 import dev.triumphteam.gui.guis.Gui;
-import dev.triumphteam.gui.guis.GuiItem;
 import dev.triumphteam.gui.guis.PaginatedGui;
 import net.kyori.adventure.text.Component;
 import org.bukkit.*;
@@ -75,7 +73,7 @@ public class GUIHandler {
         boolean areHomes = profile != null;
 
         PaginatedGui locs = Gui.paginated()
-                .title(Component.text(areHomes?"Your Homes (" + profile.getHomes().size() + "/" + profile.getMaxHomes():"Warps"))
+                .title(Component.text(areHomes?"Your Homes (" + profile.getHomes().size() + "/" + profile.getMaxHomes() + ")":"Warps"))
                 .rows(6)
                 .pageSize(45)
                 .create();
@@ -90,7 +88,7 @@ public class GUIHandler {
                     Loc loc = areHomes ? profile.getHome(name) : NSys.sql().wrapWarp(name);
                     if(loc == null) return;
                     locs.close(player);
-                    loc.teleport(player);
+                    loc.teleport(player, false);
                 });
             locs.addItem(activeItem.build());
         }

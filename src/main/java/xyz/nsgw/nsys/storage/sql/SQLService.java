@@ -52,7 +52,8 @@ public class SQLService {
 
         SQLUtils.setDb(db);
 
-        profileTable = new SQLTable("nsys_profiles", DbData.PROFILE_PK , DbData.PROFILE_COLUMNS, null);
+        profileTable = new SQLTable("nsys_profiles", DbData.PROFILE_PK , DbData.PROFILE_COLUMNS,
+                DbData.NEW_PROFILE_COLUMNS);
 
         profileCache = CacheBuilder.newBuilder()
                 .removalListener(this::saveProfile)
@@ -206,13 +207,13 @@ public class SQLService {
     private void saveWarp(@NotNull final RemovalNotification<@NotNull String, @NotNull Warp> notification) {
         Warp warp = notification.getValue();
         // OWNER_UUID,
-        setRow( warpTable, warp.getKey(), warp.getDbValues());
+        setRow( warpTable, warp.getName(), warp.getDbValues());
     }
     public void validateWarp(@NotNull final Warp warp) {
-        this.warpCache.put(warp.getKey(), warp);
+        this.warpCache.put(warp.getName(), warp);
     }
     public void invalidateWarp(@NotNull final Warp warp) {
-        this.warpCache.invalidate(warp.getKey());
+        this.warpCache.invalidate(warp.getName());
     }
     public Warp wrapWarp(@NotNull final String name) {
         try {
@@ -230,7 +231,7 @@ public class SQLService {
 
     public void invalidateAndDeleteWarp(@NotNull final Warp warp) {
         invalidateWarp(warp);
-        SQLUtils.delRow(warpTable, "\""+warp.getKey()+"\"");
+        SQLUtils.delRow(warpTable, "\""+warp.getName()+"\"");
     }
 
 

@@ -11,11 +11,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import xyz.nsgw.nsys.storage.objects.Profile;
 
-import java.util.Date;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class DisplayUtils {
 
@@ -33,7 +32,7 @@ public class DisplayUtils {
     }
 
     public static String rawProfileMeta(Profile profile, OfflinePlayer human) {
-        return ChatColor.LIGHT_PURPLE+(profile.isOnline()?ChatColor.GREEN+"Online"+(profile.isAfk()?ChatColor.YELLOW+""+ChatColor.BOLD+" (AFK)":""):"Last seen: "+ ChatColor.GREEN+ time(System.currentTimeMillis() - human.getLastSeen())+" ago.") +"\n"+
+        return ChatColor.LIGHT_PURPLE+(profile.isOnline()?ChatColor.GREEN+"Online"+(profile.isAfk()?ChatColor.YELLOW+""+ChatColor.BOLD+" (AFK)":""):"Last seen: "+ ChatColor.GREEN+ timeDiff(human.getLastSeen())+" ago.") +"\n"+
                 ChatColor.LIGHT_PURPLE+"First joined: "+ChatColor.GREEN+ date(human.getFirstPlayed())+"\n"+
                 ChatColor.LIGHT_PURPLE+"Total logins: "+ChatColor.GREEN+ profile.getMaxLogins();
     }
@@ -52,8 +51,8 @@ public class DisplayUtils {
         return Date.from(Instant.ofEpochMilli(date)).toString();
     }
 
-    public static String time(Long millis) {
-        long diff = millis;
+    public static String formatTimeInterval(Long start, Long end) {
+        long diff = end - start;
 
         long secondsInMilli = 1000;
         long minutesInMilli = secondsInMilli * 60;
@@ -85,6 +84,10 @@ public class DisplayUtils {
             res += seconds + " second"+(seconds!=1?"s":"");
         }
         return res;
+    }
+
+    public static String timeDiff(Long millis) {
+        return formatTimeInterval(millis, System.currentTimeMillis());
     }
 
 }

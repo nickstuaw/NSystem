@@ -6,9 +6,9 @@ package xyz.nsgw.nsys.storage.objects.locations;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import xyz.nsgw.nsys.NSys;
 import xyz.nsgw.nsys.config.settings.GeneralSettings;
-import xyz.nsgw.nsys.storage.objects.Icon;
 import xyz.nsgw.nsys.storage.sql.DbData;
 import xyz.nsgw.nsys.storage.sql.SQLTable;
 import xyz.nsgw.nsys.storage.sql.SQLUtils;
@@ -20,29 +20,25 @@ import java.util.stream.Collectors;
 
 public class Warp extends Loc {
 
-    private final String key;
-
     private UUID ownerUuid;
     private boolean trackingTeleports;
 
+    private boolean forSale;
+
     private double price = 0;
 
-    private String data;
-
     public Warp(final String name, final Location location, final UUID uuid) {
-        super(location);
-        key = name;
+        super(location, name);
         ownerUuid = uuid;
     }
     public Warp(final String name) {
-        super(Bukkit.getServer().getWorlds().get(0).getSpawnLocation());
-        key = name;
+        super(Bukkit.getServer().getWorlds().get(0).getSpawnLocation(), name);
+        this.forSale = false;
     }
 
     public boolean exists() {
         return this.ownerUuid!=null;
     }
-    public String getKey() {return key;}
 
     public UUID getOwnerUuid() {
         return ownerUuid;
@@ -66,21 +62,21 @@ public class Warp extends Loc {
         this.price = price;
     }
 
-    public String getData() {
-        return this.data;
+    public boolean isForSale() {
+        return this.forSale;
     }
 
-    public void setData(final String data) {
-        this.data = data;
+    public void setForSale(boolean forSale) {
+        this.forSale = forSale;
     }
 
     public Warp loadAttributes(final SQLTable table) {
-        List<Object> row = SQLUtils.getRow(table, "\""+key+"\"", Arrays.stream(DbData.WARP_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));
+        List<Object> row = SQLUtils.getRow(table, "\""+getName()+"\"", Arrays.stream(DbData.WARP_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));
         setOwnerUuid(UUID.fromString((String) row.get(0)));
         setTrackingTeleports((Boolean) row.get(1));
         setLocation(SQLUtils.stringToLocation((String) row.get(2)));
         setPrice(row.get(3) == null ? NSys.sh().gen().getProperty(GeneralSettings.PRICE_WARPS) : Double.parseDouble((String) row.get(3)));
-        setData(row.get(4) == null ? "" : (String) row.get(4));
+        setForSale((Boolean) row.get(4));
         return this;
     }
 
@@ -89,9 +85,15 @@ public class Warp extends Loc {
                 /*OWNER UUID*/this.getOwnerUuid().toString(),
                 /*TRACK TELEPORTS*/SQLUtils.getBoolInSQL(isTrackingTeleports()),
                 /*LOCATION*/SQLUtils.locationToString(this),
-                Double.toString(this.getPrice()),
-                this.getData()
+                /*PRICE*/Double.toString(this.getPrice()),
+                /*FOR SALE*/SQLUtils.getBoolInSQL(this.isForSale())
         };
     }
 
+    @Override
+    public void teleport(Player p, boolean loud) {
+        super.teleport(p, loud);
+        if(this.trackingTeleports)
+            Bukkit.getLogger().info(p.getName() + " teleported to warp " + this.getName() + ".");
+    }
 }

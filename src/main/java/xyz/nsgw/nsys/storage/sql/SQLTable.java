@@ -5,7 +5,6 @@
 package xyz.nsgw.nsys.storage.sql;
 
 import co.aikar.idb.Database;
-import xyz.nsgw.nsys.NSys;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,8 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class SQLTable {
 
@@ -47,10 +44,6 @@ public class SQLTable {
     public void init() {
         SQLUtils.update("CREATE TABLE IF NOT EXISTS "+ name
                 + " (" + String.join(" ",pk) +", "+ colsJoined + ", PRIMARY KEY ("+pk[0]+"));");
-    }
-
-    public void doNewCols(int index, String def) {
-        SQLUtils.updateAndIgnore("ALTER TABLE "+name+" ADD ("+ cols[index][0]+" "+cols[index][1] +" DEFAULT "+def +");");
     }
 
     public String getName() {

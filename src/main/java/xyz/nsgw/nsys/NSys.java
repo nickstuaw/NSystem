@@ -9,7 +9,6 @@ import dev.jorel.commandapi.CommandAPI;
 import dev.jorel.commandapi.CommandAPIConfig;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,7 +28,6 @@ import xyz.nsgw.nsys.utils.alerts.StaffAlertHandler;
 import xyz.nsgw.nsys.utils.gui.GUIHandler;
 
 import java.util.Objects;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 public final class NSys extends JavaPlugin {
@@ -48,7 +46,7 @@ public final class NSys extends JavaPlugin {
 
     @Override
     public void onLoad() {
-        CommandAPI.onLoad(new CommandAPIConfig().silentLogs(true));
+        CommandAPI.onLoad(new CommandAPIConfig().silentLogs(false));
     }
 
     @Override
@@ -57,7 +55,6 @@ public final class NSys extends JavaPlugin {
         getLogger().info("Enabling NSys...");
 
         CommandAPI.onEnable(this);
-
 
         if (!setupEconomy() ) {
             getLogger().severe(String.format("[%s] - Disabled due to no Vault dependency found!", getDescription().getName()));
@@ -99,7 +96,7 @@ public final class NSys extends JavaPlugin {
 
         commandHandler = new CommandHandler(this);
 
-        scheduleRepeatingTask(new Timer(), 10L, 50L);
+        //scheduleRepeatingTask(new Timer(), 10L, 50L);
 
         log().info("NSys Enabled!");
 
@@ -117,7 +114,6 @@ public final class NSys extends JavaPlugin {
         if(sql != null) {
             sql.invalidateList(sql.wrapList("warps"));
             sql.invalidateMap(sql.wrapMap("players"));
-            commandHandler.onDisable();
             sql.onDisable();
             SQLUtils.close();
         }
@@ -172,13 +168,12 @@ public final class NSys extends JavaPlugin {
         return true;
     }
 
-    public static void newWarp(final String name, final Player player, double price) {
+    public static Warp newWarp(final String name, final Player player, double price) {
         if(price == -1) {
             price = settingsHandler.gen().getProperty(GeneralSettings.PRICE_WARPS);
-            if (price < 0) {
-                logger.severe("Price cannot be less than 0 in NSys/general_settings.yml! Warp not created!");
-                return;
-            }
+        } else if (price < 0) {
+            logger.severe("Price cannot be less than 0 in NSys/general_settings.yml! Warp not created!");
+            return null;
         }
         Warp warp = NSys.sql().wrapWarp(name);
         warp.setOwnerUuid(player.getUniqueId());
@@ -186,5 +181,6 @@ public final class NSys extends JavaPlugin {
         warp.setPrice(price);
         NSys.sql().validateWarp(warp);
         NSys.sql().wrapList("warps").add(name);
+        return sql.wrapWarp(name);
     }
 }

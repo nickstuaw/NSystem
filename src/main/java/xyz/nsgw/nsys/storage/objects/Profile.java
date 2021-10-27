@@ -38,6 +38,8 @@ public class Profile {
 
     private HashMap<String, Home> homes;
 
+    private List<String> ownedWarps;
+
     private final int maxHomes;
 
     private int maxLogins;
@@ -69,6 +71,7 @@ public class Profile {
         afkLocation = Bukkit.getWorlds().get(0).getSpawnLocation();
         lastActive = new Date();
         lastName = "";
+        ownedWarps = new ArrayList<>();
     }
 
     public Player getBase() {
@@ -104,10 +107,12 @@ public class Profile {
         homes = new HashMap<>();
         if(raw.isEmpty()) return;
         String[] values;
+        String name;
         // homename:worlduuid,x,y,z,yaw,pitch;
         for(String home : raw.split(";")) {
             values = home.split(":");
-            homes.put(values[0].split(",")[0],new Home(SQLUtils.stringToLocation(values[1])));
+            name = values[0].split(",")[0];
+            homes.put(name,new Home(SQLUtils.stringToLocation(values[1]), name));
         }
     }
 
@@ -124,7 +129,7 @@ public class Profile {
 
     public boolean setHome(final String homeName, final Location location) {
         if(homes.size() < maxHomes || (homes.size() == maxHomes && homes.containsKey(homeName))) {
-            homes.put(homeName, new Home(location));
+            homes.put(homeName, new Home(location, homeName));
             return true;
         }
         return false;
@@ -148,6 +153,10 @@ public class Profile {
     public Home getHome(final String homeName) {
         if(!homes.containsKey(homeName)) return null;
         return homes.get(homeName);
+    }
+    public Home getHomeAtIndex(final int index) {
+        if(homes.size() < index) return null;
+        return homes.get(homes.keySet().toArray(String[]::new)[index]);
     }
     public boolean hasHome(String name) {
         return homes.containsKey(name);
@@ -261,6 +270,19 @@ public class Profile {
         return trackingTeleportsLevel;
     }
 
+    public List<String> getOwnedWarps() {
+        return ownedWarps;
+    }
+    public String getOwnedWarpsString() {
+        return this.ownedWarps.isEmpty() ? "" : String.join(";",this.ownedWarps);
+    }
+
+    public void setOwnedWarps(String raw) {
+        this.ownedWarps = new ArrayList<>();
+        if(raw.isEmpty()) return;
+        this.ownedWarps.addAll(Arrays.stream(raw.split(";")).toList());
+    }
+
     public Profile loadAttributes(final SQLTable table) {
         List<Object> row = SQLUtils.getRow(table, "\""+key.toString()+"\"",Arrays.stream(DbData.PROFILE_COLUMNS).map(c->c[0]).collect(Collectors.toList()).toArray(String[]::new));
         // DISCORD , TRACK TP , HOMES , NOTES , MUTE, LOGINS, AFK LOC
@@ -275,6 +297,7 @@ public class Profile {
         setLastActive(ArithmeticUtils.dateFromStr((String) row.get(8)));
         setLastName((String) row.get(9));
         setTrackingTeleportsLevel((Integer) row.get(10));
+        setOwnedWarps(row.get(11) == null ? "" : (String) row.get(11));
         return this;
     }
 
@@ -291,7 +314,8 @@ public class Profile {
                 /*LAST LOCATION*/SQLUtils.locationToString(afkLocation),
                 /*LAST ACTIVE*/Long.toString(getLastActive().getTime()),
                 /*LAST NAME*/getLastName(),
-                /*TRACK TP LVL*/getTrackingTeleportsLevel()
+                /*TRACK TP LVL*/getTrackingTeleportsLevel(),
+                /*OWNED WARPS*/getOwnedWarpsString()
         };
     }
 }

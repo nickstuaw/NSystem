@@ -18,13 +18,14 @@ public class DbData {
     public static final String[][] PROFILE_COLUMNS = {{"discordid","VARCHAR(32)"},{"tracktp","BOOLEAN"},
             {"homes","TEXT"},{"privatenotes","TEXT"},{"mute","VARCHAR(256)"},{"cumulativelogons","INT"},
             {"afk","BOOLEAN"},{"afklocation","VARCHAR(128)"},{"lastactive","VARCHAR(32)"},{"lastname","VARCHAR(32)"},
-            {"tracktplevel","TINYINT"}};
+            {"tracktplevel","TINYINT"},{"owned_warps","TEXT"}};
+    public static final String[][] NEW_PROFILE_COLUMNS = {{"owned_warps","TEXT"}};
 
     public static final String[] WARP_PK = {"name","VARCHAR(36)"};
     //
-    public static final String[][] WARP_COLUMNS = {{"owneruuid","VARCHAR(36)"},{"tracktp","BOOLEAN"},{"location","VARCHAR(255)"},{"value","VARCHAR(512)"},{"data","VARCHAR(512)"}};
+    public static final String[][] WARP_COLUMNS = {{"owneruuid","VARCHAR(36)"},{"tracktp","BOOLEAN"},{"location","VARCHAR(255)"},{"value","VARCHAR(512)"},{"selling","BOOLEAN DEFAULT FALSE"}};
     //
-    public static final String[][] NEW_WARP_COLUMNS = {{"value","VARCHAR(512)"},{"data","VARCHAR(512)"}};
+    public static final String[][] NEW_WARP_COLUMNS = {{"value","VARCHAR(512)"},{"selling","BOOLEAN"}};
 
     public static final String NOTES_SEP = "/sEp_/";
 }

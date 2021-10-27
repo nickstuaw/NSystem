@@ -3,64 +3,87 @@ version: ${project.version}
 main: xyz.nsgw.nsys.NSys
 api-version: 1.16
 authors: [ nsgw ]
-depend: [CommandAPI,Vault]
+depend: [Vault,CommandAPI]
+softdepend: [Essentials]
 permissions:
+  nsys.admin:
+    description: All admin permissions.
+    default: op
+    children:
+      - nsys.cmd.*
   nsys.cmd.*:
     description: Access all commands (dangerous)
     default: op
     children:
-      - nsys.cmd.afk
+      - nsys.cmd.profile
+      - nsys.cmd.profile.other
+      - nsys.cmd.seen
+      - nsys.cmd.seen.other
       - nsys.cmd.home.*
       - nsys.cmd.warp.*
+  nsys.cmd.profile:
+    description: View own profile.
+    default: not op
+  nsys.cmd.profile.other:
+    description: View other profiles.
+    default: op
+  nsys.cmd.seen:
+    description: Seen command.
+    default: not op
+  nsys.cmd.seen.other:
+    description: Seen command for other players.
+    default: not op
   nsys.cmd.home.*:
     description: Home command wildcard.
     children:
-      - nsys.cmd.home.list
-      - nsys.cmd.home.tp
-      - nsys.cmd.home.set
-      - nsys.cmd.home.delete
-      - nsys.cmd.home.visit
+      - nsys.cmd.sethome
+      - nsys.cmd.delhome
+      - nsys.cmd.home
       - nsys.cmd.homes
-  nsys.cmd.afk:
-    description: Toggle own AFK status.
-    default: not op
-  nsys.cmd.home.list:
-    description: View own homes.
-    default: not op
-  nsys.cmd.home.tp:
+      - nsys.cmd.homes.visit
+  nsys.cmd.home:
     description: Tp to own homes.
     default: not op
-  nsys.cmd.home.set:
-    description: Set own homes.
-    default: not op
-  nsys.cmd.home.delete:
-    description: Delete own homes.
-    default: not op
-  nsys.cmd.home.visit:
-    description: Visit anybodys home.
   nsys.cmd.homes:
     description: View own homes.
+    default: not op
+  nsys.cmd.homes.visit:
+    description: Visit anybodys home.
+    default: op
+  nsys.cmd.sethome:
+    description: Set own homes.
+    default: not op
+  nsys.cmd.delhome:
+    description: Delete own homes.
     default: not op
   nsys.cmd.warp.*:
     description: Warp command wildcard.
     children:
-      - nsys.cmd.warp.tp
-      - nsys.cmd.warp.set
-      - nsys.cmd.warp.delete
-      - nsys.cmd.warp.list
+      - nsys.cmd.warp
       - nsys.cmd.warps
-  nsys.cmd.warp.tp:
+      - nsys.cmd.setwarp
+      - nsys.cmd.delwarp
+      - nsys.cmd.buywarp
+      - nsys.cmd.sellwarp
+      - nsys.cmd.refundwarp
+  nsys.cmd.warp:
     description: Tp to any available warp.
     default: not op
-  nsys.cmd.warp.set:
-    description: Set a warp.
-    default: not op
-  nsys.cmd.warp.list:
-    description: View available warps.
-    default: not op
-  nsys.cmd.warp.delete:
-    description: Delete a warp.
-    default: not op
   nsys.cmd.warps:
-    description: View available warps.
+    description: List warps and tp.
     default: not op
+  nsys.cmd.buywarp:
+    description: Buy warps.
+    default: not op
+  nsys.cmd.sellwarp:
+    description: Sell own warps.
+    default: not op
+  nsys.cmd.setwarp:
+    description: Set a warp.
+    default: op
+  nsys.cmd.delwarp:
+    description: Delete a warp.
+    default: op
+  nsys.cmd.refundwarp:
+    description: Refund any warp.
+    default: op
