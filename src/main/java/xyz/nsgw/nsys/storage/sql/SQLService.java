@@ -5,6 +5,7 @@
 package xyz.nsgw.nsys.storage.sql;
 
 import co.aikar.idb.DatabaseOptions;
+import co.aikar.idb.HikariPooledDatabase;
 import co.aikar.idb.PooledDatabaseOptions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -47,27 +48,29 @@ public class SQLService {
                         database,
                         host).build();
 
-        SQLUtils.setDb(PooledDatabaseOptions.builder().options(options).createHikariDatabase());
+        HikariPooledDatabase db = PooledDatabaseOptions.builder().options(options).createHikariDatabase();
 
-        profileTable = new SQLTable("nsys_profiles", DbData.PROFILE_PK , DbData.PROFILE_COLUMNS);
+        SQLUtils.setDb(db);
+
+        profileTable = new SQLTable("nsys_profiles", DbData.PROFILE_PK , DbData.PROFILE_COLUMNS, null);
 
         profileCache = CacheBuilder.newBuilder()
                 .removalListener(this::saveProfile)
                 .build(CacheLoader.from(this::loadProfile));
 
-        listsTable = new SQLTable("nsys_settings", DbData.LISTS_PK , DbData.LISTS_COLUMNS);
+        listsTable = new SQLTable("nsys_settings", DbData.LISTS_PK , DbData.LISTS_COLUMNS, null);
 
         listsCache = CacheBuilder.newBuilder()
                 .removalListener(this::saveList)
                 .build(CacheLoader.from(this::loadList));
 
-        mapsTable = new SQLTable("nsys_settings_maps", DbData.MAPS_PK , DbData.MAPS_COLUMNS);
+        mapsTable = new SQLTable("nsys_settings_maps", DbData.MAPS_PK , DbData.MAPS_COLUMNS, null);
 
         mapsCache = CacheBuilder.newBuilder()
                 .removalListener(this::saveMap)
                 .build(CacheLoader.from(this::loadMap));
 
-        warpTable = new SQLTable("nsys_warps", DbData.WARP_PK , DbData.WARP_COLUMNS);
+        warpTable = new SQLTable("nsys_warps", DbData.WARP_PK , DbData.WARP_COLUMNS, DbData.NEW_WARP_COLUMNS);
 
         warpCache = CacheBuilder.newBuilder()
                 .removalListener(this::saveWarp)

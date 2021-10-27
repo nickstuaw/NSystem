@@ -11,7 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import xyz.nsgw.nsys.storage.objects.Profile;
 
-import java.sql.Date;
+import java.util.Date;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,13 +53,24 @@ public class DisplayUtils {
     }
 
     public static String time(Long millis) {
-        long days = TimeUnit.MILLISECONDS.toDays(millis),
-        hours = TimeUnit.MILLISECONDS.toHours(millis) -
-                TimeUnit.DAYS.toHours(days),
-        minutes = TimeUnit.MILLISECONDS.toMinutes(millis) -
-                TimeUnit.HOURS.toMinutes(hours),
-        seconds = TimeUnit.MILLISECONDS.toSeconds(millis) -
-                TimeUnit.MINUTES.toSeconds(minutes);
+        long diff = millis;
+
+        long secondsInMilli = 1000;
+        long minutesInMilli = secondsInMilli * 60;
+        long hoursInMilli = minutesInMilli * 60;
+        long daysInMilli = hoursInMilli * 24;
+
+        long days = diff / daysInMilli;
+        diff = diff % daysInMilli;
+
+        long hours = diff / hoursInMilli;
+        diff = diff % hoursInMilli;
+
+        long minutes = diff / minutesInMilli;
+        diff = diff % minutesInMilli;
+
+        long seconds = diff / secondsInMilli;
+
         String res = "";
         if(days > 0) {
             res += days + " day"+(days!=1?"s ":" ");

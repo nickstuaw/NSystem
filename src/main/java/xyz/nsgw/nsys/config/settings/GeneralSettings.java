@@ -13,6 +13,7 @@ import static ch.jalu.configme.properties.PropertyInitializer.newProperty;
 
 public class GeneralSettings implements SettingsHolder {
 
+    private static final String PFX_PRICES = "prices.";
     private static final String PFX_GAMEPLAY = "gameplay.";
     private static final String PFX_MODERATION = "moderation.";
     private static final String PFX_ALERTS = "alerts.";
@@ -33,6 +34,10 @@ public class GeneralSettings implements SettingsHolder {
         conf.setComment("",
                 "Changes to these settings can be applied by reloading the config.");
     }
+
+    @Comment("The global warp price")
+    public static final Property<Double> PRICE_WARPS =
+            newProperty(PFX_PRICES + "warps", 20.0);
     // MODERATION
     // TRACKTP
     @Comment("An alert is sent when a player teleports and has track-tp on or teleports to/at a warp with track-tp" +

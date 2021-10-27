@@ -42,6 +42,9 @@ public class SettingsList {
     public List<String> getList() {
         return list;
     }
+    public String[] getArray() {
+        return list.toArray(String[]::new);
+    }
     private String getListString() {
         return list.isEmpty() ? "" : String.join(SEPARATOR, list);
     }

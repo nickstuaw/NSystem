@@ -3,6 +3,7 @@ version: ${project.version}
 main: xyz.nsgw.nsys.NSys
 api-version: 1.16
 authors: [ nsgw ]
+depend: [CommandAPI,Vault]
 permissions:
   nsys.cmd.*:
     description: Access all commands (dangerous)

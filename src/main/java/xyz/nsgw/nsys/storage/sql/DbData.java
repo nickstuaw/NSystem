@@ -22,7 +22,9 @@ public class DbData {
 
     public static final String[] WARP_PK = {"name","VARCHAR(36)"};
     //
-    public static final String[][] WARP_COLUMNS = {{"owneruuid","VARCHAR(36)"},{"tracktp","BOOLEAN"},{"location","VARCHAR(255)"}};
+    public static final String[][] WARP_COLUMNS = {{"owneruuid","VARCHAR(36)"},{"tracktp","BOOLEAN"},{"location","VARCHAR(255)"},{"value","VARCHAR(512)"},{"data","VARCHAR(512)"}};
+    //
+    public static final String[][] NEW_WARP_COLUMNS = {{"value","VARCHAR(512)"},{"data","VARCHAR(512)"}};
 
     public static final String NOTES_SEP = "/sEp_/";
 }

@@ -4,6 +4,7 @@
 
 package xyz.nsgw.nsys.storage.objects;
 
+import dev.jorel.commandapi.CommandAPI;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -70,6 +71,10 @@ public class Profile {
         lastName = "";
     }
 
+    public Player getBase() {
+        return Bukkit.getPlayer(this.key);
+    }
+
     public UUID getKey() {
         return key;
     }
@@ -124,8 +129,19 @@ public class Profile {
         }
         return false;
     }
-    public void delHome(final String homeName) {
-        homes.remove(homeName);
+    public void setHomeHere(final String homeName) {
+        Player p = this.getBase();
+        if(homeName.contains(":")) {
+            p.sendMessage(ChatColor.RED + "Home names cannot contain ':'.");
+        } else if(this.setHome(homeName, p.getLocation())) {
+            CommandAPI.updateRequirements(p);
+            p.sendMessage(ChatColor.GREEN + "Home '" + homeName + "' set.");
+        } else {
+            p.sendMessage(ChatColor.RED + "You have reached your maximum amount of homes.");
+        }
+    }
+    public Home delHome(final String homeName) {
+        return homes.remove(homeName);
     }
 
     @Nullable

@@ -75,14 +75,10 @@ public class GUIHandler {
         boolean areHomes = profile != null;
 
         PaginatedGui locs = Gui.paginated()
-                .title(Component.text(areHomes?"Your Homes":"Warps"))
+                .title(Component.text(areHomes?"Your Homes (" + profile.getHomes().size() + "/" + profile.getMaxHomes():"Warps"))
                 .rows(6)
                 .pageSize(45)
                 .create();
-
-        locs.setItem(6, 3, new GuiItem(ItemBuilder.from(Material.PAPER).name(DisplayUtils.txt("Previous")).build(), event -> locs.previous()));
-
-        locs.setItem(6, 7, new GuiItem(ItemBuilder.from(Material.PAPER).name(DisplayUtils.txt("Next")).build(), event -> locs.next()));
 
         Collection<String> names = areHomes ? profile.getHomes().keySet() : NSys.sql().wrapList("warps").getList();
 

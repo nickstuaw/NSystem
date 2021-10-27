@@ -8,8 +8,12 @@ import co.aikar.idb.DB;
 import co.aikar.idb.Database;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.intellij.lang.annotations.Language;
 import org.jetbrains.annotations.NotNull;
+import xyz.nsgw.nsys.NSys;
+import xyz.nsgw.nsys.storage.objects.Icon;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,8 +105,9 @@ public class SQLUtils {
     }
     public static void updateAndIgnore(@Language("SQL") final String query) {
         try {
+            Bukkit.getLogger().info(query);
             db.executeUpdate(query);
-        } catch (SQLException ignored) {}
+        } catch (SQLException e) {e.printStackTrace();}
     }
 
     public static void update(@NotNull final String SQL_QUERY, Object... objects) {
@@ -170,5 +175,14 @@ public class SQLUtils {
         }
         raw.deleteCharAt(raw.length()-1);
         return raw.toString();
+    }
+
+    public static Icon stringToIcon(final String raw, OfflinePlayer owner) {
+        String[] split = raw.split(",");
+        Material material = Material.getMaterial(split[0]);
+        return new Icon(material, Integer.parseInt(split[1]), owner, split[2]);
+    }
+    public static String iconToString(final Icon icon) {
+        return icon.getStack().getType() + "," + icon.getStack().getAmount() + "," + icon.getAdditions();
     }
 }

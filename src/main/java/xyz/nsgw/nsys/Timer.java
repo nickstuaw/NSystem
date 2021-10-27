@@ -22,7 +22,7 @@ public class Timer implements Runnable {
     }
 
     private void checkActivity(Profile p) {
-        if(!p.isAfk() && p.getLastActive().getTime() + NSys.sh().gen().getProperty(GeneralSettings.MINIMUM_AFK_TIME) * 1000 < System.currentTimeMillis()) {
+        if(!p.isAfk() && p.getLastActive().getTime() + (NSys.sh().gen().getProperty(GeneralSettings.MINIMUM_AFK_TIME) * 1000) < System.currentTimeMillis()) {
             p.setAfk(true, false);
         }
     }
