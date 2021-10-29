@@ -296,6 +296,7 @@ public class CommandHandler {
                             } else {
                                 warp.setForSale(false);
                                 warp.setLocation(player.getLocation());
+                                NSys.sql().validateWarp(warp);
                                 player.sendMessage(txt("<green>Your warp is no longer up for sale. " +
                                         "Warp location updated."));
                                 NSys.log().info(player.getName() + " is no longer selling warp "+warp.getName()+".");
@@ -306,6 +307,7 @@ public class CommandHandler {
                         if(warp != null) {
                             if(warp.isForSale()) {
                                 warp.setForSale(false);
+                                NSys.sql().validateWarp(warp);
                                 OfflinePlayer previousOwner = Bukkit.getOfflinePlayer(warp.getOwnerUuid());
                                 EconUtils.give(
                                         previousOwner, price,
@@ -352,17 +354,19 @@ public class CommandHandler {
                         CommandAPI.fail("You cannot sell that warp.");
                         return;
                     }
-                    Warp warp = (Warp) args[0];
+                    Warp warp = NSys.sql().wrapWarp((String) args[0]);
                     if(!warp.exists()) {
                         CommandAPI.fail("You cannot sell that warp.");
                         return;
-                    } else if (warp.getOwnerUuid().equals(player.getUniqueId()) && warp.isForSale()) {
+                    } else if (warp.isForSale()) {
                         warp.setForSale(false);
+                        NSys.sql().validateWarp(warp);
                         player.sendMessage(txt("<green>Your warp is no longer up for sale."));
                         NSys.log().info(player.getName() + " is no longer selling warp "+warp.getName()+".");
                         return;
                     }
                     warp.setForSale(true);
+                    NSys.sql().validateWarp(warp);
                     player.sendMessage(txt("<green>You are now selling the warp <yellow>" + warp.getName()
                             + "</yellow> for <red>$" + warp.getPrice() + "</red>."));
                     NSys.log().info(player.getName() + " is now selling warp "+warp.getName()+".");
@@ -488,7 +492,7 @@ public class CommandHandler {
             if(!warp.exists())
                 return null;
             if(warp.getOwnerUuid().equals(((Player)info.sender()).getUniqueId()))
-                return warp;
+                return warp.getName();
             return null;
         }).replaceSuggestions(info -> {
             if(info.sender() instanceof Player)
