@@ -2,7 +2,7 @@
 ## Current features
 NSys (also known as NSystem) currently provides:
 * Player homes
-* Warps
+* Warps (these can be bought and sold)
 * Player profiles
 * Interactive GUIs for all of the above
 ## To be added
