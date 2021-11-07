@@ -4,6 +4,7 @@
 
 package xyz.nsgw.nsys.config.settings;
 
+import ch.jalu.configme.Comment;
 import ch.jalu.configme.SettingsHolder;
 import ch.jalu.configme.configurationdata.CommentsConfiguration;
 import ch.jalu.configme.properties.Property;
@@ -17,6 +18,10 @@ public class StartupSettings implements SettingsHolder {
         conf.setComment("",
                 "These settings will not load when reloading the config.");
     }
+    // Database migration with Json
+    @Comment("Migration modes: disabled, save, load.")
+    public static final Property<String> MIGRATION_MODE =
+            newProperty("db-migration.mode","disabled");
     // MySQL
     public static final Property<String> MYSQL_HOST =
             newProperty("mysql.host", "not set");

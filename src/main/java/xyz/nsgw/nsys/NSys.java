@@ -19,6 +19,8 @@ import xyz.nsgw.nsys.config.settings.StartupSettings;
 import xyz.nsgw.nsys.listeners.LoadingListener;
 import xyz.nsgw.nsys.listeners.PlayerListener;
 import xyz.nsgw.nsys.listeners.TpListener;
+import xyz.nsgw.nsys.storage.JsonMigration;
+import xyz.nsgw.nsys.storage.objects.Profile;
 import xyz.nsgw.nsys.storage.objects.SettingsList;
 import xyz.nsgw.nsys.storage.objects.SettingsMap;
 import xyz.nsgw.nsys.storage.objects.locations.Warp;
@@ -28,6 +30,7 @@ import xyz.nsgw.nsys.utils.alerts.StaffAlertHandler;
 import xyz.nsgw.nsys.utils.gui.GUIHandler;
 
 import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public final class NSys extends JavaPlugin {
@@ -84,11 +87,25 @@ public final class NSys extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new TpListener(), this);
         Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
 
-        SettingsList warps = sql.wrapList("warps");
-        sql.validateList(warps);
-
-        SettingsMap players = sql.wrapMap("players");
-        sql.validateMap(players);
+        JsonMigration migration;
+        switch(settingsHandler.startup().getProperty(StartupSettings.MIGRATION_MODE).toLowerCase()) {
+            case "load":
+                logger.info("Loading data from json...");
+                migration = new JsonMigration(this.getDataFolder());
+                loadFromJson(migration);
+                logger.info("Loaded data from json.");
+                logger.info(sql.wrapList("warps").getList().size()+" warps and "
+                        + sql.wrapMap("players").getMap().size() + " players.");
+            case "save":
+                logger.info("Saving data to json...");
+                migration = new JsonMigration(this.getDataFolder());
+                saveToJson(migration);
+                logger.info("Saved data to json.");
+                logger.info(sql.wrapList("warps").getList().size()+" warps and "
+                        + sql.wrapMap("players").getMap().size() + " players.");
+            default:
+                logger.info("Skipped DB migration with Json because migration is disabled.");
+        }
 
         guiHandler = new GUIHandler();
 
@@ -100,6 +117,36 @@ public final class NSys extends JavaPlugin {
 
         log().info("NSys Enabled!");
 
+    }
+
+    private void loadFromJson(JsonMigration migration) {
+        SettingsList newWarps = migration.getList("warps");
+        sql.validateList(newWarps);
+        Warp w;
+        for(String name : newWarps.getList()) {
+            w = migration.getWarp(name);
+            sql.validateWarp(w);
+        }
+        SettingsMap newPlayers = migration.getMap("players");
+        sql.validateMap(newPlayers);
+        Profile p;
+        for(String uuid : newPlayers.getMap().keySet()) {
+            p = migration.getProfile(uuid);
+            sql.validateProfile(p);
+        }
+    }
+
+    private void saveToJson(JsonMigration migration) {
+        SettingsList warps = sql.wrapList("warps");
+        migration.storeList(warps);
+        for(String name : warps.getList()) {
+            migration.storeWarp(sql.wrapWarp(name));
+        }
+        SettingsMap players = sql.wrapMap("players");
+        migration.storeMap(players);
+        for(String uuid : players.getMap().keySet()) {
+            migration.storeProfile(sql.wrapProfile(UUID.fromString(uuid)));
+        }
     }
 
     public SettingsManager getGenSettings() {

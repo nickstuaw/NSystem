@@ -115,6 +115,9 @@ public class Profile {
             homes.put(name,new Home(SQLUtils.stringToLocation(values[1]), name));
         }
     }
+    public void setHomesMap(HashMap<String,Home> hs) {
+        this.homes = hs;
+    }
 
     public String getHomesString() {
         if(homes.isEmpty()) return "";
@@ -215,7 +218,7 @@ public class Profile {
         setLastName(ign);
         updateActivity();
     }
-    private void setMaxLogins(int mx) {
+    public void setMaxLogins(int mx) {
         maxLogins = mx;
     }
     public int getMaxLogins() {
@@ -243,7 +246,7 @@ public class Profile {
         return lastActive;
     }
 
-    private void setLastActive(Date lA) {
+    public void setLastActive(Date lA) {
         lastActive = lA;
     }
 

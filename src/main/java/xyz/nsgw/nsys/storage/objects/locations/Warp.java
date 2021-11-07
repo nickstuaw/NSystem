@@ -76,7 +76,7 @@ public class Warp extends Loc {
         setTrackingTeleports((Boolean) row.get(1));
         setLocation(SQLUtils.stringToLocation((String) row.get(2)));
         setPrice(row.get(3) == null ? NSys.sh().gen().getProperty(GeneralSettings.PRICE_WARPS) : Double.parseDouble((String) row.get(3)));
-        setForSale((Boolean) row.get(4));
+        setForSale(row.get(4)==null ? false : (Boolean) row.get(4));
         return this;
     }
 
